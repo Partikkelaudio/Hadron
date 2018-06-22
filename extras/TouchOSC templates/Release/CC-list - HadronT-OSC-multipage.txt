@@ -1,0 +1,43 @@
+-- Everything is on MIDI channel 6 --
+
+Hadron 1 (first page):
+Ctrl		CC
+X: 			2
+Y: 			1
+Expr1:		3
+Expr2:		4
+Expr3:		5
+Expr4:		6
+Rec1:		7
+Rec2:		8
+Rec3:		9
+Rec4:		10
+Volume:		11
+
+Hadron 2 (second page):
+Ctrl		CC
+X: 			22
+Y: 			21
+Expr1:		23
+Expr2:		24
+Expr3:		25
+Expr4:		26
+Rec1:		27
+Rec2:		28
+Rec3:		29
+Rec4:		30
+Volume:		31
+
+Hadron 3 (third page):
+Ctrl		CC
+X: 			42
+Y: 			41
+Expr1:		43
+Expr2:		44
+Expr3:		45
+Expr4:		46
+Rec1:		47
+Rec2:		48
+Rec3:		49
+Rec4:		50
+Volume:		51

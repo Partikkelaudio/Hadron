@@ -1,0 +1,38 @@
+* liste over samples som brukes 
+	- i Lessons
+	- i demos (pr demo)
+
+	* Lessons
+	- MidiSynth
+		Cello
+		VibLineDistTone2
+		ahnoise
+		PadWsSeq1_C4
+	- MidisynthCombo
+		VibLineDistTone2
+	- effects 
+		(none)
+	- triggered effects
+		(none)
+	- livesampling
+		(none)
+	* Demos
+	- rambdemo
+		formWave0
+		formWave3
+	- darkdemo
+		Planet2
+	- barack
+		t_rengit
+		t_doom
+		t_ekkogit
+		
+
+* states som krever spesielle samples
+	CartoonVocals:
+		formWave0 etc
+	WaveSeq
+		HangOn
+
+	gtVocalWowels (not free)
+		oyv_VocFormXX

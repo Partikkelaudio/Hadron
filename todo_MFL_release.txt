@@ -1,0 +1,171 @@
+* done:
+
+*******
+todo:
+* DetuneSaw arpeggiator muligheter ?
+	- grain pitch
+	- detune / ikkedetume bpm sync ting
+	- oktav / kvint / etc grainrate?
+
+- missing docs for
+	grBrightFormant
+	grBrightFormant2
+	grDetuneSaw
+	grNoisy
+
+(standalone on linux)
+Erreur is indeed error. Removing the line "-odac -M0 -+rtmidi=mme -b2048
+-B4096 -f" helps (no crash like before) and I found a small error in
+the /inc folder. The file named "setModfuncTable.inc" should be named
+"setModFuncTable.inc" (F instead of f). With Linux, it makes a
+difference.
+
+* notification in installer:
+	- turn off antivirus and system defender software before installing
+	- as an alternative you may answer "yes" to the software's reques to modify the system registry
+	- the reson for this is that we need to store in the registry the path to where Hadron is installed,
+	  and the system defender software exists with the specific purpose of preventing unauthorized modification of such variables.
+
+;****************
+
+news:
+* updated DSP routines, new installer
+	* updated LFO routing (also applies to random generators routing, amp control after generation)
+		- DSP installer update (1.1)
+		- check for more neccessary updates
+
+* touchOSC templates
+* extra max for live devices
+
+* nonstandard max install
+	- allow installer to complete but show a big warning 
+	- with a description of how to do the config file thing
+
+************************************************ states naming notes, delete ***********************************************
+FM pack
+grFmGrains			grDualFm
+grFmGrains2			grDualFm2
+grFmGrains_short		grDualFm3
+grFMcombineGrFMstep_ratio_bpm	grDualFmStepSyncFlip (step = fm ratio steps)
+grFMstep_ratio_bpm		grFmStepSync
+grGrFMstep_ratio_bpm		grFmStepSync_GrainFm
+grFmTineFlute			grDualFmThin
+grFmTineFlute_steps		grDualFmThinSteps
+grSimpleFM_distAttack		grFmLeadGritAttack
+grSimpleFM_stepratio		grFmStepsSimple
+grSimpleFM_stepratio_syncLFO	grFmStepsArpeggio
+grSimpleFMcombineGrFM_stepratio	grFmStepsDualFm
+grSimpleGrFM_stepratio		grGrainFmSteps
+grVibroLead			grFmVibroLead
+
+
+
+*grSimpleFM_stepratio (Grain pitch FM)
+- ctrl1: Grain pitch
+- ctrl2: FM ratio, step function(0.5,1,2,3,4,5,6,7,8). Steps coincide with fractional values of the expression control, so e.g. an expression value of 0.4 equals an FM ration of 1/4, while expression value 0.5 equals FM ratio 1/5
+- ctrl3: Grain dur
+- ctrl4: FM index
+
+*grSimpleFM_stepratio_sync_LFO (Grain pitch FM) bpm synced
+- ctrl1: Grain pitch
+- ctrl2: LFO/Arpeggiator amount, controlling FM ratio in a step function(0.5,1,2,3,4,5,6,7,8). Steps coincide with fractional values of the expression control, so e.g. an expression value of 0.4 equals an FM ration of 1/4, while expression value 0.5 equals FM ratio 1/5
+- ctrl3: Grain dur
+- ctrl4: FM index
+
+*grSimpleGrFM_stepratio (Grain rate FM)
+- ctrl1: Grain pitch
+- ctrl2: FM ratio, step function(0.5,1,2,3,4,5,6,7,8). Steps coincide with fractional values of the expression control, so e.g. an expression value of 0.4 equals an FM ration of 1/4, while expression value 0.5 equals FM ratio 1/5
+- ctrl3: Grain dur
+- ctrl4: FM index
+
+*grSimpleFMcombineGrFM_stepratio (Grain rate FM and Grain pitch FM)
+- ctrl1: Pitch FM ratio step function
+- ctrl2: Pitch FM index
+- ctrl3: Rate FM ratio step function
+- ctrl4: Rate FM index
+
+*grFmTineFlute (sammenlign med grSimpleFMcombineGrFM_stepratio)
+- ctrl1 Pitch FM freq
+- ctrl2 Pitch FM index
+- ctrl3 Rate FM freq
+- ctrl4 Rate FM index
+
+*grFmTineFlute_steps (som grFmTineFlute, sammenlign med grSimpleFMcombineGrFM_stepratio)
+- ctrl1 Pitch FM freq
+- ctrl2 Pitch FM index (step function 0.2 0.4 0.6 0.8 0.33 0.66 0.25 0.5 0.75)
+- ctrl3 Rate FM freq
+- ctrl4 Rate FM index (step function 0.2 0.4 0.6 0.8 0.33 0.66 0.25 0.5 0.75)
+
+* grTineHammer controls
+- ctrl1: "Hammer", attack timbral sharpness
+- ctrl2: "Animation", formant and FM modulation amount during sustain phase
+- ctrl3: "Stereo Octaviation", stereo channel masking amount
+- ctrl4: "Inharmonicity", FM frequency offset. Approaching harmonic FM ratios at 0.5 and 1.0, all other values give more or less inhramonic spectra.
+
+* grTineHammerSoft controls
+	- similar to Hammer
+
+* grGrFMstep_ratio_bpm (bpm synced variation of grSimpleGrFM_stepratio)
+- ctrl1: Grain pitch
+- ctrl2: FM ratio, step function(0.5,1,2,3,4,5,6,7,8,9). Steps coincide with fractional values of the expression control, so e.g. an expression value of 0.4 equals an FM ration of 1/4, while expression value 0.5 equals FM ratio 1/5. Due to internal Hadron artifacts, settings below 10% on this expression controller will lead to alternating random pitches.
+- ctrl3: Grain dur and LFO/Step tempo. Combined mapping where grain duration changes linearly over the fader range, while the LFO frequency steps back and forth between 1 and 2.
+- ctrl4: FM index
+
+* grFMcombineGrFMstep_ratio_bpm (bpm synced variation of grSimpleFMcombineGrFM_stepratio where the stepped LFO mixes between Pitch FM index and Grainrate FM index)
+- ctrl1: Grain pitch, and Stereo Octaviation
+- ctrl2: FM ratio, step function(0.5,1,2,3,4,5,6,7,8,9). Steps coincide with fractional values of the expression control, so e.g. an expression value of 0.4 equals an FM ration of 1/4, while expression value 0.5 equals FM ratio 1/5
+- ctrl3: Grain dur and LFO/Step tempo. Combined mapping where grain duration changes linearly over the fader range, while the LFO frequency steps back and forth between 1 and 2.
+- ctrl4: FM index
+
+* grSimpleFM_distAttack (Grain pitch step mod)
+- ctrl1: Grain pitch
+- ctrl2: Attack modulation / Sustain modulation. Modulation consist of FM frequency ratio step functions.
+- ctrl3: Octaviation
+	0-75% : octaviation gainmask
+	75-100% stereo sub octaviation channelmask
+- ctrl4: FM index
+
+************************************************ states naming notes end ***********************************************
+
+(readline configuration on win7)
+
+;****************
+* Channel panning curve
+	- bruk ny partikkel.dll
+	- implementere mellomting mellom sqrt of linear panning (transeg shape -0.8 ?, eller sum av line og sqrt)
+
+
+;;
+
+* samples legges alltid i /samples, men lage en textfil med liste over samples for hver pack
+* lage en instruksjonstekst for hvordan man lager states packs
+	- hvor ligger states
+	- hvor ligger docs
+	- hvor ligger samples
+	- hvordan oppdatere docs (python rewrite)
+	- hvordan lage pack installer
+
+* grFmGrains_Bass
+	- GrFm index kan styres av LFO 
+	- (LFO amp på ctrl?), mulighet for clean, kanskje mer/annen modulasjon/animasjon ved høy ctrl
+	- vi bruker kun 1 ctrl nå, pitchFmIndx
+
+
+******
+******
+
+
+
+** notes: how to freeze m4l device without dependencies to max externals 
+	- edit unfreezed
+	- save
+	- open (edit mode)
+	- rename externals directories (_msp-externals, _max-externals, _m4l-externals)
+	- move externals directories
+	- freeze, save
+	- unfreeze, check deps (all objects "missing"), freeze, save
+	- test osx og win
+	- rename and move back externals
+
+
+

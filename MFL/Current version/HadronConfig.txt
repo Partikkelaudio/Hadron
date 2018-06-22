@@ -1,0 +1,4 @@
+pathWIN=
+pathOSX=
+debug=0
+debugToConsole=0

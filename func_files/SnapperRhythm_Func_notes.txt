@@ -1,0 +1,11 @@
+* rytmisk underdeling (grain rate)
+setTransFuncTable 1 7 1 1024 1 0 1.3333333333 1024 1.3333333333 0 1.5 1024 1.5 0 2 1024 2 0 2.5 1024 2.5 0 3 1024 3 0 4 1024 4 0 6 1023 6 0 8 1 8
+
+* ad ratio
+setTransFuncTable 2 7 0 4096 1 4096 0.5
+
+* grain dur
+setTransFuncTable 3 7 0 4096 0 2048 0.7 2048 1
+
+* grain rate nudge
+setTransFuncTable 4 7 0 1848 -0.01 200 0 2048 0.01 4096 0.4 2048 1

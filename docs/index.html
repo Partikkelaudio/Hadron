@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	<link rel="stylesheet" type="text/css" href="hadron.css" />
+	<link rel="icon" href="images/favicon.ico" />
+
+	<title>Hadron Documentation</title></head>
+
+
+<body>
+	<div id="headUC">
+	</div>
+
+	<div class="clear">
+	</div>
+
+	<div id="bodywrap">
+		<div id="innerbody">
+			<img src="images/pagetitles/title.png" alt="Hadron States Documentation" class="titleimage" />
+
+			<div class="clear">
+			</div>
+
+			<div id="leftmenu">
+				<h2>Main index<br /></h2>
+				<a href="index_states.html"><h2>State Documentation Index</h2></a>
+				<a href="faq.html"><h2>FAQ</h2></a>
+
+			</div>
+
+			<div id="rightcontent">
+				<h1>Hadron Particle Synthesizer</h1>
+				<p>The Hadron particle synthesizer is the ultimate creative tool for
+				granular synthesis. It is available in different plugin formats (VST, AU and Max For Live), 
+				even though the graphic appearance is slightly different for the different plugins wrappers, 
+				the audio functionality of Hadron is the same in all formats.</p>
+				<p><img style="width: 507px; height: 181px;" alt="" src="images/M4L%20Hadron%20GUI%20V6.jpg" /></p>
+				<h2>Features</h2>
+				<p>Hadron can be used for many purposes in sound design. It can be used as a
+				synthesizer or an audio effect, and it can seamlessly morph between
+				different sound processing methods. Some of the typical uses of the
+				device provide fat analog monosynths, granular delay effects, time
+				stretching, formant shifting, transient manipulation, vocal synthesis,
+				FM synthesis, sonic clouds, live sampling and sound morphing. The
+				synthesis engine is controlled by parameter states, and you can morph
+				between states using the 2-dimensional X-Y pad. Specific timbral
+				manipulation within each state can be controlled by the four expression sliders.<br /></p>
+				<h2>How does it work?</h2>
+				<p>The core of the synthesis engine behind Hadron is an extremely flexible implementation
+				of a granular audio generator. Due to it&#8217;s ability to generate all
+				known types of granular synthesis (and a few new variants as well), we
+				propose to use the term particle synthesis to describe the audio
+				processing method.
+				<br /><br>To control the particle synthesizer engine,we&#8217;ve built a system for easy manipulation of the large number of
+				parameters involved in the synthesis process. This system gives the
+				user access to a six-dimensional parameter space of sonic control.
+				Currently, over 200 parameter values are used to define how the
+				synthesis process is executed, and consequently what sound you will get
+				out of it. One such set of parameter values is called a state (you
+				might be familiar with using the term preset for such a set of
+				parameter values, but we&#8217;ll use that term later to define a collection
+				of states that will work together). Each state has 4 expression control
+				mappings, providing the user the expressional ability to modify a
+				subset of the 200+ parameters values defined in the state. A preset in
+				Hadron consists of 4 states, and a method for interpolation between
+				these states. Interpolation between states is controlled by a
+				2-dimensional control surface, with one state residing in each corner
+				of the control surface. Since a state represents a specific mode of
+				granular audio processing, this system lets the user interpolate
+				between different sounds and different sound processing modes. In
+				addition to the 4 states, a preset also contains selection of up to 4
+				waveforms used as sources for the synthesis process. Which of these
+				waveforms is actually used is defined by the state, and the graphical
+				user interface displays an activity indicator on each of the 4 waveform
+				selectors roughly indicating how much each waveform is currently used
+				in the synthesis process. The waveforms can be read from sound files,
+				they can be live sampled audio fragments, or the source can read from
+				realtime audio input.&nbsp; When realtime audio input is used, Hadron
+				acts as an advanced &#8220;granular delay&#8221; effect. This is activated by
+				selecting <i>audioInput</i> as the source waveform in Hadron.<br /></p>
+				<h2>Using Hadron as a VST plugin</h2>
+				<p>Hadron is installed in your VST plugins folder (typically <i>C:/Program Files/Steinberg/Vstplugins</i> on Windows and <i>/Library/Audio/Plug-Ins/VST</i> on OS X), 
+				and it can be used both as a midi controlled synthesizer and as an effect for processing audio input.
+				In both cases you should load Hadron as an audio insert effect on an audio track. To use it as a midi synthesizer, 
+				you can still send midi to it by routing midi notes to the VST effect.
+				<p><img style="width: 507px; height: 292px;" alt="" src="images/Cubase4_screenshot_small.png" /></p>
+				<p>Take a look at our example VST setups for 
+				<a href="http://www.partikkelaudio.com/demo_songs/Hadron_demo_cubase.zip">Cubase</a>, 
+				<a href="http://www.partikkelaudio.com/demo_songs/Hadron_demo_mulab.zip">Mulab</a>, 
+				<a href="http://www.partikkelaudio.com/demo_songs/Hadron_demo_reaper.zip">Reaper</a> and
+				<a href="http://www.partikkelaudio.com/demo_songs/Hadron_demo_live.zip">Ableton Live</a>.</p>
+				<h2>Using Hadron as a AU plugin</h2>
+				<p>Hadron is installed in your AU plugins folder (<i>/Library/Audio/Plug-Ins/Components</i>), 
+				and it can be used both as a midi controlled synthesizer and as an effect for processing audio input. In AU terms it's defined as a "MIDI-controlled Effect".
+				<br><br>
+				To be able to use Hadron with both audio and MIDI at the same time, you'll have to insert it on a instrument track like you would with a synthesizer (Hadron is placed under "AU MIDI-controlled Effects->PartikkelAudio"). To get audio input, you select either a audio channel or one of the available audio inputs from the side chain dropdown box in the upper right corner of the plugin window.
+
+<p><img style="width: 507px; height: 292px;" alt="" src="images/Logic8_screenshot_small.png" /></p>
+
+				<h2>Using Hadron as a Max For Live device</h2>
+				<p>Hadron is installed in your Live library under <i>Audio Effects/Max Audio
+				Effect/HadronForLive</i>. Here you&#8217;ll find the Hadron device itself
+				(<b>Hadron for Live</b>), a midi sender device (<b>Hadron MIDI sender</b>), and various
+				Hadron preset files.
+				<br />
+				<ul>
+				For typical use:
+				<li>- load <b>Hadron for Live</b> on an audio track, and </li>
+				<li>- load <b>Hadron MIDI sender</b> on a midi track.</li></ul>
+				<br>
+				This way, midi data (midi notes) will be sent from the midi track to the
+				Hadron audio device. If you only use effects states (states with an fx
+				prefix in the name), you will not need to load the <b>Hadron MIDI sender</b><br /></p>
+				<p>Take a look at our Live demo songs for diffeent configuration examples:
+				<a href="http://www.partikkelaudio.com/demo_songs/DemoSongs.alp">Hadron demo songs for Ableton Live</a></p>
+				<h2>The different types of Hadron states</h2>
+				<p>Parameter states in Hadron can be divided into categories depending on what kind
+				of processing the state provides. The state names start with a two- or
+				three-letter prefix signifying the state&#8217;s type.
+				<br /><ul><li><b>fx</b>: This type of state lets Hadron be used as an audio effect for live audio input.
+				These are normally used with <i>audioInput</i> selected as the waveform
+				source(s).</li>
+				<li><b>tfx</b>: Similar to the fx state type, these states
+				provide processing of a live audio input signal. The tfx states require
+				midi input to make sound, as the audio output is muted when no midi
+				notes are sent to Hadron.</li>
+				<li><b>gr</b>: Audio synthesis states, where the perceived pitch is constituted by the grain rate (the number
+				of audio particles/grains created per second)</li>
+				<li><b>gt</b>: Audio synthesis states, where the perceived pitch is constituted by the transposition
+				of sound inside each audio particle/grain.</li></ul>
+				</p>
+				<hr />
+			</div>
+
+			<div class="clear">
+			</div>
+		</div>
+	</div>
+	<div class="clear">
+	</div>
+	<div id="footer">
+		<div id="footercopyright">
+			Copyright © 2010
+			Partikkel Audio ® All Rights Reserved
+		</div>
+
+		<div id="footerlogo">
+			<!-- [ Partikkel Audio Logo ] -->
+		</div>
+	</div>
+	<div class="empty-block">
+	</div>
+</body></html>

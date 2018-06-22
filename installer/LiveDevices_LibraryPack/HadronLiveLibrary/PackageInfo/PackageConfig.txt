@@ -1,0 +1,13 @@
+Ableton#03M
+
+PackageConfigurationInfo
+{
+  String PackageName = "Hadron Particle Synthesizer";
+  String MinimalSoftwareVersion = "8.0";
+  String Product = "Hadron Particle Synthesizer";
+  String Vendor = "PartikkelAudio";
+  Int Version = 2;
+  Int MajorVersion = 1;
+
+}
+

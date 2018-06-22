@@ -1,0 +1,245 @@
+* states under prod
+	- grDetunedSaw
+	- grSimpleFM
+	- grFMGrains
+	* enveloped FM index (start PitchFM xfade til GrFm, + Grainpitch sweeps
+
+
+* Trombone versjon med manuell plunger ctrl
+	- dvs en expr ledig
+* FM ratio step LFO 0.2 0.4 0.6 0.8
+
+* FMGrains med Func for Mod Freq, oppnå heltallsforhold
+	- 1/2, 1/4, 1/3, 2/3, 1/6, 5/6, 1/5, 2/5, 3/5, 4/5, og fortsette med 1/7 til 6/7 (det skulle blir 16 steps)
+
+* Rand step Noise i attack (enveloped)
+	- FM index?
+
+* synth states: 
+	- soft analog (ARP)
+	- brass/string, overtonemønster, PitchFM?
+	- octaviation ved fast 8-grain channelmask 2 3 4 3 5 3 4 3
+		- pan/filter/amp, på func
+			- 1oct: mod ch3
+			- 2oct: mod ch4
+			- 3oct: mod ch5
+	- GrFm: FMratio on func, integer relationships
+
+* FMGrains+Detune on expression
+	- for å kompensere for ustabil pitch
+
+* FM GrainPitch + detun, som over
+	- dvs split FmGrains2 i to forskjellige states
+	- kan kominere begge ved preset morf
+
+
+* particle verb
+* octo verb
+
+* preset pack "Pitch Responses", "Amp Responses" ...
+
+* Transient dependant pitch shift
+	- expr 1: transient to pitch 
+	- expr 2: transient envelope release
+	- expr 3: grain rate
+	- expr 4: pitch flattening (inverted pitch track to grain pitch)
+	- note: general pitch shift
+
+
+* VocalWowels_oyv
+	- med bpm synced random wowel
+
+* VocalDada
+	- en wavesource med (ustemte) konsonanter
+	- f h k p r s t 
+	- for stemte konsonanter må source pitches, det skulle være mulig
+		- mulig å legge dette i samme source som wowels ?
+
+
+* gtPitchTimeAndMix endre rekkefølge fra
+	Expression1: Grain Rate
+	Expression2: Manual Time pointer
+	Expression3: Wave Mix X axis (source 1+3 to source 2+4)
+	Expression4: Wave Mix Y axis (source 1+2 to source 3+4)
+til:
+	Manual Time pointer
+	Grain Rate
+	Wave Mix X axis (source 1+3 to source 2+4)
+	Wave Mix Y axis (source 1+2 to source 3+4)
+	...
+->** for variasjon state "PitchAndTimeLFO"
+	Manual Time pointer
+	Time LFO Amount
+	Time LFO Freq
+	WaveMix XY (WaveMix1234_All)
+		- func tables med 4 segmenter
+		- X: 0 2048 1 2048 1 2048 0 2048 0.5
+		- Y: 0 2048 0 2048 1 2048 1 2048 0.5
+		* mulig å gjøre en "hold" ved hver enkelt kilde?
+		- X: 0 1792 1 256 1   1792 1 256 1   1792 0 256 0   1792 0.5 256 0.5
+		- Y: 0 1792 0 256 0   1792 1 256 1   1792 1 256 1   1792 0.5 256 0.5
+
+* fxStopTime
+	- variasjon som kryssfader til rent signal ved note off
+	- bruke source wave 2 som alltid følger normal time, xfade til source 1 (stop) via envelope
+
+* noisecloud
+	- source bandpass noise, medium q, 440Hz
+	- glissons, random freqstart og -end, soft attack
+
+* "Cosmic Background"
+
+* hard "code" particle snips
+	- tydelig tematisk utvikling i første del av attack pffft-ktkt-... 
+	- "pitched"
+	- høy transponering opp gir kraftig støy (kan brukes her), men avhengig av sr ...
+
+* fx state: Gapper
+	- tempo (grain rate) bpm sync, går i steps 8th, trioler, 16ths, 24ths, 32nds ...
+	- channelmask B1-L-R-B1-L-B1-B2-R, B1 høyere freq enn B2, begge center pan
+	- expr
+		- tempo
+		- gr.dur
+		- chn morf
+
+* fx state: Turbulent_CalmMeWithMidi
+	- random pitch sweep, random distribution
+	- Midi note stabiliserer pitch, fjerner random
+		- Envelope med lang attack tid, modmatrix routes til random med negativt fortegn
+
+* tfx state : Spears vocoder
+	- pitch transp via midi
+	- korte grains (0.7), med attack (0.1)
+	- grain rate følger også midi cps, men i området 20-80 Hz (4 eller 5 octaver ned fra pitch)
+
+
+
+* gr med dur = 2 (_bandpassOct.spst)
+	* skip lowpassfilter, kjøre Bandpass -> out
+	* HammerLead Attack
+	- transpose randh
+	- portamento time
+
+* constant Q Filtering
+	channelmask lengde 3, BP1,2,3
+	randh freq = grain rate
+	randh control BP freq
+	hvert BP har sitt område, f.eks. 500, 1000, 2000
+	randh amp på expr control
+
+* gjøre ferdig noen av t_ states
+	- glissons
+
+* det kan være smart å ha en samling states som ligner ganske mye på hverandre for timbral morphing
+	- litt mer enn ett parameter i forskjell, men 
+		- lyder som ligner men som har veldig forskjellige parameterverdier
+		- lyder som ikke ligner men som har veldig like verdier
+	* vi burde utarbeide et "kart" over states som kan representere "timbral distance" og "parameter value distance"
+		- mangedimensjonalt representasjonsproblem i 2D
+	* og kart/oversikt over expression controller funksjonalitet, hvilke states som har f.eks "vibrato"
+		- "expression controller distance"
+	* noe kan sikkert gjøres med søk, ala winhelp stikkord søk i statesdokumentasjon
+		- men denne tar bare exact matches, vi vil gjerne ha proximity
+
+* live sampling states
+	- ala improsculpt/lemur
+	- sjekk den som er laget "PitchAndTime ??"... nytt navn ?
+	- "Texture", TimeLFO
+		- random wavemixmasks, controller:bias (en enkelt ctrl velger hvilken kilde som har hovedfokus 1,2,3,4)
+	- "Looper", live sampl
+		- trenger å resette startpunkt ved sampling av source1 ?
+		- time offset for source 2,3,4 relativ til *recording start time*?
+		- sync record time to live tempo, or timepointer to live tempo
+		- starten av *neste* recordede segment høres på slutten av assignet segment (SamplePlayer)
+
+
+
+* efx states:
+	* buffershuffler
+		- 2 shuffler patterns (func)
+		- randomize
+			- only 4 last steps
+	* fx: GrainDistortion
+		- pitch sync FM freq, adaptive FM
+		- adaptive GrRateFM, FM freq = 0.5 eller 0.25 av grain rate
+			
+* shepard tone
+	- interval controls range
+
+
+* Grain delay in Live
+	- grain rate (default 60Hz)
+	- grain transpose (default 0)
+	- rand.pitch (range +/- ca 4 semitones)
+	- feedback (max feed gir økende feed hvis pitch = 0)
+	- delay time: i beat subdivisions
+		- bpm sync delay time
+		- quantize delay time via func (1,2,3,4,5,6,8,16)(in 16ths)
+	- spray: random delaytime deviation (i ms)
+		- høres ut som om de bruker to parallelle delaylinjer med forskjellig delay tid
+		- kanskje etterligne med channelmask i stereo
+		- vår "spray" control:
+			- channelmask morf fra mono til stereo (gjennom func, bratt kurve)
+			- random delaytid
+	* transpose: note num
+	* rate: interval (default 60 Hz, octave down = 30Hz)
+	* delay time: ctrl1
+	* rand pitch: ctrl2
+	* feed: ctrl3
+	* spray: ctrl 4
+
+* arpeggiator states
+	- grain rate sync to host (1/16)
+	- freqmasks with arpeggio patterns
+	- morph from 3 to 5 step arpeggio
+	- write riffs
+	* trenger partikkel reinit on new note, for mask sync
+		- test cpu bruk ved reinit
+
+* timestretching state
+	- bruk så høy grainrate som mulig, kan da bruke mindre random timepointer
+	- transient gir høyere grain rate
+	- høy pitch gir høyere grainrate
+	- sikre mot phase/timepointer overflow i slutten av sample
+		- kortere grains, reverse grains, stoppe timepointer 1/graindur før sample end
+
+* Formant shifter for live follow mode
+
+* sample play keyboard split state
+	- 4 samples med hardcoded original key
+
+* rekonstruere Iain schedkwhen granular
+
+* Transient analysis, muligens andre analysis tracks også
+	- offset index when analyzing, for å unngå time lag
+	- sjekk mer (analyzeSamples):
+		kampindx	= int(kindx - (iAttack*kr))
+		kcpsindx	= int(kindx - (ihopsize1/(2*ksmps)))
+		ktransindx	= int(kampindx - (iResponse*0.001*kr*2))
+	- hvis riktig, kopiere til inputFollow.inc, og test
+	- test også offset for pitch og amp
+	* er det "amount/amplitude" på transient envelope ?
+		- mulig å skru av ?
+	* debug: skriv transient envelope til audio fil, i stereo med audio out
+	* muligens skal transientEnvelope flyttes så mye tidligere at attack time for envelope kommer *før* selve transienten
+		- dvs. dynamisk negativ delay avhengig av attack time
+		- kan løses med time pointer mod ?
+* transient envelope processing:
+	- legge delay/efx kun på residue ikke på transients
+* Transient Separator
+	- transients til venstre, rest til høyre
+	- transponere transients og rest forskjellig
+	- forskjellig grain rate for transients og rest
+	- Transient Envelope parameters on expr control
+	
+
+*** States ideas:
+* PitchContour state, preset set
+	- flattenPitch: bruk pitchanalyse til å påvirke transposisjon negativt (GrainPitch master)
+		- andre samples (slot 2,3,4) vil da få negativ pitchcontour fra sample1
+	- transferPitchContour: bruke pitch analyse fra ett sample til å påvirke transposisjon av et annet
+		- kan evt kombineres med flattenPitch for å unngå at samplets opprinnelige pitchvariasjoner spiller inn
+
+
+***
+

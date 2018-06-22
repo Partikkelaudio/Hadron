@@ -1,0 +1,159 @@
+; ideas based on shortcomings of current states
+	- gt16thsStagger
+		- expr 1 is not very clear in timbral function
+		- tempo control would be swell
+	- gtSnapperRhythm
+		- 2 expr controls for rhythm is excessive
+			- bruk kun expr 2 for tempo, sett offset slik den er ved expr1 = 0.2
+		- bruk expr 1 til time pointer (nå 4)
+		- og sett expr 4 til source wave xfade
+
+; revive old states for new statespacks 2016
+	; interesting, needs mod
+	- fxDiryChaos 
+		- spør Bernt hva som egentlig skal skje
+	- fxDrone
+		- lag 2 varianter
+	- fxHarmonizer
+		- fin deep boom, men kontrollere pitch-up flakes
+		- variant med raskere respons, kontroll over dypbass/oktav-range
+	- fxHarmonizer2 
+		- har noe fint, men kanskje temme vibratoen litt
+	- fxHarmonizer3 
+		- er nesten goood to go, bare sjekk hva som egentlig skjer
+	- fxLooper 
+		- er en god ide men funker slett ikke
+	- fxTransientPitchQuad 
+		- hva skjer egentlig?
+		- kanskje lage noe som er stramt i transient, men flyter ut etterhvert som tonen holdes?
+	- fxTransientDelayPitch 
+		- interesting, men weird, stram opp
+	- fxTransientPitch 
+		- interesting, men weird, skal den være chorus eller pitch? eller noe annet?
+	- fxTransientDelayTime
+		- interesting ide, men ikke ferdig, stram opp og utvide til grainrate også?
+	- fxSusteinMangler 
+		-god ide, lag flere
+		- likevel ukontrollert nå
+		- og prøv å få ned latency
+	- fxSustainFloater 
+		- ja, som SusteinMangler, god ide, men justeres, 
+		- få opp tydelighet der det er rent
+	- fx_ls_stutter.
+		- Fin ide, men rydde vesentlig
+	- fx_masterFM-pitch: Veldig fin "blipper-tail"
+		- random latency minimeres
+		- med gul fader er det egentlig to forskjellige effekter(?)
+			- lage to separate varianter?
+			- og grønn fader funker litt som rød gjør i andre states (mengde chaos), byttte?
+	- fx_mastergitartest 1&2
+		- grain reverb aktige, ryddes og cleanes, tydeligere ctrl
+	- fx_master_maskPulse
+		- looping/overdub med transposisjon, filter, masse
+		- fin ide: ryddes
+	- fx_master_octavia
+		- fin octaver, men har ingen ctrls
+	- fx_master_STATE2: hvis rød extr står på 0.2 eller mindre
+		- RingModChorusKindOfThing, tørr og tight effect (+)
+	- grBrightFormant og grBrightFormant2: 
+		- nice mono thin punch
+		- men noe rart skjer i morfing mellom de to
+	- grDetuneSaw: 
+		- nice soft deep punch
+		- gul expr gjør nesten det samme i max og min, men har annen klang ved 50%. endre range?
+	- grNoisy
+		- hm, kanskje gjøre attack litt softere
+		- samle formantkarakter ctrl (lilla+gul) på lilla
+		- ha en støykarakter type til på gul slider
+	- gtGlisson states
+		- hva skal vi med de?
+	- gtSampleLooper
+		- brukbart verktøy, er gul expr egentlig den riktige å ha?
+		- hva gjør expr contr? lilla??
+		- hva er forskjellen mellom denne og SamplePlayback?
+	- gtSnappitch
+		- artig, hva er forskjellen mellom denne og gtSnappper?
+	- gtVocalWowels_oyv
+		- er fin sampleplayback
+		- kutt source-select via midi note
+	- gtWaveSeq
+		- kan være strålende til live sampling, blande samples bitvis cutup
+		- lage en versjon uten trainlets
+		- sjekk hva expr gjør, men funker ganske artig nå
+	- tfxStopTime2_e
+		- er aktivt i bruk
+		- sjekk expr 2 og 4 om de er hensiktsmessige
+	- tfxStopTime2
+		- pussig rekkefølge på expr
+		- expr 2 og 3 er interessante
+		- kan expr 2 temmes litt?
+		- og legge samme rekkefølge som i *_e
+	- tfxStutter_e
+		- er i aktivt bruk
+		- sjekk om expr 2 kan gjøre noe mer interessant
+		- expr 4 er bra, men kan den gjøre mindre (bare endre på tid, og så flytte annen mod til expr 2?)
+	- tfxStutter
+		- som stutter_e, men expr4 er renere (?)
+		- sjekk diff til *_e
+		- lage de to til klart forskjellige states med lignende funksjon
+	- tfxVoicePitchHarm
+		- er en veldig god ide: keyboard mod pitch og grainrate
+		- expr1 er interessant (grain rate mod)
+		- expr2 er mystisk, hva gjør den. Fint med noe delaytid mod, men ...
+			- *enten* random dev *eller* offset (?)
+	- tfx states basert på
+		- gtGliss states
+		- gtSnappitch
+	- gt livesampling states basert på
+		- gtGliss states (inkl GlissTakeoff)
+	- gr states basert på t_OddHarmonics, t_Harm2+3
+		- trenger expr controls
+	- fx: gating states
+		- amp masking
+		- pitch masking
+	
+		
+	
+	
+	
+	
+	
+
+
+	; ok, needs doc
+
+	; ok, all done
+	- 
+
+;***
+		grBandpassAnimator1
+		grBlackBells
+		grCartoonVocals
+		grFilterSynth
+		grReedyFormantStepSync
+		grReedyOctEfx
+		grReedyThinAnalog
+		grReedyThinBadRadio
+		grTrainletDistribution
+		grTrainletFM1Randmask
+		grTrombone
+
+		gt16thsStagger
+		gtLiveSampling1
+		gtParticleCloud
+		gtPitchTimeAndMix
+		gtSamplePlayback
+		gtSnapper
+		gtSnapperRhythm
+
+		fxGrotaver
+		fxGrainFlanger2
+		fxGrainFlanger
+		fxLowpassRand
+		fxTwinPeaks
+
+		tfxHarmonyFM
+		tfxPitchModFMEcho
+		tfxRisingSmoke
+		tfxVoicePitcher
+

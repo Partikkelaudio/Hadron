@@ -1,0 +1,489 @@
+* done:
+ 
+
+** status/todo:
+
+* iConfigTab for hvs2
+	- non linear interpolation between presets
+	- should stay static at zero for the first 3/127, then smooth sigmoid-ish transition, and end at static value 1 for the last 3/127
+
+* median filtering (window = 3) on midi note interval
+	- due to table (giSortedNotenum) writing not synchronized with table reading
+* to allow inclusion of median filtering:
+	- compile new csound with functioning portaudio
+
+* export mask tables to text
+	- for investigation/documentation
+	- for backup of states data in text format
+
+* test bpm sync med VST
+
+
+* retreive original key for source samples ("ftpitch" or other new opcode9
+	- used e.g. to set midi key for original playback pitch
+	- new parameter (origpitch1,2,3,4)
+	* no new parameter:
+		- read pitch from file
+		- hardcode, always take original pitch into account, default 271Hz or 440Hz
+
+
+* docs for states designer
+	- mangler oversikt over LFO waveforms
+	- range for grain pitch og for grainpitch 1 (2,3,4)
+
+
+* Formel for å finne original playback rate, plassere denne på C=notenum=60
+	- finne/lagre original pitch i sample, sette notenum slik at den alltid spiller av i riktig transponering
+	- f.eks orig pitch i sample = 440Hz, notenum 69 spiller den av utransponert
+
+
+*** Bruk median filter på Pitch analyse
+	- sorter alle verdier i filterbuffer, outputverdi er middleverdi fra buffer
+
+* autocompare (python script) for states
+	- velg ett state som utgangspunkt, søk gjennom alle presets for å finne andre som er like
+	- helst funksjonalitet for å sortere andre presets etter *hvor mye de ligner*
+	- bruke i states design for å bestemme om nye states er unike
+	- helt nødvendig hvis vi tilbyr unike states på bestilling (med tidsfrist for hvor lenge states skal være kundens private)
+
+
+* Add license note to all files
+	- check dual license: noncommercial, educational, personal use. For commercial use, proprietary license.
+	- and add full licence text in root dir
+
+* store user presets
+	- checkbox/options
+		- modulators 
+			- (LFO, Rand, Envelopes as separate checkboxes, all enabled by default when modulators enabled)
+				- mulig problem ved "Envelope to Amp modulator, at amp blir hengende "on"
+				- egen option for Amp ?
+			- expression controllers
+		- randomize parameters amount
+
+* expression controls lock for each corner of XY pad
+	- if all corners locked, expression controls will not affect sound
+	- display 4 small dots on each expression control, if locked the dot is lit
+
+* test første gangs loading, Cubase/Live quit uten melding, ved andre gangs oppstart funker alt ok
+	- lese om VST initialisering ??
+
+* hva skjer med 4-ch output fra Hadron når Cubase kjører den på et Quadro spor?
+	- på stereo spor hører vi både L og R
+	- på Quadro spor hører vi bare L
+		- panning eller output routing fra Quadro spor ??
+	* test audio out on ch 3&4: 3:440Hzsine, 4:noise
+	* test med annen vst host
+
+* morphing of LFO waveforms, same as modTransFunc
+	- save waveform with state, interpolate waveforms between states
+	- set waveform method
+	* EXPENSIVE, hvs morph of 4 tables a 65536
+
+
+
+* Thomas:
+	* lagre expression controller verdier som egne presets (hold)
+	- bruke XY pad for å bevege seg mellom "user states"
+	- egen knapp "hold" dvs lagre expr controllers, tilhørende hvert hjørne av XY pad
+	- dvs 4 knapper "expr hold"
+	* lagre user states direkte fra X,Y,1,2,3,4 instillinger, for å laste opp i hver hjørne
+		- modmatrix ??? lagre interpolert routing
+		- obs. lagre preset *etter modmatrix*
+
+
+* notes:
+
+* when compiling own Csound version
+	- remove randh printing "Seeding from system time"
+	
+
+* note: bruke source waveforms med forskjellig original key
+	- må lagres i state, bruke forskjellig GrainPitch1,2,3,4
+	- vil ikke automatisk bli riktig når man endrer source waveform
+	- dvs. presets og state files henger sammen, nok en grunn til å kjøpe gode presets ...
+
+* import old presets:
+	* preset must exist in both binary and text format
+	1. load default text preset with new parameter configuration
+	2. load old (to be imported) text preset, overwriting relevant parameter values
+	3. save text preset, using same name (when saving a text preset, the preset version parameter is also updated in the file)
+	4. load old binary preset file
+	5. load text preset as saved in stage 3 (modified with new parameter configuration, using default values for new parameters)
+	6. save binary preset to file
+
+** neste versjon:
+* egne valg for live sampling (??)
+	- save (and load) live sampling buffer, and live segment attack marker table
+	- button in gui "save live sampling buffer" (file dialog)
+	- same for "load saved live sampling buffer"
+
+* "grain delay" delay time (verdi for samplepos, på ctrl)
+	- evt egen valuebox for live follow med display av delaytid
+
+* modPatch point
+	- input1Sum (default=0); TRENGS IKKE
+	- input2Sum (default=0); TRENGS IKKE
+	- input3Mult (default=1); TRENGS IKKE
+	- input4Div (default=1) ; TRENGS DEN ?
+		- ((in1+in2)*in3)/in4 : bruk divz (ved divz skal vi dele på 1, eller 0.01 ?)
+		- evt divz parameter (default =1)
+		- divide_by (for inverse relationship, f.eks. dess lenger soundLength dess lavere LFO_Freq)
+		- er sound length et parameter? hvor er det tilgang til det ?
+	- offset (default = 0) ; TRENGS IKKE
+	- quantize (default = 0)
+	- sample and hold
+		- frequency parameter (default = 0)
+	- transfer function 
+		- (table indexed, a few standard functions, with interpolation between them)
+
+
+* preset randomizer (csound instr)
+	- med "amount" control
+		0-1 = la de som er 0 forbli på 0
+		over 1 = randomize all
+	- mulighet for å endre presets litt, komme opp med alternative forslag som ligner
+	- save new preset with new name
+
+* make giInterpolFilt and giInterpolRate preset parameters, changeable on a per preset basis
+	- a master preset will use the highest update rate of the 4 single presets
+	- would it use the lowest or the highest filtering freq ?
+
+
+* CPU optimization
+	- global effects
+		- no reverb
+		- 4 bandpass ?
+		- ringmod, SSB?
+		- delay ?
+		- wide pan 1-|2-3|-4 (2&3 normal stereo, 1&4 wide) ?
+	* CPU tests (run csound from score with score length 1000sec)
+		- modmatrix uses	4% (old)
+		- partikkel uses	1%
+		- reverb effect uses	1%
+		- modulators uses	0.5%
+		- delay effect uses 	0.5%
+		- RM/BP effects uses	0.3%
+		- input follow 		0.1%
+		- master audio out	0.05%
+	** hvs opcodes take a significant amount of cpu for large tables (master preset tables)
+		- low update rate for interpolation lowers CPU usage but can lead to artifacts when interpolating (e.g. transpose/formant and samplepos parameters)
+		- current update rate of 200 Hz is a trade-off, uses 3 times more CPU than an update rate of 10Hz, but pretty clean sounding in most cases
+
+* optimalisering:
+	*
+	- live feed table write og analyse gjøres kun når live feed er valgt som lydkilde
+	- dvs skru på instr når kilden velges, skru av når noe annet velges
+		- host trenger da å holde en variabel som sier om live feed instr er på eller av (unngå å skru av non-existent instance)
+	- vi trenger da å slette tabell i det instrumentet skrus på (eller av) for å unngå gammelt restmateriale i delaylinje
+	- analyse gjøres etter live feedback, slik at vi kan oppnå eventuelle transient-feedback effekter m.m.
+	* 
+	- func table hvs morphing kan kanskje gjøres billigere med tabmorf ?
+
+* presets 
+	* preset pack design guidelines
+
+********************************************
+* Max/MFL
+* note regarding MFL, running Csound in Max
+	- do NOT run all init instruments at once at time zero
+	- some things may be missed
+	- e.g. ftable loading, init at 1 sec (score time)
+
+* debug and test Max version, as compared to Csound/Python version
+
+* save master preset
+
+* load master preset
+	- test if waveform menus reflect the contents of the master preset
+
+* hvorfor starter ikke Csound når Live device lastes ?
+
+* midi notes input to live device ?
+	- test using a saved copy of working midi template ?
+	- midi in to partikkel device does not work
+
+* use live gui widgets
+
+* live sampling activate button
+
+* assign last recorded segment (button x4)
+	- chnget "lastRecordedSegment"
+	- i20 0 1 1 X "segment N"
+
+* display "% of recording buffer currently used"
+
+* sample pointer reset (when record buffer is full)
+	- MUST be a trigger only (momentary button)
+
+* change XY pad to send midi ctrl no 5 and 6
+
+* Max: trainlet synth seems to react differently to ctrl mod
+	- result of different trainlet operation or different ctrl mapping, or what ??
+
+********************************************
+
+********************************************
+
+* preset exclude
+	- manuell midi control av valgte parameter
+	- eget "preset" for midi control configuration
+	- master on/off for preset exclude
+
+* composition environment
+	- rewrite automation instruments (old) to write to parameter tables
+
+* how to set masking tables
+	- using separate instrument call ?
+	- octaviation is a reasonable parameter to have, e.g. for midi expression control, or for LFO modulation
+		- implement a separate ftable morphing method ?
+		- implement a scaling method for values in masking table
+			- maskScaleTable, = length = masktable
+			- use vaddv to scale excisting values in mask table
+
+
+* waveform names in (master) preset implemented, expand this:
+	(presetStoreMaster.inc, automation_instruments.inc instr 20)
+	- master presets will by default use waveforms for preset 1 (x,y = 0,0) (not correct, waveforms stored in master preset)
+	- option to change waveforms when interpolating presets
+		- will not interpolate, but change abruptly at interpolation index 0.5
+	* check if soundfile already loaded when  preset loads
+		- if not loaded, do ftgen with the sound file referenced by the preset
+
+* output and routing
+	- vurdere hvilken output routing vi skal ha som standard
+		- efx
+		- reverb og delay bør være stereo in/out, bevarer output pan
+	- eventuelle "post effects"
+		- lowpass filter, distortion
+
+* kan gjøre "octaviation" kobinert med manuell redigering av gainmasks:
+	- eget instr som kalkulerer gainmasks (basert på octaviation parameter)
+	- hvis octaviation instr er enabled, vil ikke manuell redigering ha noen effekt
+	- hvis manuell redigering er enabled vil ikke octaviation ha noen effekt
+	- et eget parameter velger modus (octaviation eller manuell)
+	- egen knapp i GUI setter modus parameter
+	- i GUI bør inaktive widgets skjules, i samsvar med valgt modus
+
+* LFO til ftable morph
+	- ved tablemorph, evt lage ny med HVS
+	- må sannsynligvis bruke temp tabeller
+		- fordi preset interpolering overskriver mask table
+		- og LFO vil overskrive samme mask table
+		- kanskje preset skal skrive til en temp table, og LFO skal skrive til en temp table
+			- deretter ftablemorf til mask table ? (always on)
+	- **test: hva skjer hvis kildetabeller endres under morphing?
+		- f.eks. temp tables endres av LFO eller preset interpolering
+** tests **
+
+
+;save single presets
+i 71 0 1 "presetname"
+; read single presets into slots
+i 72 0 1 "single1" 0
+i 72 0 1 "single2" 1
+i 72 0 1 "single3" 2
+i 72 0 1 "single4" 3
+; write all presets to master preset file
+i 73 0 1 "master1"
+; enable interpolation between single presets in master preset
+i 74 0 100
+; control interpolation index in 2D (x,y)
+chnset, presetY, 0.2
+chnset, presetX, 0.2
+...etc
+
+* preset interpolering
+	- HVS outputTab er en tabell med "current parameter values", 
+	- for vanlige parameter (alt unntatt masking tables) skrives verdier fra outputTab til chn channels uten videre
+	- for masking tables; egen interpolering gjennom HVS for hver masking table, output til "masking table in use"
+
+* bør implementere preset names som en liste
+	- global string, endres kun ett sted
+	- erstatte alle chnset, preset save/recall med string parsing av parameterlist
+	- gjøres når Csound max string length har blitt økt
+
+** waveform selection is not part of a single preset
+	- but it can be part of a master preset ?
+	- or: should it be part of a preset, but disabled (recall disable) by default
+
+* ved lasting av single preset: skal man kunne interpolere fra current til nye settings ? 
+
+* muligens behøves en modulator "matrixPoint"
+	- som tar ett eller flere input (miksing kan gjøres i modMatrix)
+	- kan gjøre offset (f.eks. MidiNoteNum-60 for "original key")
+	- quantize (variable step size)
+	- sample and hold
+	- divide_by (for inverse relationship, f.eks. dess lenger soundLength dess lavere LFO_Freq)
+	* 2 slike matrixPoints for å begynne med ?
+	- øker antallet modulatorer til 64...
+	- øker antallet parameter med (2x) mp_in, mp_off, mp quant, mp_sh_fq
+		- fra 103 til 111
+	- ... hvis man heller skal legge til offset, quant, sh i alle modulatorer:
+		- øker antallet parameter med (32x3) 96, til 199
+		- dvs modMatrix 256x32, eller 128x64
+	** alternativt i første omgang:
+		- legge til ett enkelt parameter: "midiNoteOffset"
+
+******
+
+******
+* doc
+	- preset save gjelder current verdier (instr 71)
+		- lagre til fil
+	- preset recall legges i en av 4 preset slots (instr 72)
+		- faktisk recall av parameterverdier skjer ved interpolering (XYpad) mellom alle 4 presets currently in RAM
+	- hvis XYpad er f.eks. i posisjon 0,0 er det kun verdier fra preset slot 1 som er aktive
+		- det er dermed mulig å laste presets til andre presetSlots uten at det høres, 
+		- ... før man deretter endrer XYpad posisjon for å aktivere nylig lastede presets
+	- save master preset table (instr 73)
+	- preset interpolering (instr 74)
+		- always on
+		- X,Y input parameter
+
+	- det skal være problemfritt å legge til flere parameter i presetfiler
+		- eldre presetfiler i gammelt format leses riktig selv om aller parameter ikke finnes i eldre filer
+		- ved manglende parameter i presetfil brukes current value in chn channel
+		* det eneste å passe på er at man ikke kan slette parameter i oppsettet for presetfiler
+			- kan være lurt å tenkte 3 ganger før man legger til nytt parameter ...
+	* ved manuell redigering av parameterverdier:
+		- skru av presetInterpolate slik at endringer i chn values kommer fram
+
+******
+
+* parameter list as string
+	- max_str_len=10000
+	- test i presetRead
+	- problem:
+		- strSplit macro gir en S-variabel som output
+		- dette funker for å bruke S-variable inne i macro
+		- men får ikke til å bygge unike variabelnavn 
+			- feks iNum$, hvor $representerer en S-variabel
+			- hvis S-variabel har navn Sout vil i-variabelen hete iNumSout uansett hvilken streng som er lagret i Sout
+
+
+******
+done:
+* disable update av parameters not in preset file
+	- load default values into giMasterPreset table
+	- hvis det ikke er verdier for et parameter i preset file, så blir default verdier liggende
+	- lage en default preset med riktig antall parameter
+		- lages ny hvis antall parameter oppdateres
+
+* save waveform names med presets 
+	- save waveform filename with single preset
+		- waveform filename encodes som ascii tegn i tabell (size = 256)
+
+******
+** CPU
+* vector summing (tableSum) for each modulator signal vector is expensive
+	- currently limited to 32 modulation signals, 128 output parameters
+	- maybe tabsum opcode will save some cycles ?
+		- yes it does, by far
+	- compare also vcopy to writing several copies of the mod signals manually
+		- 128*128
+			- vcopy: 5-7% CPU
+			- table write multiple: 60% CPU
+		- 32*128
+			- vcopy: 2-5%
+			- table write multiple: 20%
+	- hvs2
+		- ved 1024 parameter: ca 10%
+		- ved 8 parameter: ca 2%
+		- ved 128 parameter: ca 4-5%
+
+* optimalization (probably just slight)
+- no need to use the pName_pre channels
+	- presets parameter values already reside in table
+	- use vaddv to add modulator (sum) to parameter values 
+******
+
+* lag presentasjon for partikkelteam møte
+	- introduksjon til dsp arkitektur i partikkelplug
+		- parametersett
+		- modulatorsett
+		- mod matrix
+		- kildelyder, live sampling, live follow
+	- demo
+	- ferdigstilling max patch, MFL
+	- modmatrix opcode, kompilere for mac
+	- preset pack guidelines
+		- tematisk samling av presets
+			- analog synth
+			- pitching and timestretching
+			- vocal manupilations
+			- "swirling clouds"
+			- "PartikularPercussion"
+			- kan være bredt eller smalt
+				- presets gjenspeiler også bred eller smal profil
+		- 10 presets, 4 masterpresets
+		- demo sekvens, viser en eller flere presets, lite annen (muligens noe støtte, trommer og bass el.l.)
+	- begrep for single presets "parameter hyperspace location", bedre forslag...
+	- installasjonsrutiner, minimal csound + csound~ + plugin
+	- installasjonsrutiner for preset packs
+	- markedsføring: web communities (slashdot ++), samle relevante kanaler
+	- markedsføring: cm-magasiner: betaler man for dekning ?
+	- web design ?
+
+
+******
+** notes:
+* to create vibrato with fade in:
+	- cps to grain rate = 200
+	- cps to Env amp = (200) * 0.1
+	- Env to LFO amp = 1
+	- LFO to grain rate = 1
+
+** for writeModulationMatrix and parmset
+	- should it be possible to edit values in any master preset slot?
+	- currently editing master preset slot 0
+
+** to start live sampling:
+	- i 55 0 p3, with p3 being normal Csound instrument p3 (duration)
+
+** to assign live sampled segments:
+	- use i 20 0 1 "segment N", with N being live sampled segment number (segment number may be limited to 0-9, not sure)
+
+* to use live follow mode (grain delay), just select "liveFollow" as wave source
+
+* to use master presets, presetInterpolate (instr 74) must be active
+	- and vice versa, to use single presets instr 74 must be deactivated
+
+** individual grain pitch
+	- uses cent format, e.g. one semitone is 100 cents
+
+* time pointer (samplepos)
+	- may "overshoot" 0.0 to 1.0 range when combining modulators and preset parameters
+		- limit samplepos, or just document the "feature" ?
+
+** importing presets from text will always put the parameter values at the correct index in the preset table(s)
+	- because reading presets as text refer to parameter names, and checks with (csound) parameterNumbering.inc to get the index where to write the parameter value
+	- parameter read also refer to the index specified in parameterNumbering.inc, via named chn channels
+
+** masking ftables in presets, how it's implemented
+	- load two mask ftables for every mask function
+	- morph ala partikkel automation score
+		- adding one morph parameter for each mask function
+	* generate three masking tables
+		- mask_A and mask_B: as input to ftmorf
+		- mask: as output from ftmorf, and used by partikkel
+	* master presets interpolation:
+		- load mask_A_pre and mask_B_pre from preset file
+		- transfer values to mask_A_Master and mask_B_Master
+		- interpolate (hvs) for both of them, output to mask_A and mask_B
+
+* interpolation between presets have a low update rate (20Hz), the same applies to modulation matrix updates (e.g. LFO routed to grain rate)
+	- parameters that could show zipper noise due to low interpolation update rate are filtered
+	- this applies to all frequency and amp parameters including wave mix samplepos, see partikkel_instr for details
+
+* write preset with expression control of mask morf, and different mask tables in different presets
+	- gain mask 	|1|10|		|100|1000|
+	- chn mask	|0.5|112|	|12|123|
+* test as part of master preset
+
+* bug (jan 2010)
+	- hvis man setter wavemask via i 80 *før* partikkelDsp går på, vil man kun få effekt av den første wavemask endring 
+	- dvs
+		- set wave mask
+		- dsp on
+		- set wave mask
+		- set wave maske (no effect)

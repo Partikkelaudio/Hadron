@@ -1,0 +1,100 @@
+singleState read grTrainletDistribution.spst -1
+singleState read gtLivesampling1.spst -1
+setSourceWave 1 1 BlueVibMed_Ab3.WAV
+setStatesDir unsorted
+singleState write fxLooper.spst
+singleState_TXT write fxLooper.spst
+liveSampling 1
+liveSampling 0
+setSourceWave 1 1 segment_1
+singleState_TXT read fxLooper.txt
+singleState_TXT write fxLooper.txt
+singleState_TXT read fxLooper.txt
+liveSampling 1
+liveSampling 0
+setSourceWave 1 2 segment_2
+singleState_TXT read fxLooper.txt
+setSourceWave 1 1 segment_2
+singleState_TXT read fxLooper.txt
+singleState write fxLooper.spst
+q
+presetMode state
+setStatesDir unsorted
+setSourceWave 1 1 audioInput
+setSourceWave 1 2 audioInput
+setSourceWave 1 3 audioInput
+setSourceWave 1 4 audioInput
+singleState read fxTransientDelayTime.spst -1
+singleState read _clean.spst -1
+singleState read fxTemplate.spst -1
+singleState read fxTransientDelayTime.spst -1
+q
+presetMode state
+setStatesDir unsorted
+setSourceWave 1 1 audioInput
+setSourceWave 1 3 audioInput
+setSourceWave 1 2 audioInput
+setSourceWave 1 4 audioInput
+singleState read fxTransientDelayTime.spst -1
+singleState_TXT write fxTransientDelayTime.txt
+singleState_TXT read fxTransientDelayTime.txt
+singleState write fxTransientDelayTime.spst
+singleState read fxTransientDelayPitch.spst -1
+singleState_TXT read fxTransientDelayPitch.txt
+singleState write fxTransientDelayPitch.spst
+singleState write fxTransientPitch.spst
+singleState_TXT write fxTransientPitch.txt
+singleState_TXT read fxTransientPitch.txt
+setModMatrix TransientEnvelope1 Multiplier1Input1 1
+setModMatrix MidiCtrl4 Multiplier1Input2 1
+setModMatrix MidiCtrl4 LiveFeedbackAmount 0
+setModMatrix Multiplier1 LiveFeedbackAmount 0.65
+singleState_TXT write fxTransientPitch.txt
+set
+help
+setTransFuncTable
+setTransFuncTable 1 7 -1 8192 1
+setModMatrix MidiCtrl1 Func1 1
+setModMatrix Func1 Multiplier2Input1 1
+setModMatrix TransientEnvelope1 Multiplier2Input2 1
+setModMatrix Multiplier2 Partikkel1GrainPitch1 500
+setModMatrix TransientEnvelope1 Partikkel1GrainPitch1 0
+singleState_TXT write fxTransientPitch.txt
+setModMatrix MidiCtrl1 Func1Input 1
+singleState_TXT write fxTransientPitch.txt
+singleState_TXT read fxTransientPitch.txt
+singleState_TXT write fxTransientPitch.txt
+singleState_TXT read fxTransientPitch.txt
+singleState_TXT write fxTransientPitch.txt
+singleState write fxTransientPitch.spst
+singleState write fxTransientPitchQuad.spst
+singleState_TXT write fxTransientPitchQuad.txt
+singleState_TXT read fxTransientPitchQuad.txt
+singleState write fxTransientPitchQuad.spst
+singleState_TXT write fxTransientPitchQuad.txt
+singleState_TXT write fxSustainFloater.txt
+singleState write fxSustainFloater.spst
+singleState_TXT read fxSustainFloater.txt
+singleState_TXT write fxSustainFloater.txt
+setModMatrix Multiplier2 Partikkel1Samplepos1 0.2
+singleState_TXT write fxSustainFloater.txt
+singleState_TXT read fxSustainFloater.txt
+singleState_TXT write fxSustainFloater.txt
+setModMatrix TransientEnvelope1 Randh1_Amp 1
+parmset Randh1_Amp 0
+parmset Randh2_Amp 0
+parmset Randh2_Freq 20
+setModMatrix TransientEnvelope1 Randh2_Amp 1
+setModMatrix Randh1 Partikkel1Samplepos1 0.3
+setModMatrix Randh1 Partikkel1Samplepos2 0.2
+setModMatrix Randh2 Partikkel1Samplepos4 0.2
+setModMatrix Randh2 Partikkel1Samplepos3 0.3
+singleState_TXT write fxSustainFloater.txt
+singleState_TXT read fxSustainFloater.txt
+singleState_TXT write fxSustainFloater.txt
+singleState_TXT read fxSustainFloater.txt
+singleState_TXT write fxSustainFloater.txt
+singleState_TXT read fxSustainFloater.txt
+singleState_TXT write fxSustainFloater.txt
+singleState write fxSustainFloater.spst
+q

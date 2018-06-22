@@ -1,0 +1,10 @@
+License:
+The Hadron state and preset developer system is licenced for educational and noncommercial purposes only. 
+To obtain a license for any other use, you must contact the author at obrandts@gmail.com.
+
+Exceptions:
+The Hadron Particle Synthesizer, as can be found in the "/inc" directory from this file, is covered by a LGPL Licence.
+The Max For Live devices HadronForLive.amxd and HadronMidiSender.amxd is also released under the LGPL license, these files are found under M4L in the source, and are copied to the Live Library upon insstallation of Hadron.
+The LGPL license can be found in the file lgpl-3.0.txt
+
+The Hadron parameters states and presets as can be found in the "/states" and "/states-release" are covered by a proprietary license, you can obtain a license for personal use by buying the states via partikkelaudio.com

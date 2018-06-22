@@ -1,0 +1,657 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7205920F0F27B5EB00DBD484 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
+		7205921D0F27B5EB00DBD484 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72E5F1230E075C59008BE4D5 /* ApplicationServices.framework */; };
+		7245ADCD1226C67F00C1E511 /* Args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADAE1226C67F00C1E511 /* Args.cpp */; };
+		7245ADCE1226C67F00C1E511 /* atom_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADB01226C67F00C1E511 /* atom_buffer.cpp */; };
+		7245ADCF1226C67F00C1E511 /* channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADB21226C67F00C1E511 /* channel.cpp */; };
+		7245ADD01226C67F00C1E511 /* csound~.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADB41226C67F00C1E511 /* csound~.cpp */; };
+		7245ADD11226C67F00C1E511 /* CsoundObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADB61226C67F00C1E511 /* CsoundObject.cpp */; };
+		7245ADD21226C67F00C1E511 /* CsoundTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADB81226C67F00C1E511 /* CsoundTable.cpp */; };
+		7245ADD31226C67F00C1E511 /* Lock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADBD1226C67F00C1E511 /* Lock.cpp */; };
+		7245ADD41226C67F00C1E511 /* memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADC01226C67F00C1E511 /* memory.cpp */; };
+		7245ADD51226C67F00C1E511 /* message_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADC21226C67F00C1E511 /* message_buffer.cpp */; };
+		7245ADD61226C67F00C1E511 /* midi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADC41226C67F00C1E511 /* midi.cpp */; };
+		7245ADD71226C67F00C1E511 /* PatchScripter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADC71226C67F00C1E511 /* PatchScripter.cpp */; };
+		7245ADD81226C67F00C1E511 /* sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADC91226C67F00C1E511 /* sequencer.cpp */; };
+		7245ADD91226C67F00C1E511 /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADCB1226C67F00C1E511 /* util.cpp */; };
+		7245ADDA1226C67F00C1E511 /* Args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADAE1226C67F00C1E511 /* Args.cpp */; };
+		7245ADDB1226C67F00C1E511 /* atom_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADB01226C67F00C1E511 /* atom_buffer.cpp */; };
+		7245ADDC1226C67F00C1E511 /* channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADB21226C67F00C1E511 /* channel.cpp */; };
+		7245ADDD1226C67F00C1E511 /* csound~.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADB41226C67F00C1E511 /* csound~.cpp */; };
+		7245ADDE1226C67F00C1E511 /* CsoundObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADB61226C67F00C1E511 /* CsoundObject.cpp */; };
+		7245ADDF1226C67F00C1E511 /* CsoundTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADB81226C67F00C1E511 /* CsoundTable.cpp */; };
+		7245ADE01226C67F00C1E511 /* Lock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADBD1226C67F00C1E511 /* Lock.cpp */; };
+		7245ADE11226C67F00C1E511 /* memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADC01226C67F00C1E511 /* memory.cpp */; };
+		7245ADE21226C67F00C1E511 /* message_buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADC21226C67F00C1E511 /* message_buffer.cpp */; };
+		7245ADE31226C67F00C1E511 /* midi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADC41226C67F00C1E511 /* midi.cpp */; };
+		7245ADE41226C67F00C1E511 /* PatchScripter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADC71226C67F00C1E511 /* PatchScripter.cpp */; };
+		7245ADE51226C67F00C1E511 /* sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADC91226C67F00C1E511 /* sequencer.cpp */; };
+		7245ADE61226C67F00C1E511 /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7245ADCB1226C67F00C1E511 /* util.cpp */; };
+		72E5F1240E075C59008BE4D5 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72E5F1230E075C59008BE4D5 /* ApplicationServices.framework */; };
+		8D01CCCA0486CAD60068D4B7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
+		EC3ED53D13251D4100F46F32 /* MaxAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC3ED53C13251D4100F46F32 /* MaxAPI.framework */; };
+		EC3ED54113251D5200F46F32 /* MaxAudioAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC3ED54013251D5200F46F32 /* MaxAudioAPI.framework */; };
+		EC3ED59C13251F4200F46F32 /* MaxAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC3ED53C13251D4100F46F32 /* MaxAPI.framework */; };
+		EC3ED59D13251F4200F46F32 /* MaxAudioAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC3ED54013251D5200F46F32 /* MaxAudioAPI.framework */; };
+		EC5F876E1345C21500A7FE7A /* libboost_serialization.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5F876D1345C21500A7FE7A /* libboost_serialization.a */; };
+		EC5F876F1345C21500A7FE7A /* libboost_serialization.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC5F876D1345C21500A7FE7A /* libboost_serialization.a */; };
+		EC78B546135C8424008186CE /* CsoundLib64.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC78B545135C8424008186CE /* CsoundLib64.framework */; };
+		ECA0B25B138F0423007CE5EB /* libsndfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ECA0B25A138F0423007CE5EB /* libsndfile.dylib */; };
+		ECA0B25C138F0423007CE5EB /* libsndfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ECA0B25A138F0423007CE5EB /* libsndfile.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7245ADAE1226C67F00C1E511 /* Args.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Args.cpp; path = src/Args.cpp; sourceTree = "<group>"; };
+		7245ADAF1226C67F00C1E511 /* Args.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Args.h; path = src/Args.h; sourceTree = "<group>"; };
+		7245ADB01226C67F00C1E511 /* atom_buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = atom_buffer.cpp; path = src/atom_buffer.cpp; sourceTree = "<group>"; };
+		7245ADB11226C67F00C1E511 /* atom_buffer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = atom_buffer.h; path = src/atom_buffer.h; sourceTree = "<group>"; };
+		7245ADB21226C67F00C1E511 /* channel.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = channel.cpp; path = src/channel.cpp; sourceTree = "<group>"; };
+		7245ADB31226C67F00C1E511 /* channel.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = channel.h; path = src/channel.h; sourceTree = "<group>"; };
+		7245ADB41226C67F00C1E511 /* csound~.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = "csound~.cpp"; path = "src/csound~.cpp"; sourceTree = "<group>"; };
+		7245ADB51226C67F00C1E511 /* csound~.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "csound~.h"; path = "src/csound~.h"; sourceTree = "<group>"; };
+		7245ADB61226C67F00C1E511 /* CsoundObject.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CsoundObject.cpp; path = src/CsoundObject.cpp; sourceTree = "<group>"; };
+		7245ADB71226C67F00C1E511 /* CsoundObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CsoundObject.h; path = src/CsoundObject.h; sourceTree = "<group>"; };
+		7245ADB81226C67F00C1E511 /* CsoundTable.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = CsoundTable.cpp; path = src/CsoundTable.cpp; sourceTree = "<group>"; };
+		7245ADB91226C67F00C1E511 /* CsoundTable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = CsoundTable.h; path = src/CsoundTable.h; sourceTree = "<group>"; };
+		7245ADBA1226C67F00C1E511 /* definitions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = definitions.h; path = src/definitions.h; sourceTree = "<group>"; };
+		7245ADBB1226C67F00C1E511 /* eksepshun.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = eksepshun.h; path = src/eksepshun.h; sourceTree = "<group>"; };
+		7245ADBC1226C67F00C1E511 /* includes.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = includes.h; path = src/includes.h; sourceTree = "<group>"; };
+		7245ADBD1226C67F00C1E511 /* Lock.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = Lock.cpp; path = src/Lock.cpp; sourceTree = "<group>"; };
+		7245ADBE1226C67F00C1E511 /* Lock.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Lock.h; path = src/Lock.h; sourceTree = "<group>"; };
+		7245ADBF1226C67F00C1E511 /* max_headers.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = max_headers.h; path = src/max_headers.h; sourceTree = "<group>"; };
+		7245ADC01226C67F00C1E511 /* memory.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = memory.cpp; path = src/memory.cpp; sourceTree = "<group>"; };
+		7245ADC11226C67F00C1E511 /* memory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = memory.h; path = src/memory.h; sourceTree = "<group>"; };
+		7245ADC21226C67F00C1E511 /* message_buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = message_buffer.cpp; path = src/message_buffer.cpp; sourceTree = "<group>"; };
+		7245ADC31226C67F00C1E511 /* message_buffer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = message_buffer.h; path = src/message_buffer.h; sourceTree = "<group>"; };
+		7245ADC41226C67F00C1E511 /* midi.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = midi.cpp; path = src/midi.cpp; sourceTree = "<group>"; };
+		7245ADC51226C67F00C1E511 /* midi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = midi.h; path = src/midi.h; sourceTree = "<group>"; };
+		7245ADC61226C67F00C1E511 /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Parser.h; path = src/Parser.h; sourceTree = "<group>"; };
+		7245ADC71226C67F00C1E511 /* PatchScripter.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = PatchScripter.cpp; path = src/PatchScripter.cpp; sourceTree = "<group>"; };
+		7245ADC81226C67F00C1E511 /* PatchScripter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = PatchScripter.h; path = src/PatchScripter.h; sourceTree = "<group>"; };
+		7245ADC91226C67F00C1E511 /* sequencer.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = sequencer.cpp; path = src/sequencer.cpp; sourceTree = "<group>"; };
+		7245ADCA1226C67F00C1E511 /* sequencer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = sequencer.h; path = src/sequencer.h; sourceTree = "<group>"; };
+		7245ADCB1226C67F00C1E511 /* util.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = util.cpp; path = src/util.cpp; sourceTree = "<group>"; };
+		7245ADCC1226C67F00C1E511 /* util.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = util.h; path = src/util.h; sourceTree = "<group>"; };
+		72E5F1230E075C59008BE4D5 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
+		8D01CCD10486CAD60068D4B7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EC3ED53C13251D4100F46F32 /* MaxAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MaxAPI.framework; path = /Library/Frameworks/MaxAPI.framework; sourceTree = "<absolute>"; };
+		EC3ED54013251D5200F46F32 /* MaxAudioAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MaxAudioAPI.framework; path = /Library/Frameworks/MaxAudioAPI.framework; sourceTree = "<absolute>"; };
+		EC5F876D1345C21500A7FE7A /* libboost_serialization.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_serialization.a; path = ../../../../../../../../Code/Csound/boost_1_46_1/_libs/libboost_serialization.a; sourceTree = SOURCE_ROOT; };
+		EC6261D113D775DB00FA79A6 /* csound~.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "csound~.mxo"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC78B545135C8424008186CE /* CsoundLib64.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CsoundLib64.framework; path = /Applications/Hadron/Contents/Frameworks/CsoundLib64.framework; sourceTree = "<absolute>"; };
+		EC9CC8F9132528410062DBD0 /* csound~_hadron.mxo */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "csound~_hadron.mxo"; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECA0B25A138F0423007CE5EB /* libsndfile.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsndfile.dylib; path = /Applications/Hadron/Contents/libsndfile.dylib; sourceTree = "<absolute>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		720592180F27B5EB00DBD484 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7205921D0F27B5EB00DBD484 /* ApplicationServices.framework in Frameworks */,
+				EC3ED53D13251D4100F46F32 /* MaxAPI.framework in Frameworks */,
+				EC3ED54113251D5200F46F32 /* MaxAudioAPI.framework in Frameworks */,
+				EC5F876E1345C21500A7FE7A /* libboost_serialization.a in Frameworks */,
+				EC78B546135C8424008186CE /* CsoundLib64.framework in Frameworks */,
+				ECA0B25B138F0423007CE5EB /* libsndfile.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D01CCCD0486CAD60068D4B7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC3ED59C13251F4200F46F32 /* MaxAPI.framework in Frameworks */,
+				EC3ED59D13251F4200F46F32 /* MaxAudioAPI.framework in Frameworks */,
+				72E5F1240E075C59008BE4D5 /* ApplicationServices.framework in Frameworks */,
+				EC5F876F1345C21500A7FE7A /* libboost_serialization.a in Frameworks */,
+				ECA0B25C138F0423007CE5EB /* libsndfile.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* csound~ */ = {
+			isa = PBXGroup;
+			children = (
+				ECA0B25A138F0423007CE5EB /* libsndfile.dylib */,
+				08FB77ADFE841716C02AAC07 /* Source */,
+				089C167CFE841241C02AAC07 /* Resources */,
+				089C1671FE841209C02AAC07 /* External Frameworks and Libraries */,
+				19C28FB4FE9D528D11CA2CBB /* Products */,
+			);
+			name = "csound~";
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				EC5F876D1345C21500A7FE7A /* libboost_serialization.a */,
+				EC3ED53C13251D4100F46F32 /* MaxAPI.framework */,
+				EC3ED54013251D5200F46F32 /* MaxAudioAPI.framework */,
+				72E5F1230E075C59008BE4D5 /* ApplicationServices.framework */,
+				EC78B545135C8424008186CE /* CsoundLib64.framework */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C167CFE841241C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D01CCD10486CAD60068D4B7 /* Info.plist */,
+				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		08FB77ADFE841716C02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				7245ADAE1226C67F00C1E511 /* Args.cpp */,
+				7245ADAF1226C67F00C1E511 /* Args.h */,
+				7245ADB01226C67F00C1E511 /* atom_buffer.cpp */,
+				7245ADB11226C67F00C1E511 /* atom_buffer.h */,
+				7245ADB21226C67F00C1E511 /* channel.cpp */,
+				7245ADB31226C67F00C1E511 /* channel.h */,
+				7245ADB41226C67F00C1E511 /* csound~.cpp */,
+				7245ADB51226C67F00C1E511 /* csound~.h */,
+				7245ADB61226C67F00C1E511 /* CsoundObject.cpp */,
+				7245ADB71226C67F00C1E511 /* CsoundObject.h */,
+				7245ADB81226C67F00C1E511 /* CsoundTable.cpp */,
+				7245ADB91226C67F00C1E511 /* CsoundTable.h */,
+				7245ADBA1226C67F00C1E511 /* definitions.h */,
+				7245ADBB1226C67F00C1E511 /* eksepshun.h */,
+				7245ADBC1226C67F00C1E511 /* includes.h */,
+				7245ADBD1226C67F00C1E511 /* Lock.cpp */,
+				7245ADBE1226C67F00C1E511 /* Lock.h */,
+				7245ADBF1226C67F00C1E511 /* max_headers.h */,
+				7245ADC01226C67F00C1E511 /* memory.cpp */,
+				7245ADC11226C67F00C1E511 /* memory.h */,
+				7245ADC21226C67F00C1E511 /* message_buffer.cpp */,
+				7245ADC31226C67F00C1E511 /* message_buffer.h */,
+				7245ADC41226C67F00C1E511 /* midi.cpp */,
+				7245ADC51226C67F00C1E511 /* midi.h */,
+				7245ADC61226C67F00C1E511 /* Parser.h */,
+				7245ADC71226C67F00C1E511 /* PatchScripter.cpp */,
+				7245ADC81226C67F00C1E511 /* PatchScripter.h */,
+				7245ADC91226C67F00C1E511 /* sequencer.cpp */,
+				7245ADCA1226C67F00C1E511 /* sequencer.h */,
+				7245ADCB1226C67F00C1E511 /* util.cpp */,
+				7245ADCC1226C67F00C1E511 /* util.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		19C28FB4FE9D528D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EC9CC8F9132528410062DBD0 /* csound~_hadron.mxo */,
+				EC6261D113D775DB00FA79A6 /* csound~.mxo */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7205920D0F27B5EB00DBD484 /* csound~_hadron double */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7205921F0F27B5EB00DBD484 /* Build configuration list for PBXNativeTarget "csound~_hadron double" */;
+			buildPhases = (
+				7205920E0F27B5EB00DBD484 /* Resources */,
+				720592100F27B5EB00DBD484 /* Sources */,
+				720592180F27B5EB00DBD484 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "csound~_hadron double";
+			productInstallPath = "$(HOME)/Library/Bundles";
+			productName = "csound~";
+			productReference = EC9CC8F9132528410062DBD0 /* csound~_hadron.mxo */;
+			productType = "com.apple.product-type.bundle";
+		};
+		8D01CCC60486CAD60068D4B7 /* csound~_hadron float */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4FADC23308B4156C00ABE55E /* Build configuration list for PBXNativeTarget "csound~_hadron float" */;
+			buildPhases = (
+				8D01CCC90486CAD60068D4B7 /* Resources */,
+				8D01CCCB0486CAD60068D4B7 /* Sources */,
+				8D01CCCD0486CAD60068D4B7 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "csound~_hadron float";
+			productInstallPath = "$(HOME)/Library/Bundles";
+			productName = "csound~";
+			productReference = EC6261D113D775DB00FA79A6 /* csound~.mxo */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 4FADC23708B4156C00ABE55E /* Build configuration list for PBXProject "csound~_hadron" */;
+			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 089C166AFE841209C02AAC07 /* csound~ */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D01CCC60486CAD60068D4B7 /* csound~_hadron float */,
+				7205920D0F27B5EB00DBD484 /* csound~_hadron double */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7205920E0F27B5EB00DBD484 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7205920F0F27B5EB00DBD484 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D01CCC90486CAD60068D4B7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D01CCCA0486CAD60068D4B7 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		720592100F27B5EB00DBD484 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7245ADCD1226C67F00C1E511 /* Args.cpp in Sources */,
+				7245ADCE1226C67F00C1E511 /* atom_buffer.cpp in Sources */,
+				7245ADCF1226C67F00C1E511 /* channel.cpp in Sources */,
+				7245ADD01226C67F00C1E511 /* csound~.cpp in Sources */,
+				7245ADD11226C67F00C1E511 /* CsoundObject.cpp in Sources */,
+				7245ADD21226C67F00C1E511 /* CsoundTable.cpp in Sources */,
+				7245ADD31226C67F00C1E511 /* Lock.cpp in Sources */,
+				7245ADD41226C67F00C1E511 /* memory.cpp in Sources */,
+				7245ADD51226C67F00C1E511 /* message_buffer.cpp in Sources */,
+				7245ADD61226C67F00C1E511 /* midi.cpp in Sources */,
+				7245ADD71226C67F00C1E511 /* PatchScripter.cpp in Sources */,
+				7245ADD81226C67F00C1E511 /* sequencer.cpp in Sources */,
+				7245ADD91226C67F00C1E511 /* util.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D01CCCB0486CAD60068D4B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7245ADDA1226C67F00C1E511 /* Args.cpp in Sources */,
+				7245ADDB1226C67F00C1E511 /* atom_buffer.cpp in Sources */,
+				7245ADDC1226C67F00C1E511 /* channel.cpp in Sources */,
+				7245ADDD1226C67F00C1E511 /* csound~.cpp in Sources */,
+				7245ADDE1226C67F00C1E511 /* CsoundObject.cpp in Sources */,
+				7245ADDF1226C67F00C1E511 /* CsoundTable.cpp in Sources */,
+				7245ADE01226C67F00C1E511 /* Lock.cpp in Sources */,
+				7245ADE11226C67F00C1E511 /* memory.cpp in Sources */,
+				7245ADE21226C67F00C1E511 /* message_buffer.cpp in Sources */,
+				7245ADE31226C67F00C1E511 /* midi.cpp in Sources */,
+				7245ADE41226C67F00C1E511 /* PatchScripter.cpp in Sources */,
+				7245ADE51226C67F00C1E511 /* sequencer.cpp in Sources */,
+				7245ADE61226C67F00C1E511 /* util.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C167DFE841241C02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C167EFE841241C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4FADC23408B4156C00ABE55E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				CONFIGURATION_TEMP_DIR = "$(inherited)";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../c74support/max-includes\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../c74support/msp-includes\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "csound~_Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					MACOSX,
+					_CSOUND_TILDE_DEBUG,
+				);
+				GCC_REUSE_STRINGS = NO;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "/Applications/MaxMSP\\ 4.5/MaxMSP-SDK/c74support/max-includes";
+				HEADER_SEARCH_PATHS_QUOTED_2 = "/Applications/MaxMSP\\ 4.5/MaxMSP-SDK/c74support/msp-includes";
+				HEADER_SEARCH_PATHS_QUOTED_3 = "\"/Applications/MaxMSP 4.6/MaxMSP UB SDK/c74support/max-includes\"";
+				HEADER_SEARCH_PATHS_QUOTED_4 = "\"/Applications/MaxMSP 4.6/MaxMSP UB SDK/c74support/msp-includes\"";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../../../../Code/Csound/boost_1_46_1/_libs\"",
+					"\"$(SYSTEM_APPS_DIR)/Hadron/Contents\"",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../boost_1_44_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../boost_1_46_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../boost_1_44_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../boost_1_46_1/_libs\"";
+				OTHER_LDFLAGS = "-lmx";
+				PRODUCT_NAME = "csound~";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				WRAPPER_EXTENSION = mxo;
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		4FADC23508B4156C00ABE55E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				CONFIGURATION_TEMP_DIR = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../c74support/max-includes\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../c74support/msp-includes\"";
+				GCC_FAST_MATH = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "csound~_Prefix.pch";
+				GCC_STRICT_ALIASING = NO;
+				GENERATE_PKGINFO_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "/Applications/MaxMSP\\ 4.5/MaxMSP-SDK/c74support/max-includes";
+				HEADER_SEARCH_PATHS_QUOTED_2 = "/Applications/MaxMSP\\ 4.5/MaxMSP-SDK/c74support/msp-includes";
+				HEADER_SEARCH_PATHS_QUOTED_3 = "\"/Applications/MaxMSP 4.6/MaxMSP UB SDK/c74support/max-includes\"";
+				HEADER_SEARCH_PATHS_QUOTED_4 = "\"/Applications/MaxMSP 4.6/MaxMSP UB SDK/c74support/msp-includes\"";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../../../../Code/Csound/boost_1_46_1/_libs\"",
+					"\"$(SYSTEM_APPS_DIR)/Hadron/Contents\"",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../boost_1_44_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../boost_1_46_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../boost_1_44_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../boost_1_46_1/_libs\"";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-lmx";
+				PRODUCT_NAME = "csound~";
+				SDKROOT = "$(inherited)";
+				WRAPPER_EXTENSION = mxo;
+			};
+			name = Release;
+		};
+		4FADC23808B4156C00ABE55E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				CONFIGURATION_TEMP_DIR = "$(PROJECT_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"/Users/berntisak/Code/Max/MaxSDK-5.1.1/c74support/max-includes",
+					"/Users/berntisak/Code/Max/MaxSDK-5.1.1/c74support/msp-includes",
+				);
+				GCC_FAST_MATH = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_ONE_BYTE_BOOL = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					MACOSX,
+					_CSOUND_TILDE_DEBUG,
+				);
+				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/Users/berntisak/Code/Csound/boost_1_46_1,
+					"/Users/berntisak/Code/Max/MaxSDK-5.1.1/c74support/max-includes",
+					"/Users/berntisak/Code/Max/MaxSDK-5.1.1/c74support/msp-includes",
+					/Library/Frameworks/CsoundLib64.Framework/Headers,
+					"/Users/berntisak/Code/Csound/csound-src/libsndfile-1.0.23/src",
+				);
+				INSTALL_PATH = "/Applications/Max5/Cycling '74/msp-externals/_my_externals";
+				LIBRARY_SEARCH_PATHS = /Users/berntisak/Code/Csound/boost_1_46_1/_libs;
+				OBJROOT = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = "-lmx";
+				PREBINDING = NO;
+				SYMROOT = "/Applications/Max5/Cycling '74/msp-externals/_my_externals";
+			};
+			name = Debug;
+		};
+		4FADC23908B4156C00ABE55E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				CONFIGURATION_TEMP_DIR = "$(OBJROOT)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"/Users/berntisak/Code/Max/MaxSDK-5.1.1/c74support/max-includes",
+					"/Users/berntisak/Code/Max/MaxSDK-5.1.1/c74support/msp-includes",
+				);
+				GCC_AUTO_VECTORIZATION = YES;
+				GCC_FAST_MATH = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_ONE_BYTE_BOOL = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "csound~_hadron_Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = MACOSX;
+				GCC_REUSE_STRINGS = NO;
+				GCC_STRICT_ALIASING = NO;
+				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
+				GCC_UNROLL_LOOPS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_PKGINFO_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					/Users/berntisak/Code/Csound/boost_1_46_1,
+					"/Users/berntisak/Code/Max/MaxSDK-5.1.1/c74support/max-includes",
+					"/Users/berntisak/Code/Max/MaxSDK-5.1.1/c74support/msp-includes",
+					/Users/berntisak/Music/Projects/Hadron/hadron/CsoundMod/OSX_framework_10_5/CsoundLib64.framework/Headers,
+					"/Users/berntisak/Code/Csound/csound-src/libsndfile-1.0.23/src",
+				);
+				LIBRARY_SEARCH_PATHS = /Users/berntisak/Code/Csound/boost_1_46_1/_libs;
+				OBJROOT = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				OTHER_LDFLAGS = "-lmx";
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+				SYMROOT = "/Applications/Max5/Cycling '74/msp-externals/_my_externals";
+				USER_HEADER_SEARCH_PATHS = /Users/berntisak/Code/Csound/boost_1_46_1;
+			};
+			name = Release;
+		};
+		720592200F27B5EB00DBD484 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				CONFIGURATION_BUILD_DIR = "$(inherited)";
+				CONFIGURATION_TEMP_DIR = build_double;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
+					"\"$(SYSTEM_APPS_DIR)/Hadron/Contents/Frameworks\"",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../c74support/max-includes\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../c74support/msp-includes\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SYSTEM_APPS_DIR)/Hadron/Contents/Frameworks\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "csound~_Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					MACOSX,
+					_DEBUG,
+					USE_DOUBLE,
+				);
+				GCC_REUSE_STRINGS = NO;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "/Applications/MaxMSP\\ 4.5/MaxMSP-SDK/c74support/max-includes";
+				HEADER_SEARCH_PATHS_QUOTED_2 = "/Applications/MaxMSP\\ 4.5/MaxMSP-SDK/c74support/msp-includes";
+				HEADER_SEARCH_PATHS_QUOTED_3 = "\"/Applications/MaxMSP 4.6/MaxMSP UB SDK/c74support/max-includes\"";
+				HEADER_SEARCH_PATHS_QUOTED_4 = "\"/Applications/MaxMSP 4.6/MaxMSP UB SDK/c74support/msp-includes\"";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "/Applications/Max5/Cycling '74/msp-externals/_my_externals";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5)",
+					"\"$(SRCROOT)/../boost_1_44_0/_libs\"",
+					"\"$(SRCROOT)/../boost_1_46_1/_libs\"",
+					"\"$(SRCROOT)/../../../../../../../../Code/Csound/boost_1_46_1/_libs\"",
+					"\"$(SYSTEM_APPS_DIR)/Hadron/Contents\"",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../boost_1_44_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../boost_1_46_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../boost_1_46_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../boost_1_44_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../boost_1_46_1/_libs\"";
+				OTHER_CPLUSPLUSFLAGS = "-malign-natural";
+				OTHER_LDFLAGS = "-lmx";
+				PRODUCT_NAME = "csound~";
+				SDKROOT = "";
+				WRAPPER_EXTENSION = mxo;
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		720592210F27B5EB00DBD484 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				CONFIGURATION_BUILD_DIR = "$(inherited)";
+				CONFIGURATION_TEMP_DIR = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Hadron/Contents/Frameworks\"",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../c74support/max-includes\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../c74support/msp-includes\"";
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SYSTEM_APPS_DIR)/Hadron/Contents/Frameworks\"";
+				GCC_FAST_MATH = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = "";
+				GCC_ONE_BYTE_BOOL = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "csound~_Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					MACOSX,
+					USE_DOUBLE,
+				);
+				GCC_STRICT_ALIASING = NO;
+				GENERATE_PKGINFO_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS_QUOTED_1 = "/Applications/MaxMSP\\ 4.5/MaxMSP-SDK/c74support/max-includes";
+				HEADER_SEARCH_PATHS_QUOTED_2 = "/Applications/MaxMSP\\ 4.5/MaxMSP-SDK/c74support/msp-includes";
+				HEADER_SEARCH_PATHS_QUOTED_3 = "\"/Applications/MaxMSP 4.6/MaxMSP UB SDK/c74support/max-includes\"";
+				HEADER_SEARCH_PATHS_QUOTED_4 = "\"/Applications/MaxMSP 4.6/MaxMSP UB SDK/c74support/msp-includes\"";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../../../../Code/Csound/boost_1_46_1/_libs\"",
+					"\"$(SYSTEM_APPS_DIR)/Hadron/Contents\"",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../boost_1_44_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../../../boost_1_46_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3 = "\"$(SRCROOT)/../boost_1_46_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_4 = "\"$(SRCROOT)/../boost_1_44_0/_libs\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../boost_1_46_1/_libs\"";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "-malign-natural";
+				OTHER_LDFLAGS = "-lmx";
+				PRODUCT_NAME = "csound~_hadron";
+				SDKROOT = "";
+				WRAPPER_EXTENSION = mxo;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4FADC23308B4156C00ABE55E /* Build configuration list for PBXNativeTarget "csound~_hadron float" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4FADC23408B4156C00ABE55E /* Debug */,
+				4FADC23508B4156C00ABE55E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4FADC23708B4156C00ABE55E /* Build configuration list for PBXProject "csound~_hadron" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4FADC23808B4156C00ABE55E /* Debug */,
+				4FADC23908B4156C00ABE55E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7205921F0F27B5EB00DBD484 /* Build configuration list for PBXNativeTarget "csound~_hadron double" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				720592200F27B5EB00DBD484 /* Debug */,
+				720592210F27B5EB00DBD484 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}

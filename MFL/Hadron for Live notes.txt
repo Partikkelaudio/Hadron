@@ -1,0 +1,35 @@
+Latest unfrozen version of Hadron for Live is to be found in the "Current version" folder. This is the version used for development and editing. The "Current version" folder also contains all GUI files. The frozen version is build/frozen from this source and saved under "installer/LiveDevices_LibraryPack/HadronLiveLibrary/Presets/Audio Effects/Max Audio Effect/PartikkelAudio/Hadron" in the repo. 
+
+The instrument version also resides under "Current version", but for the time being it has to be manually remade. The frozen version of the instrument version is also build/frozen from this source and saved under "installer/LiveDevices_LibraryPack/HadronLiveLibrary/Presets/Instruments/Max Instrument/PartikkelAudio/Hadron" in the repo.
+
+For consistancy "Hadron MIDI Sender" is also placed under "Current version". This device doesn't need to be frozen, but has to be copied to the same folder as the main device.
+
+To make the device platformindependent both the Mac version and the Windows version of csound~_hadron must be present in the Max folder (Cycling'74/msp-externals).
+
+To update the Live Library with the newest devices, complete the following steps:
+
+1. Open the main device from "Current version"
+2. Check that all GUI elements are in place and that no dependencies are lost
+	- If you're not updating the instrument device, skip to step 13.
+3. Switch to "Patching Mode", select all (Edit->Select All) and copy (Edit->Copy)
+4. Open the instrument device from "Current version"
+5. Switch to "Patching Mode", select all (Edit->Select All), deselect the "States to umenus" module and delete the rest
+6. Change the background image (in the "GUI Graphichs" module) to "M4L_Hadron_InstrumentDevice_Background.tif"
+7. Remove the following elements:
+	- "Midi handler" (entire module)
+	- The live sampling portion of the module "Source waves and live sampling"
+	- The "append audioInput" message box (in the "Source waves and live sampling" module)
+	- The "send toggle_midiOnOff" and "send txt_MidiOnOff" message boxes inside the "debugGraphicsCoordinates" sub-patch in the "Debug" module
+8. Replace the "plugin~" object with a "midiin" object
+9. Switch to "Presentation Mode" and realign the device to fit under the semi transparent grey rectangle and save
+10. Click the "Freeze" button
+11. Go to File->Save As and choose "installer/LiveDevices_LibraryPack/HadronLiveLibrary/Presets/Instruments/Max Instrument/PartikkelAudio/Hadron" under yout repo folder to replace and update the instrument device
+12. Close the instrument device and switch focus back to the main device
+13. Click the "Freeze" button
+14. Go to File->Save As and choose "installer/LiveDevices_LibraryPack/HadronLiveLibrary/Presets/Audio Effects/Max Audio Effect/PartikkelAudio/Hadron" under your repo folder to replace and update the main device
+
+
+
+If you forgot to deselect the "States to umenus" module when updating the instrument device, here is the correct code for this module in the instrument device:
+
+<pre><code>----------begin_max5_patcher----------1131.3ocyY1ziZiCFG+L7ovBoQpUkwie2N8R281dbkpzdYa0pPvvjUPRTrQKcq52801Pf.EBAHSXmQCDrMIO9m++7h878gCFMIes1LB7QveBFL36CGLHzjugAa+7fQKiWmrH1DF1nL8+jO4uGMdSWV8Zan4R8b85Bvr0vOT02r7LaV7Rcn++PWNMNKtpurUKSyVnsg6Idei4qrUsxqcaLo+a31DAQaasH1l7ZZ17+pTmX2X+XpP.QBEkGMFPwbnTRPQ7w.I080.XIDA951ud5zfU4lIOyTpJqZyS29sB8l63nQiO5OvW8i7GCG5eYbKQ1RswDOW+SLyXisN3es3hbRbguZbw3RnTvoJ7X.AgbWivTxX.CEvE+z3hPZ.W2DdZVQ8NnovXeO3WLqlXro1UVM3IT0nWjloSxWkYqClGfviuW3wU6DdXjxiRh5LnjweiUdmCsfme94ESnWszC0UROAdmzCiIPNRg3RmzSzjmJQv5Xo247Le4WKJVjlDaSyyLu7awSKyyd4g4nREr8zRp14nhk3F8T4Q8jmpWNsAR+dr80Glphph1yoPvMDF6TUJVypJTGioj7kK0tPRGyoOGh2Cr4fUt9WYt4DkyJmOYiEhfXVDxoEPPRDBGI7WQYtos6JbsIr+YLKNI7Lnmj2nSvaBpYfyjvHWXOhC3NOZkv8jcg.I3PBWJ9z.GGQqilj7E4ksc1zchVSQYpCI.y27P.7j4IyCzAmCIXIC4DqDGyUDN0KbwXTSJWrh0iN3uFbvcZ3R6iyCuFnpm2P0bdCT+fIiGSIlOeak0gasWYKXD240nb4ScBHVDmPcdkRRSLhhF0g4OSVniKeXtSbJYGAnJJDyUTB2WZVSoKkj9QkXAS7+1Q5C584CQEPNAoTN8AS0XrlyGpYRb1beIpG7dWRrhRcgNaJHtv+VGAN7c4XQoRnXqrp4fOx9JFctemQcJhH2EhHB4NOOYiUfIuv1fdC1UI7Cew8C7ceJ8i9sW9o2O5Qt2wcHKB6bMUR+VGwMdnERwiYmiyxWLUW9X0WUEJwvPZjPfb0FRiZDVMe.Oo9SO3VXTQbldwMjKeRdoGh0F2ImqaRWwCuRnTnPpvBhOklDRwHFge5pq2Usyj4GTaMiihT9Jp4jHFNTks.IULp+JoPIHxCvP3tGNgkiNfvf05a+P1XxWUlTA1p5t.6WQlpM1zrvdpqMHehkZC50zoS0Y0o0xzoE4t0nsFwYVoZqMEdbjKXSgy35ZLJLCQgxpjpbVXqmL+0LIs1dROWGQhZc3haR9oN5ho8kVJBGXPeuVfufQ4KK6pVJ7mB.4TKEbW.C41Hs663NmCgyj5+ah7i0umwnTGx+2bq5H4USVUOJBUsYATp52EP+ICeQihh5UiR1pXHGY4u4FUa.kuZo9zlZi2mjesw0bEQWkhwE0ARjRNIrGNeG6J5tpi6NtFp0YL5uPHGkLnabKNHwfOQthHBUEc.Y22w8NGDsnBjv+TxdTxt44Qujl8dBM69vOF9ev.Y797-----------end_max5_patcher-----------</code></pre>

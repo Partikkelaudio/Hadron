@@ -1,0 +1,18 @@
+* a separate opcode that can read out the current mask index
+	- for wave masking, channelmaskin etc
+	- this can be useful for synchronizing the masking sequences with an external process
+	- discovered during generation of wave source amp display signals
+** and: a separate opcode to reset the mask indices
+
+* panning law for channel masking
+	- e.g. channel 0 and 1 is used for dryL and dryR
+	- a channel mask of 0.7 should give an amp of 0.707 for both ch0 and ch1
+	- option to set channel mask mapping table?
+		- for each channel transition
+			0 to 1 map
+			1 to 2 map
+			etc
+			8 to 1 map (for round pan)
+
+* Trainlets:
+	- hvis partials og chroma begge == 1.0 lager den diskontinuiteter i output

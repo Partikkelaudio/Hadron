@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<link rel="stylesheet" type="text/css" href="hadron.css" />
+	<link rel="icon" href="images/favicon.ico" />
+
+	<title>Hadron States Documentation</title>
+</head>
+
+<body>
+	<div id="headUC">
+	</div>
+
+	<div class="clear">
+	</div>
+
+	<div id="bodywrap">
+		<div id="innerbody">
+			<img src="images/pagetitles/maintitle.png" alt="Hadron States Documentation" class="titleimage">
+
+			<div class="clear">
+			</div>
+
+			<div id="leftmenu">
+				<a href="index_states.html"><h2>State Documentation Index</h2></a>
+
+			</div>
+
+			<div id="rightcontent">
+				<h1>Hadron state description sheet</h1>
+
+				<p><h2>State title</h2>
+				tfxRisingSmoke</p>
+
+				<p><h2>Type of sound</h2>
+				Sound processing of live input. Grain Delay Cloud with a rising pitch profile, randomized pitch and delay time</p>
+
+				<p><h2>Controllers</h2>
+				Expression1: Delay time randomization and offset. Grain duration decrease (with amp compensation)<br>
+				Expression2: Grain pitch randomization and offset. Grain rate increase<br>
+				Expression3: Grain delay feedback<br>
+				Expression4: Output routing modification of single grains (channel mask morphing)</p>
+
+				<p><h2>Midi keyboard control</h2>
+				Note Number: Pitch modification in semitones (notes below middle C might turn “rising smoke” into “falling stream” (...)<br>
+				Velocity: Amp</p>
+
+				<p><h2>Suggested source waveform</h2>
+				Slot1: audioInput<br>
+				Slot2: audioInput<br>
+				Slot3: audioInput<br>
+				Slot4: audioInput</p>
+
+				<p>Waveform sources/slots used: 1,2,3,4</p>
+
+				<p><h2>Mask tables</h2>
+				Channelmask:<br>
+				maskA = default pan (stereo center)<br>
+				maskB = sequence: Left-Right-Bandpass1-BP2-Lowpass-BP3-Delay1-Delay2</p>
+
+				<p><h2>Pitch definition mode</h2>
+				Grain Transpose<br>
+				Octave: Original transposition at middle C (note 60)</p>
+			</div>
+
+			<div class="clear">
+			</div>
+		</div>
+	</div>
+	<div class="clear">
+	</div>
+	<div id="footer">
+		<div id="footercopyright">
+			Copyright &copy; 2010
+			Partikkel Audio &reg; All Rights Reserved
+		</div>
+
+		<div id="footerlogo">
+			<!-- [ Partikkel Audio Logo ] -->
+		</div>
+	</div>
+	<div class="empty-block">
+	</div>
+</body>
+</html>

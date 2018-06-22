@@ -1,0 +1,134 @@
+$Page Getting Started with Hadron 
+$TargetName Getting Started with the Hardon Particle Synthesizer
+LessonLogo2.tif
+
+The /Hadron Particle Synthesizer/ is a multi-purpose tool for granular synthesis. It is released as a Max For Live device, and the DSP processing is done in Csound.
+
+Hadron can be used as a /synthesizer/ or an /audio effect./ It can also seamlessly morph between different sound processing methods. 
+You can also use /live sampling/ as a sound source for manipulation with Hadron.
+
+In this Lesson, you'll learn a bit about the basic concepts of the Hadron device and take a look at some of the powerful sound processing methods it provides.
+
+Please click /Next Page/ below to proceed.
+
+
+$Comment --------------------------------------------------------------------------------
+$Page Using Hadron as a midi synthesizer
+$TargetName Using Hadron as a midi synthesizer
+
+*
+Click $Link here <Set:Hadron introduction Lessons/Hadron Midi Synth.als> to load a Live Set that uses Hadron as a midi synthesizer.*
+
+The first track in the Set contains Hadron loaded as an audio effect, but in practice this device is used as a midi synthsizer driven by midi notes on track 2.
+
+/Play/
+Now play some notes on your MIDI keyboard, or use your computer keyboard to play midi notes. You can also start the included midi clip on track 2 to hear a simple melody played on Hadron.
+
+/Tweak/
+Try tweaking the controls, using the XY pad and the four expression control sliders. 
+The expression sliders will modulate the timbre and the XY pad will morph between different timbral states.
+Hadron uses the concept of "parameter states" to designate different timbral modes of the device. You can think of the parameter states as "presets" or timbres for the synthesizer, and the expression controls as timbral modifiers within each preset. 
+
+/Morph/
+Watch it! The expression controllers will affect the timbre differently depending on the position of the XY pad cursor. This is because the expresson control mapping is also morphed between Hadron parameter states.
+
+$Comment --------------------------------------------------------------------------------
+$Page Inline help
+$TargetName Inline help
+
+/
+Shift-click for states documentation/
+Since each Hadron state will process the sound in a unique manner, and the expression controls will have different functions for each state, you might find it useful to look up the documentation for each state. Try shift-clicking on the state name, it will open the documentation for this state in a web browser. 
+state_shiftclick_c_24.tif
+
+The browser window will in some cases be opened in the background, so you might have to flip through you currently open applications to get to it.
+
+/General Hadron documentation/
+The general documentation for Hadron can be accessed by clicking on the question mark in the GUI.
+help_click1_c_24.tif
+
+$Comment --------------------------------------------------------------------------------
+$Page Using several instances of Hadron simultaneously
+$TargetName Using several instances of Hadron simultaneously
+
+*
+Click $Link here <Set:Hadron introduction Lessons/Hadron Midi Synth Combo.als> to load a Live Set that uses several instances of Hadron.*
+
+We load one /HadronMidiSender/ for each separate instance of /Hadron For Live/ , and select a corresponding midi connection 'channel' for each HadronMidiSender and the HadronForLive device it should control. 
+midi_select2_c_24.tif
+
+By default, the MidiSender and the Hadron device will be set to midi connection channel 1. Four separate channels are available. These channels represents only the internal communication between the HadronMidiSender and the HadronForLive devices, not to be confused with normal midi channels.
+
+To simplify the use of Hadron as a standard midi instrument, we've also created an instrument version of the device. Using the instrument device eliminates the need for the Hadron Midi Sender. The drawback is that the instrument device does not allow audio input, so it can not be used as a live sampler and audio effect.
+
+
+$Comment --------------------------------------------------------------------------------
+$Page Using Hadron as an audio effect
+$TargetName Using Hadron as an audio effect
+
+*
+Click $Link here <Set:Hadron introduction Lessons/Hadron Audio Effect.als> to load a Live Set that uses Hadron as an audio effect.*
+
+The first track in the Set contains an Hadron loaded as an audio effect, processing audio on this track. 
+
+Simply start the audio clip on the track to start experimenting with using Hadron as an audio effect, or Record enable the track to process live audio input from your soundcard.
+
+The XY pad will morph between different types of effects, and the expression sliders let you adjust selected parameters for each effect. 
+The function of the expression sliders will change gradually when morphing between different effects. 
+
+
+$Comment --------------------------------------------------------------------------------
+$Page Midi triggered audio effects
+$TargetName Using Hadron as a midi triggered audio effect
+
+*
+Click $Link here <Set:Hadron introduction Lessons/Hadron Triggered Audio Effect.als> to load a Live Set that uses Hadron as a midi triggered audio effect.*
+
+Using Hadron as a midi triggered audio effect is similar to using it as a regular audio effect, with the important difference that audio output from the effect is muted when no midi notes are sent to the audio effect. 
+In addition, midi note parameters can be used to control various parameters of the effects. For example, if you use Hadron as a pitch shifter, the amount of pitch shift can be controlled via midi note input. 
+Since the effect is muted when no midi notes are present, you can also use the midi keyboard to quickly turn the effect on and off during live performances.
+
+The live set contains a short demo arrangement of midi triggered effects in Hadron. Start the arrangement to hear some spoken text processed with changing midi notes and automated device controls.
+
+$Comment --------------------------------------------------------------------------------
+$Page Midi triggered audio effects
+$TargetName Using Hadron as a midi triggered audio effect
+
+/
+Try it/
+Still using the same live set as loaded on the previous page, you can experiment with the Triggered Audio Effects mode of Hadron:
+-> stop playback and go to session view.
+-> click the Stop Clips button on the Master track to the right
+-> start the audio clip on track 1
+-> make sure track 2 is Record enabled
+-> play some midi notes (on track 2) and listen to the audio effect this triggers on track 1
+-> experiment with the XY pad to morph between different effects, and the expression controls to modify the effect parameters
+-> you can also enable live audio input on track 1 by setting the Monitor to "In" (you don't want to record enable track 1, as this will disable midi input on track 2)
+
+
+$Comment --------------------------------------------------------------------------------
+$Page Live sampling with Hadron
+$TargetName Using Hadron as a live sampler instrument
+
+*
+Click $Link here <Set:Hadron introduction Lessons/Hadron Livesampling.als> to load a Live Set that uses Hadron as a live sampling instrument.*
+
+Simply press play to see the live sampling feature in action. The arrangement view contains automation of the live sampling record buttons for each sound source in Hadron. The first part of the arrangement samples different sounds into Hadron, and the second part (from bar 15) uses these live sampled sounds to create a short evolving soundscape.
+
+This set contains two soundfiles used as a test input for live sampling. To use live input from your soundcard, simply Record enable the track. 
+
+
+$Comment --------------------------------------------------------------------------------
+$Page Get More States and Presets for Hadron
+$TargetName Get More States and Presets for Hadron
+
+/
+Expanding Hadron/
+
+We've included a small selection of Hadron parameter states for free with this release. To further expand the sonic processing capabilities you can /add more states./ 
+
+States are available for purchase at $Link www.partikkelaudio.com <http://www.partikkelaudio.com>
+
+partikkelaudio1_24.tif
+
+$Comment --------------------------------------------------------------------------------

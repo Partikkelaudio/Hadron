@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>data</key>
+	<data>
+	AAAAAAAAAAAAAAALAAAAAAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAAwAAAAAAAAAEAAAA
+	AAAAAAUAAAAAAAAABgAAAAAAAAAHAAAAAAAAAAgAAAAAAAAACQAAAAAAAAAKAAAAAA==
+	</data>
+	<key>jucePluginState</key>
+	<data>
+	VkMyIaABAAA8UEFSVElLS0VMU0VUVElOR1MgcGx1Z2luVmVyc2lvbj0iMyIgbmFtZT0i
+	W2Z4XURhcmtNYXR0ZXIiIGV4cHJlc3Npb24xPSIwLjE1OTk5OTk5NiIgZXhwcmVzc2lv
+	bjI9IjAuMjgwMDAwMDAxIiBleHByZXNzaW9uMz0iMC42Mjk5OTk5OTUiIGV4cHJlc3Np
+	b240PSIwLjI3MDAwMDAxMSIgcHJlc2V0WD0iMC40MDk5OTk5OTYiIHByZXNldFk9IjAu
+	NjM5OTk5OTg2IiBtYXN0ZXJMZXZlbD0iMC45MjEwNTI2MzUiIHN0YXRlMT0idGZ4SGFy
+	bW9ueUZNIiBzdGF0ZTI9InRmeFBpdGNoTW9kRk1FY2hvIiBzdGF0ZTM9InRmeFJpc2lu
+	Z1Ntb2tlIiBzdGF0ZTQ9InRmeFZvaWNlUGl0Y2hlciIgc291bmQxPSJBdWRpbyBpbnB1
+	dCIgc291bmQyPSJBdWRpbyBpbnB1dCIgc291bmQzPSJBdWRpbyBpbnB1dCIgc291bmQ0
+	PSJBdWRpbyBpbnB1dCIvPgDy
+	</data>
+	<key>manufacturer</key>
+	<integer>1348551029</integer>
+	<key>name</key>
+	<string>[fx]ColourTransposer-1</string>
+	<key>subtype</key>
+	<integer>1635085670</integer>
+	<key>type</key>
+	<integer>1635085670</integer>
+	<key>version</key>
+	<integer>0</integer>
+</dict>
+</plist>

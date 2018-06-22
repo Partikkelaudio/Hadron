@@ -1,0 +1,7 @@
+
+WaveMix
+X: setTransFuncTable 1 7 0 2730 1 2730 1 2732 0
+Y: setTransFuncTable 2 7 0 2730 0 2730 1 2732 1
+
+Delaytime sync: continuous control første halvdel, deretter halvtempo(0.5)-triol(0.66)-hel(1.0)
+setTransFuncTable 3 7 0 4096 0.5 1365 0.5 0 0.666666 1365 0.666666 0 1 1366 1

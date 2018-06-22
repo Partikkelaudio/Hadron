@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	<link rel="stylesheet" type="text/css" href="hadron.css" />
+	<link rel="icon" href="images/favicon.ico" />
+
+	<title>Hadron States Documentation</title></head>
+
+
+<body>
+	<div id="headUC">
+	</div>
+
+	<div class="clear">
+	</div>
+
+	<div id="bodywrap">
+		<div id="innerbody">
+			<img src="images/pagetitles/maintitle.png" alt="Hadron States Documentation" class="titleimage" />
+
+			<div class="clear">
+			</div>
+
+			<div id="leftmenu">
+				<a href="index_states.html"><h2>State Documentation Index</h2></a>
+			</div>
+
+			<div id="rightcontent">
+				<h1>Hadron state description sheet</h1>
+
+				<p></p><h2>State title</h2>
+				gtSnapperRhythm
+
+				<p></p><h2>Type of sound</h2>
+				Rhythmic &#8220;snapping&#8221; texture bpm synced to the host song temp. 
+				Rhythmic subdivision amount on expression control. 
+				<h2>Controllers</h2>
+				Expression1: <br />
+				&nbsp;&nbsp; &nbsp;Grain rate rhythm pattern <br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Quarter notes (0% to 12.5%)<br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;dotted 8ths (12.5% to 25%) <br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;triplets (25% to 37.5%)<br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;8ths (37.5% to 50%)<br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Quintuplets (50% to 62.5%) <br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;8th triplets (62.5% to 75%) <br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;16ths (75% to 87.5%)<br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;16th triplets (87.5% to 99%)<br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;32nd notes (100%)<br />
+				Expression2: <br />
+				&nbsp;&nbsp; &nbsp;Grain rate fine tune <br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Nudge down from 0% to 25%<br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Nudge up from 25% to 50 %<br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Significantly raise grain rate from 50% to 100%<br />
+				Expression3: <br />
+				&nbsp;&nbsp; &nbsp;Grain Attack and Duration modification<br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Shorten Attack from 0% to 50%<br />
+				&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;Shorten Grain from 50% to 100%<br />
+				Expression4: <br />
+				&nbsp;&nbsp; &nbsp;Manual time pointer, what part of the source waveforms to read<br />
+				<h2>Midi keyboard control</h2>
+				Note Number: Transposition<br />Velocity: Amp<br />Interval: Output routing sequence length (channel mask)<br />
+				&nbsp;&nbsp; &nbsp;When playing a single note: all grains will be played mono<br />
+				&nbsp;&nbsp; &nbsp;An interval of one semitone: grains are panned left and right<br />
+				&nbsp;&nbsp; &nbsp;An interval of two semitones: left, right, bandpass<br />
+				&nbsp;&nbsp; &nbsp;&#8230; up to the max sequence length of 8 (when the interval is a perfect fifth)<br />
+				<h2>Suggested source waveform</h2>
+				Slot1: Any Sampled waveform, e.g. Cello.wav<br />
+				Slot2: not used<br />
+				Slot3: not used<br />
+				Slot4: not used<br />
+				* Sounds with significant timbral variation over time will give more animated results.
+
+				<p>Waveform sources/slots used: 1</p>
+
+				<p></p><h2>Mask tables</h2>
+				Channelmask: <br />
+				&nbsp;&nbsp; &nbsp;A: Left, Right, (loop length=2 particles)<br />
+				&nbsp;&nbsp; &nbsp;B: Left, Right, BP1, BP2, LP, BP3, Delay L, Delay R (loop length=8 particles)<br />
+				<h2>Pitch definition mode</h2>
+				Grain Transpose<br />Octave: 0<br />
+				Source waveforms transposed so that note num 69 (middle A) should give a perceived fundamental of 440Hz<br />
+				The original key stored with each source wave file may be octave displaced,
+				in which case the same octaviation occurs on playback with this state.<br />
+			</div>
+
+			<div class="clear">
+			</div>
+		</div>
+	</div>
+	<div class="clear">
+	</div>
+	<div id="footer">
+		<div id="footercopyright">
+			Copyright © 2010
+			Partikkel Audio ® All Rights Reserved
+		</div>
+
+		<div id="footerlogo">
+			<!-- [ Partikkel Audio Logo ] -->
+		</div>
+	</div>
+	<div class="empty-block">
+	</div>
+</body></html>

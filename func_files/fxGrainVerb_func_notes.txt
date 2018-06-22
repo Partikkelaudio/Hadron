@@ -1,0 +1,24 @@
+(LFO1 til Func 1 og 2)
+
+Xfade mellom source 1 og 2
+setTransFuncTable 1 7 1 4096 0 4096 1
+
+Samplepos for source 2
+setTransFuncTable 2 7 0.5 4096 1 0 0 4096 0.5
+
+
+fxGrainVerbQuad_08Xfade.spst
+LFO1 to Samplepos1 and to Func(1,2,3,4)input
+
+Samplepos2 controlled by Modulo1
+(similar to func table 1 and 2, wrap around at 1.0, offset 0.25)
+
+Samplepos3 (offset 0.5)
+setTransFuncTable 1 7 0.5 4096 1 0 0 4096 0.5
+Samplepos4 (offset 0.75)
+setTransFuncTable 2 7 0.75 2048 1 0 0 6144 0.75
+
+WaveX
+setTransFuncTable 3 7 0.8 2048 0.8 2048 0.2 2048 0.2 2048 0.8
+WaveY
+setTransFuncTable 4 7 0.8 2048 0.2 2048 0.2 2048 0.8 2048 0.8

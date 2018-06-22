@@ -1,0 +1,95 @@
+Func1 xfade mellom source wave (1+4) og (2+3), slik at samplepos kan endres uten at det høres
+- f.eks. source 1 og 4 er mixet helt ned på det tidspunkt hvor samplepoos for disse to endres (via func2).
+Func2 samplepos for source 1 og 4
+Func3 samplepos for source 2 og 3
+
+a  - 	e  - 	i  - 	o  - 	u	: 5 segments
+0.1, 	0.3, 	0.5, 	0.7, 	0.9	: samplepos
+8192/5 = 1638,4 pr segment
+hold : 1000
+xfade: 638
+
+
+Func1:(linseg)
+index	:	value	
+0	:	0.0	*a
+585	:	0.0	 -
+1170	:	0.0	 x
+1755	:	1.0	*e
+2340	:	1.0	 -
+2925	:	1.0	 x
+3510	:	0.0	*i
+4095	:	0.0	 -
+4680	:	0.0	 x
+5265	:	1.0	*o
+5850	:	1.0	 -
+6435	:	1.0	 x
+7020	:	0.0	*u
+7605	:	0.0	 -
+8190	:	0
+
+Func1:(linseg)
+;a	     e		  o	       u	    i
+0 1170 0 585 1 1170 1 585 0 1170 0 585 1 1170 1 585 0 1170 0
+(gen 7)
+
+
+Func2:(step, hold value from index until next value)
+index	:	value	
+0	:	0.1		a
+2340	:	0.5		o
+5850	:	0.9		i
+(use gen -7, no normalize)
+0.1 2340 0.1 0 0.5 3510 0.5 0 0.9 2342 0.9
+
+Func3:(step, hold value from index until next value)
+index	:	value	
+0	:	0.3		e
+4095	:	0.7		u
+(use gen -7, no normalize)
+0.3 4095 0.3 0 0.7 4097 0.7
+
+
+** andre forbedringer
+GrainPitch kan gå ned til 0.9 i nedre register (note nr 30)	: 1.1 ved note nr 70	: 1.05 ved note nr 60
+AdRatio kan gå ned til 0.05 i nedre register			: >0.2 ved note nr 70	: 0.2 ved note nr 60
+GrainDur kan gå ned til 0.6 i nedre register			: 0.9 ved note nr 70	: 0.8 ved note nr 60
+* vibrato
+- fade in 1.5 sek til full vibr (ikke retrig env ved legato)
+- control vibr amt og rate
+
+
+old (read from old states, to be fixed) values:
+
+Func1:(linseg)
+index+26:	value	
+26	:	0.000000	a
+807	:	0.000000
+1570	:	1.000000	e
+1970	:	1.000000
+2733	:	0.000000	i
+3133	:	0.000000
+3896	:	1.000000	o
+4296	:	1.000000
+5059	:	0.000000	u
+5459	:	0.000000
+6222	:	1.000000
+6622	:	1.000000
+8162	:	0.000000
+(end)	:	0.0
+
+
+Func2:(step, hold value from index until next value)
+index+26:	value	
+26	:	0.071000	a
+1770	:	0.335000
+4096	:	0.639000
+6422	:	0.923000
+
+Func3:(step, hold value from index until next value)
+index+26:	value	
+26	:	0.000000
+607	:	0.213000
+2933	:	0.497000
+5259	:	0.781000
+7585	:	1.000000

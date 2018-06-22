@@ -1,0 +1,245 @@
+/*
+	Theme Name: PartikkelAudio
+	Theme URI: http://www.partikkelaudio.com
+	v1.0 | 2010
+	Theme for: Partikkel Audio Web Store
+	Author: Arne Sigmund Skeie
+	Author URI: http://www.arneskeie.no/
+*/
+
+/* Reset Browser Defaults */
+
+div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+
+html 	{ height: 100%; }
+
+
+ol, ul, li { 
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+	}
+
+.clear {
+	clear: both;
+	}
+
+p {
+	margin:15px 0;
+	}
+
+	div.spoiler {
+		display: block;
+		margin:15px 0;
+		border-bottom: 1px solid #cccccc;
+		}
+
+	div.spoiler:last-child {
+		display: block;
+		margin:15px 0;
+		border-bottom: 0px solid #cccccc;
+		}
+
+a, a:link, a:visited {
+	color:#0b76bf;
+	text-decoration:none
+	}
+
+a:hover, a:active {
+	color:#0b76bf;
+	text-decoration:underline
+	}
+
+a img, img {
+	border:0;
+	}
+	
+hr {
+	height: 1px;
+	border: 0;
+	width: 100%;
+	color: #cccccc;
+	background-color: #cccccc;
+	}
+
+
+/* Typography Headers */
+
+img.titleimage {
+	padding: 10px 0 40px 0;
+	}
+
+h1 {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 22px;
+	}
+
+h2 {
+	font-family: Helvetica, Arial, sans-serif;
+	line-height:100%;
+	margin-top: 25px;
+	}
+
+h3 {
+	font-family: Helvetica, Arial, sans-serif;
+	}
+
+h4 {
+	font-family: Helvetica, Arial, sans-serif;
+	}
+
+p {
+	font-family: Helvetica, Arial, sans-serif;
+	}
+
+p.leftmenu {
+	margin: 5px 0 0 20px;
+	}
+
+ul {
+	font-family: Helvetica, Arial, sans-serif;
+	}
+
+
+
+/* Main Structure */
+
+body {
+	width:100%;
+	margin:0 auto;
+	padding:0;
+	position:relative;
+	background:#000000 url(images/outerbodyback.jpg) no-repeat top center;
+	}
+	
+#bodywrap {
+	width:1000px;
+	margin:auto;
+	padding:0;
+	position:relative;
+	background:transparent url(images/innerbodyback.png) repeat-y top center;
+	}
+
+#innerbody {
+	width:932px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 11px;
+	line-height: 16px;
+	color:#333333;
+	margin:0 auto;
+	padding: 0 15px;
+	position:relative;
+	background:transparent url(images/innerbodygradient.png) repeat-x top center;
+	}
+
+#leftmenu {
+	width:220px;
+	float:left;
+	}
+	
+#rightcontent {
+	width:600px;
+	float:right;
+	margin-right:50px;
+	}
+	
+div.index_column {
+	width: 250px;
+	margin: 10px 40px 0 0;
+	float: left;
+	}
+
+/* Header */
+
+#headUC {
+	width: 960px;
+	height: 51px;
+	margin: auto;
+	position: relative;
+	overflow: hidden;
+	padding: 0 20px;
+	background:transparent url(images/innerbodytopUC.png) top center no-repeat;
+	}
+	
+	
+	
+
+/* Footer */
+
+#footer {
+	width:960px;
+	margin:0 auto;
+	position:relative;
+	color:#bbbbbb;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 9px;
+	text-align:center;
+	background:transparent url(images/innerbodybottom.png) top center no-repeat;
+	padding:40px 20px 20px 20px;
+	}
+
+	#footercopyright {
+		position:absolute;
+		top:40px;
+		left:20px;
+		}
+
+	#footerlinks {
+		font-size: 11px;
+		display:block;
+		margin:0 0 0 280px;
+		}
+
+		#footernav li a,#footernav li a:link,#footernav li a:visited {
+			display:block;
+			float:left;
+			text-transform:uppercase;
+			font-weight:bold;
+			color:#ffffff;
+			margin:0;
+			padding:0 10px;
+			border-left:1px solid #ffffff;
+			}
+
+		#footernav li a:hover {
+			text-decoration:none;
+			color:#dddddd;
+			}
+
+		#footernav li a:active {
+			text-decoration:none;
+			color:#dddddd;
+			}
+			
+		#footernav li:first-child a {
+			border-left:none;
+			}
+
+	#footerlogo {
+		position:absolute;
+		top:40px;
+		right:20px;
+		}
+
+.empty-block {
+	width:960px;
+	height:20px;
+	margin:0;
+	padding:0
+	}

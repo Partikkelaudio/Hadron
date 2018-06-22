@@ -1,0 +1,6 @@
+;csound~.def
+
+LIBRARY csound~
+
+EXPORTS
+	main

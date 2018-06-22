@@ -1,0 +1,12 @@
+; Default gain masking table. all 1's. loop length = 64 frames							
+; also usable as freqstartmasks. freqendmasks and fmampmasks							
+0	63						
+1	1	1	0.5	0.5	0	0		;7
+1	1	1	0.5	0.5	0	0	0	;15
+1	1	0	0	0.5	0.5	0.5	1	;23
+1	1	0	0	0.5	0.5	0.5	1	;31
+1	1	1	0.5	0.5	0	0		;38
+1	1	1	0.5	0.5	0	0		;45
+1	1	0	0	1	1	0	0	;53
+1	0.8	0.7	0.6	0.5	0.4	0.3	0.2	;61
+0	0	0

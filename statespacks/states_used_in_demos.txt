@@ -1,0 +1,72 @@
+* liste over states som brukes 
+	- i Lessons
+	- i demos (pr demo)
+
+	* Lessons
+	- MidiSynth
+		grBandpassAnimator1
+		grFilterSynth
+		grReedyFormantStepSync
+		grTrainletFM1Randmask
+	- MidisynthCombo
+		gtSnapper
+		gtSnapperRhythm
+		gtPitchTimeAndMix
+		gt16thsStagger
+		grReedyThinBadRadio
+		grTrombone
+		*grReedyFormantStepSync
+		*grTrainletFM1Randmask
+	- effects
+		grOctaver
+		fxGrainFlanger2
+		fxLowpassRand
+		fxTwinPeaks
+	- triggered effects
+		tfxHarmonyFM
+		tfxPitchModFMEcho
+		tfxRisingSmoke
+		tfxVoicePitcher
+	- livesampling
+		gtLiveSampling1
+		gtSamplePlayback
+		gtParticleCloud
+		*gt16thsStagger
+	* Demos
+	- rambdemo
+		grReedyThinAnalog
+		*grReedyThinBadRadio
+		*grFilterSynth
+		*grReedyFormantStepSync
+		grParticleCloud
+		grTrainletDistribution
+		grReedyOctEfx
+		tfxRisingSMoke
+		*grTrombone
+		*grTrainletDistribution
+		grBlackBells
+		grCartoonVocals
+	- darkdemo
+		*gr16thStagger
+		*grFilterSynth
+		*grTrombone
+		*grReedyFormantStepSync
+		*grParticleCloud
+		*fxTwinPeaks
+		*tfxPitchModFMEcho
+		fxGrainFlanger
+		*grTrombone
+		*grTrainletDistribution
+		*grTrainletFM1Randmask
+		grTrainletRandmask
+		*grTrombone
+		*grBandpassAnimator1
+		*grReedyThinBadRadio
+		*grBlackBells
+	- barack
+		*gtSnapper
+		*gtPitchTimeAndMix
+		*gt16thsStagger
+		*gtSnapperRhythm
+		*grTrainletFM1Randmask
+		*grTrainletRandmask

@@ -1,0 +1,11 @@
+; Channel masking table with repeating sequences of 0 to 1. loop length = 64 frames							
+; 0 is the first output channel. 7 is the last							
+0	63						
+0	1	0	1	0	1	0	1
+0	1	0	1	0	1	0	1
+0	1	0	1	0	1	0	1
+0	1	0	1	0	1	0	1
+0	1	0	1	0	1	0	1
+0	1	0	1	0	1	0	1
+0	1	0	1	0	1	0	1
+0	1	0	1	0	1	0	1

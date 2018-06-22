@@ -1,0 +1,15 @@
+* gSpath must be set
+	- currently in chnparms.inc
+	- calling instr 1 in standalone (ok?)
+
+* Some divz in modulators (fixed)
+
+* Macro terminators enforced, e.g. $N.
+
+* instr 20, loading sound files: trigger instr 61 to load analysis
+	- creates error (due to table size change?)
+
+INIT ERROR in instr 0: sprintf: insufficient arguments for format
+Sfmampmasks_A	sprintf	"gifmampmasks%i_A"	1	
+INIT ERROR in instr 0: sprintf: insufficient arguments for format
+Sfmampmasks_B	sprintf	"gifmampmasks%i_B"	1	

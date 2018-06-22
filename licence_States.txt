@@ -1,0 +1,38 @@
+The following Licence applies to state files for the Hadron Particle Synthesizer.
+State files are not free, and can not be redistributed by any company/person/entity unless specific authorization from partikkelaudio.com has been explicitly given.
+The Licence as printed in the rest of this document corresponds with the Terms and Conditions as given on partikkelaudio.com:
+
+
+The product is provided “as is” with no warrany of any kind. The product is copyrighted and may not be redistributed.
+
+Terms & Conditions 
+
+You should carefully read the following Terms and Conditions. Your purchase or use of our products implies that you have read and accepted these Terms and Conditions. 
+
+PartikkelAudio grants you non-exclusive limited license to use the states and presets and other products sold through our web site by PartikkelAudio (the “closed source products”) in accordance with these Terms and Conditions. The Terms and Conditons apply differently to the open source product “Hadron Particle Synthesizer”, this is referenced to as “the open source products” in this text.
+
+1.Limited usage granted: You are permitted to use any closed source product you purchase from Partikkelaudio.com on up to 2 of your computers. If you wish to use the product on more computers, please purchase additional licenses. This limitation does not apply to the open source product “Hadron Particle Synthesizer”.
+
+2.Modifications: You are authorized to make any necessary modification(s) to our open source products to fit your purposes. Such modifications must comply with the LGPL license as published by the Free Software Foundation. 
+
+3.Unauthorized use: You may not place any of our closed source products, modified or unmodified on a diskette, CD, website or any other medium and offer them for redistribution or resale of any kind without prior written consent from Partikkelaudio.com. 
+
+4.Delivery: After we have successfully received your payment, you will be forwarded to a download page for your purchased products. A download link will also be emailed to the address you registered with. The download links will be valid for 24 hours after purchase.
+
+5.Assignability: You may not sub-license, assign, or transfer this license to anyone else without prior written consent from Partikkelaudio.com 
+
+6.Ownership: You may not claim intellectual or exclusive ownership to any of our products, modified or unmodified. All products are property of Partikkelaudio.com. Our products are provided “as is” without warranty of any kind, either expressed or implied. In no event shall our juridical person be liable for any damages including, but not limited to, direct, indirect, special, incidental or consequential damages or other losses arising out of the use of or inability to use our products. 
+
+7.Use of Content: You acknowledge that the site contains or may contain material (collectively the “Content”) which is protected by copyright, trademark or other proprietary rights. You may not transfer or sell, reproduce, create derivative works from, distribute, or in any way exploit any of the Content, in whole or in part, except with an expressly permitted Agreement from the developer. 
+
+8.Warranty: Partikkelaudio.com does not warranty or guarantee the products in any manner. The sole exception is that we guarantee preset packs and parameter states to be compatible with the version of the Hadron Particle Synthesizer most current at the time of purchase.
+
+9.Support: Partikkelaudio.com offers these products ‘as is’, with no implied meaning that they will function exactly as you wish. Our support capacity is limited, and no guarantee for support of any kind is implied.
+
+Refund Policy
+As all of our products are digital software, delivered instantly once orders are approved, it is impossible for you to return a product to use for a refund. 
+
+If you find a bug in our software, you can report it to us and we will fix it in the next version. Finding a bug is not a reason to request a refund. 
+
+THIS SOFTWARE IS PROVIDED BY Partikkelaudio.com “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL PARTIKKELAUDIO.COM, OR ANY OF IT’S STAFF BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+.

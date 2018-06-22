@@ -1,0 +1,5 @@
+License:
+The Hadron Particle Synthesizer is covered by a LGPL Licence.
+The LGPL license can be found in the file lgpl-3.0.txt
+
+The Hadron parameters states and presets as can be found in the "/states" and "/states-release" directories are covered by a proprietary license, you can obtain a license for personal use by buying the states via partikkelaudio.com

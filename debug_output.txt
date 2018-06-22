@@ -1,0 +1,1488 @@
+PortMIDI real time MIDI plugin for Csound
+PortAudio real-time audio module for Csound
+virtual_keyboard real time MIDI plugin for Csound
+0dBFS level = 32768.0
+Csound version 5.11 (double samples) Oct  1 2009
+libsndfile-1.0.20
+Reading options from $CSOUNDRC: C:\Develop\Csound\.csoundrc 
+orchname:  C:\Store\applikasjoner\barebones\partikkel_automation_score.orc
+scorename: C:\Store\applikasjoner\barebones\partikkel_automation_score.sco
+RAWWAVE_PATH: C:\Develop\Csound\samples/
+rtaudio: PortAudio module enabled ... using callback interface
+rtmidi: PortMIDI module enabled
+orch compiler:
+Macro definition for PartikkelTables
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_pre matches macro name $N
+WARNING: $N_A_pre matches macro name $N
+WARNING: $N_B_pre matches macro name $N
+WARNING: $N_A_pre matches macro name $N
+WARNING: $N_B_pre matches macro name $N
+WARNING: $N_A_pre matches macro name $N
+WARNING: $N_B_pre matches macro name $N
+WARNING: $N_A_pre matches macro name $N
+WARNING: $N_B_pre matches macro name $N
+WARNING: $N_A_pre matches macro name $N
+WARNING: $N_B_pre matches macro name $N
+WARNING: $N_A_pre matches macro name $N
+WARNING: $N_B_pre matches macro name $N
+WARNING: $N_Master matches macro name $N
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_B_Master matches macro name $N
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_B_Master matches macro name $N
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_B_Master matches macro name $N
+WARNING: $N_B_Master matches macro name $N
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_B_Master matches macro name $N
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_B_Master matches macro name $N
+Macro definition for ModulatorTables
+WARNING: $N_pre matches macro name $N
+WARNING: $N_Master matches macro name $N
+Macro definition for GenerateTablesForSoundfileNames
+WARNING: $VoiceSourceWave1Name matches macro name $Voice
+WARNING: $VoiceSourceWave2Name matches macro name $Voice
+WARNING: $VoiceSourceWave3Name matches macro name $Voice
+WARNING: $VoiceSourceWave4Name matches macro name $Voice
+WARNING: $VoiceSourceWave1Name matches macro name $Voice
+WARNING: $VoiceSourceWave2Name matches macro name $Voice
+WARNING: $VoiceSourceWave3Name matches macro name $Voice
+WARNING: $VoiceSourceWave4Name matches macro name $Voice
+Macro definition for WriteSoundfileName
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $VoiceSourceWave matches macro name $Voice
+WARNING: $SlotName matches macro name $Slot
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $VoiceSourceWave matches macro name $Voice
+WARNING: $SlotName matches macro name $Slot
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $VoiceSourceWave matches macro name $Voice
+WARNING: $SlotName matches macro name $Slot
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $VoiceSourceWave matches macro name $Voice
+WARNING: $SlotName matches macro name $Slot
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $VoiceSourceWave matches macro name $Voice
+WARNING: $SlotName matches macro name $Slot
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $VoiceSourceWave matches macro name $Voice
+WARNING: $SlotName matches macro name $Slot
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $VoiceSourceWave matches macro name $Voice
+WARNING: $SlotName matches macro name $Slot
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $Voice_ matches macro name $Voice
+WARNING: $VoiceSourceWave matches macro name $Voice
+WARNING: $SlotName matches macro name $Slot
+WARNING: $Voice_ matches macro name $Voice
+Macro definition for readMaskTable
+Macro definition for readModFuncTable
+Macro definition for PresetRead
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $NVal matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_A_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_A_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_AVal matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_B_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_B_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_BVal matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_A_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_A_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_AVal matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_B_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_B_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_BVal matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_A_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_A_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_AVal matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_B_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_B_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_BVal matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_A_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_A_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_AVal matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_B_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_B_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_BVal matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_A_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_A_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_AVal matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_B_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_B_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_BVal matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_A_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_A_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_AVal matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $N_B_pre matches macro name $N
+WARNING: $tName_Master matches macro name $tName
+WARNING: $N_B_Master matches macro name $N
+WARNING: $tNameVal matches macro name $tName
+WARNING: $N_BVal matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $N_pre matches macro name $N
+WARNING: $N_Master matches macro name $N
+WARNING: $tName_pre matches macro name $tName
+WARNING: $tName_Master matches macro name $tName
+WARNING: $tNameVal matches macro name $tName
+WARNING: $tName_pre matches macro name $tName
+WARNING: $tName_Master matches macro name $tName
+WARNING: $tNameVal matches macro name $tName
+WARNING: $tName_pre matches macro name $tName
+WARNING: $tName_Master matches macro name $tName
+WARNING: $tNameVal matches macro name $tName
+WARNING: $tName_pre matches macro name $tName
+WARNING: $tName_Master matches macro name $tName
+WARNING: $tNameVal matches macro name $tName
+Macro definition for GenerateStringFromAscii
+Macro definition for interpolateMaskingTable
+Macro definition for interpolateMaskAndModscale
+Macro definition for interpolateModfuncTable
+WARNING: $T_Master matches macro name $T
+WARNING: $N_Master matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_B_Master matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_B_Master matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_B_Master matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_B_Master matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_B_Master matches macro name $N
+WARNING: $N_A matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_A_Master matches macro name $N
+WARNING: $N_B matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $N_B_Master matches macro name $N
+WARNING: $N_Master matches macro name $N
+WARNING: $T_Master matches macro name $T
+WARNING: $T_Master matches macro name $T
+WARNING: $T_Master matches macro name $T
+WARNING: $T_Master matches macro name $T
+Macro definition for LFO
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSyncIndx matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Waveform matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_FreqBpmSyncIndx matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSyncIndx matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Waveform matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_FreqBpmSyncIndx matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSyncIndx matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Waveform matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_FreqBpmSyncIndx matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $N_Global matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSyncIndx matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Waveform matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $Nreinit matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_FreqBpmSyncIndx matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_FreqBpmSync matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Phase matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $N_Freq matches macro name $N
+WARNING: $N_Wave matches macro name $N
+WARNING: $N_Phase matches macro name $N
+Macro definition for envelope
+WARNING: $NAmp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $N_Delay matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_DelayBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Attack matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_AttackBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Decay matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_DecayBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Sustain matches macro name $N
+WARNING: $N_Release matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_ReleaseBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Curve matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $N_Retrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $N_Delay matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_DelayBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Attack matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_AttackBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Decay matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_DecayBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Sustain matches macro name $N
+WARNING: $N_Release matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_ReleaseBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Curve matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $N_Retrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $N_Delay matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_DelayBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Attack matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_AttackBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Decay matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_DecayBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Sustain matches macro name $N
+WARNING: $N_Release matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_ReleaseBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Curve matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $N_Retrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $N_Amp matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $N_Delay matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_DelayBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Attack matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_AttackBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Decay matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_DecayBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Sustain matches macro name $N
+WARNING: $N_Release matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $N_ReleaseBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSyncIndx matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $NBpmSync matches macro name $N
+WARNING: $N_Curve matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NRel matches macro name $N
+WARNING: $NAmp matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $N_Retrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+WARNING: $NRetrig matches macro name $N
+Macro definition for TransientFollowing
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+WARNING: $NC matches macro name $N
+Macro definition for calcWaveformParameters
+Macro definition for PartikkelInstrument
+WARNING: $NAmp matches macro name $N
+WARNING: $NGrainRate matches macro name $N
+WARNING: $NGrainRateBpmSync matches macro name $N
+WARNING: $NSyncGravity matches macro name $N
+WARNING: $NGrFmFreq matches macro name $N
+WARNING: $NGrFmFreqBpmSync matches macro name $N
+WARNING: $NGrFmIndex matches macro name $N
+WARNING: $NDistribution matches macro name $N
+WARNING: $NGrainDur matches macro name $N
+WARNING: $NSustain matches macro name $N
+WARNING: $NAdRatio matches macro name $N
+WARNING: $NEnv2Amt matches macro name $N
+WARNING: $NGrainPitch matches macro name $N
+WARNING: $NSweepshape matches macro name $N
+WARNING: $NPitchFmFreq matches macro name $N
+WARNING: $NPitchFmFreqBpmSync matches macro name $N
+WARNING: $NPitchFmIndex matches macro name $N
+WARNING: $NTrainCps matches macro name $N
+WARNING: $NTrainPartials matches macro name $N
+WARNING: $NTrainChroma matches macro name $N
+WARNING: $NRandomMask matches macro name $N
+WARNING: $NWaveX matches macro name $N
+WARNING: $NWaveY matches macro name $N
+WARNING: $NTrainAmp matches macro name $N
+WARNING: $NSourceWave1 matches macro name $N
+WARNING: $NSourceWave2 matches macro name $N
+WARNING: $NSourceWave3 matches macro name $N
+WARNING: $NSourceWave4 matches macro name $N
+WARNING: $NGrainPitch1 matches macro name $N
+WARNING: $NGrainPitch2 matches macro name $N
+WARNING: $NGrainPitch3 matches macro name $N
+WARNING: $NGrainPitch4 matches macro name $N
+WARNING: $NSamplepos1 matches macro name $N
+WARNING: $NSamplepos2 matches macro name $N
+WARNING: $NSamplepos3 matches macro name $N
+WARNING: $NSamplepos4 matches macro name $N
+WARNING: $W_tmp matches macro name $W
+WARNING: $Wa matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $Wa matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $NGrainDelayTime matches macro name $N
+WARNING: $WBpmSync matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $Wa matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $Wa matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $NGrainDelayTime matches macro name $N
+WARNING: $WBpmSync matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $Wa matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $Wa matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $NGrainDelayTime matches macro name $N
+WARNING: $WBpmSync matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $Wa matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $Wa matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $NGrainDelayTime matches macro name $N
+WARNING: $WBpmSync matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $WBpmSyncIndx matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+WARNING: $W_tmp matches macro name $W
+4622 lines read
+	instr	1	
+	instr	2	
+	instr	10	
+	instr	11	
+	instr	12	
+	instr	20	
+	instr	50	
+	instr	51	
+	instr	52	
+	instr	60	
+	instr	61	
+	instr	62	
+	instr	63	
+	instr	70	
+	instr	71	
+	instr	72	
+	instr	73	
+	instr	74	
+	instr	75	
+	instr	79	
+	instr	80	
+	instr	81	
+	instr	89	
+	instr	90	
+	instr	91	
+	instr	100	
+	instr	101	
+	instr	102	
+	instr	104	
+	instr	105	
+	instr	106	
+	instr	107	
+	instr	108	
+	instr	109	
+	instr	110	
+	instr	111	
+	instr	115	
+	instr	116	
+	instr	120	
+	instr	121	
+	instr	125	
+	instr	126	
+	instr	240	
+	instr	251	
+extending Floating pool to 512
+	instr	252	
+	instr	253	
+	instr	254	
+	instr	260	
+	instr	293	
+	instr	294	
+	instr	295	
+	instr	296	
+	instr	297	
+	instr	399	
+	instr	400	
+LABELS list is full...extending to 10
+LABELS list is full...extending to 15
+LABELS list is full...extending to 20
+LABELS list is full...extending to 25
+LABELS list is full...extending to 30
+LABELS list is full...extending to 35
+LABELS list is full...extending to 40
+GOTOS list is full..extending to 80
+LABELS list is full...extending to 45
+LABELS list is full...extending to 50
+Elapsed time at end of orchestra compile: real: 0.185s, CPU: 0.185s
+sorting score ...
+Macro definition for SCORELEN
+Macro definition for cpsMidi
+Macro definition for semiTone
+	... done
+Elapsed time at end of score sort: real: 0.216s, CPU: 0.217s
+Csound version 5.11 (double samples) Oct  1 2009
+displays suppressed
+0dBFS level = 1.0
+chnl 1 using instr 89
+chnl 2 using instr 89
+chnl 3 using instr 89
+chnl 4 using instr 89
+chnl 5 using instr 89
+chnl 6 using instr 89
+chnl 7 using instr 89
+chnl 8 using instr 89
+chnl 9 using instr 89
+chnl 10 using instr 89
+chnl 11 using instr 89
+chnl 12 using instr 89
+chnl 13 using instr 89
+chnl 14 using instr 89
+chnl 15 using instr 89
+chnl 16 using instr 89
+ftable 101:
+ftable 102:
+ftable 103:
+ftable 104:
+ftable 105:
+ftable 106:
+ftable 107:
+ftable 108:
+ftable 109:
+ftable 110:
+ftable 111:
+ftable 112:
+ftable 113:
+ftable 114:
+ftable 115:
+ftable 116:
+ftable 117:
+ftable 118:
+ftable 119:
+ftable 120:
+ftable 121:
+ftable 122:
+ftable 123:
+ftable 124:
+ftable 125:
+ftable 126:
+ftable 127:
+ftable 128:
+ftable 129:
+ftable 130:
+ftable 131:
+ftable 132:
+ftable 133:
+ftable 134:
+ftable 135:
+ftable 136:
+ftable 137:
+ftable 138:
+ftable 139:
+ftable 140:
+ftable 141:
+ftable 142:
+ftable 143:
+ftable 144:
+ftable 145:
+ftable 146:
+ftable 147:
+ftable 148:
+ftable 149:
+ftable 150:
+ftable 151:
+ftable 152:
+ftable 153:
+ftable 154:
+ftable 155:
+ftable 156:
+ftable 157:
+ftable 158:
+ftable 159:
+ftable 160:
+ftable 161:
+ftable 162:
+ftable 163:
+ftable 164:
+ftable 165:
+ftable 166:
+ftable 167:
+ftable 168:
+ftable 169:
+ftable 170:
+ftable 171:
+ftable 172:
+ftable 173:
+ftable 174:
+ftable 175:
+ftable 176:
+ftable 177:
+ftable 178:
+ftable 179:
+ftable 180:
+ftable 181:
+ftable 182:
+ftable 183:
+ftable 184:
+ftable 185:
+ftable 186:
+ftable 187:
+ftable 188:
+ftable 189:
+ftable 190:
+ftable 191:
+ftable 192:
+ftable 193:
+ftable 194:
+ftable 195:
+ftable 196:
+ftable 197:
+ftable 198:
+ftable 199:
+ftable 200:
+ftable 201:
+ftable 202:
+ftable 203:
+ftable 204:
+ftable 205:
+ftable 206:
+ftable 207:
+ftable 208:
+ftable 209:
+ftable 210:
+ftable 211:
+ftable 212:
+ftable 213:
+ftable 214:
+ftable 215:
+ftable 216:
+ftable 217:
+ftable 218:
+ftable 219:
+ftable 220:
+orch now loaded
+audio buffered in 4096 sample-frame blocks
+SECTION 1:
+new alloc for instr 2:
+ftable 221:
+ftable 222:
+ftable 223:
+ftable 224:
+ftable 225:
+ftable 226:
+ftable 227:
+ftable 228:
+ftable 229:
+new alloc for instr 1:
+instr 1:  p1 = 1.000  p2 = 0.000  p3 = 1.000
+C:\Store\applikasjoner\barebones\
+  rtevent:	   T  0.001 TT  0.001 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 230:
+deferred alloc
+audio sr = 44100, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\BlueVibMed_Ab3.WAV
+  defer length 1204224
+Num files loaded: 1 BlueVibMed_Ab3.WAV C:\Store\applikasjoner\barebones\samples/BlueVibMed_Ab3.WAV
+new alloc for instr 61:
+ftable 231:
+ftable 232:
+ftable 233:
+WARNING: ftable 231 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 232 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 233 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.001 TT  0.001 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 234:
+deferred alloc
+audio sr = 44100, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\Cello.wav
+  defer length 187392
+Num files loaded: 2 Cello.wav C:\Store\applikasjoner\barebones\samples/Cello.wav
+new alloc for instr 61:
+ftable 235:
+ftable 236:
+ftable 237:
+WARNING: ftable 235 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 236 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 237 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.002 TT  0.002 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 238:
+deferred alloc
+audio sr = 44100, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\formWave0.wav
+  defer length 339570
+Num files loaded: 3 formWave0.wav C:\Store\applikasjoner\barebones\samples/formWave0.wav
+new alloc for instr 61:
+ftable 239:
+ftable 240:
+ftable 241:
+WARNING: ftable 239 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 240 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 241 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.003 TT  0.003 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 242:
+deferred alloc
+audio sr = 44100, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\formWave1.wav
+  defer length 339570
+Num files loaded: 4 formWave1.wav C:\Store\applikasjoner\barebones\samples/formWave1.wav
+new alloc for instr 61:
+ftable 243:
+ftable 244:
+ftable 245:
+WARNING: ftable 243 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 244 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 245 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.004 TT  0.004 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 246:
+deferred alloc
+audio sr = 44100, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\formWave2.wav
+  defer length 339570
+Num files loaded: 5 formWave2.wav C:\Store\applikasjoner\barebones\samples/formWave2.wav
+new alloc for instr 61:
+ftable 247:
+ftable 248:
+ftable 249:
+WARNING: ftable 247 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 248 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 249 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.004 TT  0.004 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 250:
+deferred alloc
+audio sr = 44100, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\formWave3.wav
+  defer length 339570
+Num files loaded: 6 formWave3.wav C:\Store\applikasjoner\barebones\samples/formWave3.wav
+new alloc for instr 61:
+ftable 251:
+ftable 252:
+ftable 253:
+WARNING: ftable 251 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 252 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 253 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.005 TT  0.005 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 254:
+deferred alloc
+audio sr = 44100, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\formWave4.wav
+  defer length 339570
+Num files loaded: 7 formWave4.wav C:\Store\applikasjoner\barebones\samples/formWave4.wav
+new alloc for instr 61:
+ftable 255:
+ftable 256:
+ftable 257:
+WARNING: ftable 255 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 256 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 257 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.006 TT  0.006 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 258:
+deferred alloc
+audio sr = 44100, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\GrSrc_FlwMe1.wav
+  defer length 83456
+Num files loaded: 8 GrSrc_FlwMe1.wav C:\Store\applikasjoner\barebones\samples/GrSrc_FlwMe1.wav
+new alloc for instr 61:
+ftable 259:
+ftable 260:
+ftable 261:
+WARNING: ftable 259 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 260 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 261 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.007 TT  0.007 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 262:
+deferred alloc
+audio sr = 44100, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\GrSrc_JH2.wav
+  defer length 198656
+Num files loaded: 9 GrSrc_JH2.wav C:\Store\applikasjoner\barebones\samples/GrSrc_JH2.wav
+new alloc for instr 61:
+ftable 263:
+ftable 264:
+ftable 265:
+WARNING: ftable 263 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 264 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 265 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.007 TT  0.007 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 266:
+deferred alloc
+audio sr = 44100, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\GrSrc_StruglKor2mono.wav
+  defer length 319918
+Num files loaded: 10 GrSrc_StruglKor2mono.wav C:\Store\applikasjoner\barebones\samples/GrSrc_StruglKor2mono.wav
+new alloc for instr 61:
+ftable 267:
+ftable 268:
+ftable 269:
+WARNING: ftable 267 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 268 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 269 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.008 TT  0.008 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 270:
+deferred alloc
+audio sr = 44100, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\GrSrc_VibLineDistTone3.wav
+  defer length 396287
+Num files loaded: 11 GrSrc_VibLineDistTone3.wav C:\Store\applikasjoner\barebones\samples/GrSrc_VibLineDistTone3.wav
+new alloc for instr 61:
+ftable 271:
+ftable 272:
+ftable 273:
+WARNING: ftable 271 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 272 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 273 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.009 TT  0.009 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 274:
+deferred alloc
+WARNING: C:\Store\applikasjoner\barebones\samples\h2_aeiouya.wav sr = 96000, orch sr = 44100.0
+audio sr = 96000, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\h2_aeiouya.wav
+  defer length 739264
+Num files loaded: 12 h2_aeiouya.wav C:\Store\applikasjoner\barebones\samples/h2_aeiouya.wav
+new alloc for instr 61:
+ftable 275:
+ftable 276:
+ftable 277:
+WARNING: ftable 275 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 276 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 277 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.009 TT  0.009 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 278:
+deferred alloc
+WARNING: C:\Store\applikasjoner\barebones\samples\h2_aeiouya_4.wav sr = 96000, orch sr = 44100.0
+audio sr = 96000, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\h2_aeiouya_4.wav
+  defer length 739264
+Num files loaded: 13 h2_aeiouya_4.wav C:\Store\applikasjoner\barebones\samples/h2_aeiouya_4.wav
+new alloc for instr 61:
+ftable 279:
+ftable 280:
+ftable 281:
+WARNING: ftable 279 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 280 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 281 relocating due to size change
+         currently active instruments may find this disturbing
+  rtevent:	   T  0.010 TT  0.010 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 60:
+ftable 282:
+deferred alloc
+WARNING: C:\Store\applikasjoner\barebones\samples\h2_aeiouya_hp.wav sr = 96000, orch sr = 44100.0
+audio sr = 96000, monaural
+opening WAV infile C:\Store\applikasjoner\barebones\samples\h2_aeiouya_hp.wav
+  defer length 739264
+Num files loaded: 14 h2_aeiouya_hp.wav C:\Store\applikasjoner\barebones\samples/h2_aeiouya_hp.wav
+new alloc for instr 61:
+ftable 283:
+ftable 284:
+ftable 285:
+WARNING: ftable 283 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 284 relocating due to size change
+         currently active instruments may find this disturbing
+WARNING: ftable 285 relocating due to size change
+         currently active instruments may find this disturbing
+B  0.000 ..  1.000 T  1.000 TT  1.000 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 20:
+Set source wave:GrSrc_StruglKor2mono.wav, segmentOrTableNum:266, voice:1, slot:1
+new alloc for instr 20:
+Set source wave:GrSrc_VibLineDistTone3.wav, segmentOrTableNum:270, voice:1, slot:2
+new alloc for instr 20:
+Set source wave:GrSrc_FlwMe1.wav, segmentOrTableNum:258, voice:1, slot:3
+new alloc for instr 20:
+Set source wave:GrSrc_JH2.wav, segmentOrTableNum:262, voice:1, slot:4
+new alloc for instr 50:
+new alloc for instr 52:
+new alloc for instr 91:
+new alloc for instr 400:
+B  1.000 ..  1.100 T  1.100 TT  1.100 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 70:
+new alloc for instr 73:
+master preset handling: C:\Store\applikasjoner\barebones\presets/masterTest1.mpst
+new alloc for instr 75:
+  rtevent:	   T  1.100 TT  1.100 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 72:
+Instr72: C:\Store\applikasjoner\barebones\presets/reedyThinAnalog1.spst
+reedyThinAnalog1.spst
+  rtevent:	   T  1.100 TT  1.100 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 72:
+Instr72: C:\Store\applikasjoner\barebones\presets/reedyThinAnalog2.spst
+reedyThinAnalog2.spst
+  rtevent:	   T  1.100 TT  1.100 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 72:
+Instr72: C:\Store\applikasjoner\barebones\presets/reedyThinAnalog3.spst
+reedyThinAnalog3.spst
+  rtevent:	   T  1.100 TT  1.100 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 72:
+Instr72: C:\Store\applikasjoner\barebones\presets/reedyThinAnalog3_badRadio.spst
+reedyThinAnalog3_badRadio.spst
+  rtevent:	   T  1.100 TT  1.100 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 20:
+Set source wave:GrSrc_StruglKor2mono.wav, segmentOrTableNum:266, voice:1, slot:1
+  rtevent:	   T  1.100 TT  1.100 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 20:
+Set source wave:GrSrc_VibLineDistTone3.wav, segmentOrTableNum:270, voice:1, slot:2
+  rtevent:	   T  1.100 TT  1.100 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 20:
+Set source wave:GrSrc_FlwMe1.wav, segmentOrTableNum:258, voice:1, slot:3
+  rtevent:	   T  1.100 TT  1.100 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 20:
+Set source wave:GrSrc_JH2.wav, segmentOrTableNum:262, voice:1, slot:4
+B  1.100 ..  1.200 T  1.200 TT  1.200 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 74:
+B  1.200 ..  1.400 T  1.400 TT  1.400 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 293:
+new alloc for instr 294:
+new alloc for instr 295:
+new alloc for instr 296:
+new alloc for instr 297:
+B  1.400 ..  1.500 T  1.500 TT  1.500 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 81:
+ftable 286:
+new alloc for instr 81:
+ftable 287:
+new alloc for instr 81:
+ftable 288:
+new alloc for instr 81:
+ftable 289:
+new alloc for instr 81:
+ftable 290:
+new alloc for instr 81:
+ftable 291:
+B  1.500 ..  1.600 T  1.600 TT  1.600 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 90:
+Seeding from current time 327120598
+Seeding from current time 327120689
+B  1.600 ..  2.000 T  2.000 TT  2.000 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 240:
+new alloc for instr 251:
+B  2.000 ..  2.100 T  2.100 TT  2.100 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 260:
+B  2.100 ..  3.100 T  2.101 TT  2.101 M:  0.00000  0.00000  0.00000  0.00000
+  rtevent:	   T 27.340 TT 27.340 M:  0.00000  0.00000  0.00000  0.00000
+Instr72: C:\Store\applikasjoner\barebones\presets/syncTest.spst
+syncTest.spst
+  rtevent:	   T 30.492 TT 30.492 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 89:
+instr 89:  iNoteNum = 57.000  iVel = 81.000
+Seeding from current time 740938226
+Seeding from current time 740938304
+  rtevent:	   T 30.943 TT 30.943 M:  0.00000  0.00000  0.00000  0.00000
+  rtevent:	   T 35.052 TT 35.052 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 77.000  iVel = 47.000
+Seeding from current time 806100057
+Seeding from current time 806100138
+  rtevent:	   T 35.252 TT 35.252 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 89:
+instr 89:  iNoteNum = 76.000  iVel = 52.000
+  rtevent:	   T 35.440 TT 35.440 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 75.000  iVel = 92.000
+  rtevent:	   T 35.492 TT 35.492 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 74.000  iVel = 47.000
+  rtevent:	   T 35.642 TT 35.642 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 73.000  iVel = 80.000
+  rtevent:	   T 35.841 TT 35.841 M:  0.00000  0.00000  0.00000  0.00000
+  rtevent:	   T 35.841 TT 35.841 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 72.000  iVel = 45.000
+  rtevent:	   T 35.893 TT 35.893 M:  0.00000  0.00000  0.00000  0.00000
+  rtevent:	   T 35.893 TT 35.893 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 71.000  iVel = 40.000
+  rtevent:	   T 35.993 TT 35.993 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 70.000  iVel = 76.000
+  rtevent:	   T 36.043 TT 36.043 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 69.000  iVel = 47.000
+  rtevent:	   T 36.442 TT 36.442 M:  0.00000  0.00000  0.00000  0.00000
+  rtevent:	   T 39.192 TT 39.192 M:  0.26450  0.26450  0.00000  0.00000
+instr 89:  iNoteNum = 59.000  iVel = 122.000
+Seeding from current time 865511291
+Seeding from current time 865511366
+  rtevent:	   T 39.692 TT 39.692 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 60.000  iVel = 110.000
+  rtevent:	   T 39.742 TT 39.742 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 62.000  iVel = 110.000
+  rtevent:	   T 40.241 TT 40.241 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 64.000  iVel = 107.000
+  rtevent:	   T 40.392 TT 40.392 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 65.000  iVel = 107.000
+  rtevent:	   T 40.492 TT 40.492 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 67.000  iVel = 105.000
+  rtevent:	   T 41.041 TT 41.041 M:  0.00000  0.00000  0.00000  0.00000
+  rtevent:	   T 53.991 TT 53.991 M:  0.26450  0.26450  0.00000  0.00000
+Instr72: C:\Store\applikasjoner\barebones\presets/syncTest2.spst
+syncTest2.spst
+  rtevent:	   T 55.492 TT 55.492 M:  0.00035  0.00035  0.00000  0.00000
+instr 89:  iNoteNum = 57.000  iVel = 81.000
+Seeding from current time 1098941112
+Seeding from current time 1098941190
+  rtevent:	   T 55.641 TT 55.641 M:  0.07039  0.07039  0.00000  0.00000
+  rtevent:	   T 56.641 TT 56.641 M:  0.23568  0.23568  0.00000  0.00000
+instr 89:  iNoteNum = 57.000  iVel = 88.000
+Seeding from current time 1115407213
+Seeding from current time 1115407293
+  rtevent:	   T 60.542 TT 60.542 M:  0.33538  0.33538  0.00000  0.00000
+  rtevent:	   T 70.102 TT 70.102 M:  0.18901  0.18901  0.00000  0.00000
+instr 89:  iNoteNum = 55.000  iVel = 81.000
+Seeding from current time 1308008757
+Seeding from current time 1308008834
+  rtevent:	   T 72.752 TT 72.752 M:  0.23542  0.23542  0.00000  0.00000
+  rtevent:	   T102.952 TT102.952 M:  0.17254  0.17254  0.00000  0.00000
+instr 89:  iNoteNum = 60.000  iVel = 69.000
+Seeding from current time 2105700418
+Seeding from current time 2105700498
+  rtevent:	   T103.952 TT103.952 M:  0.10601  0.10598  0.00000  0.00000
+  rtevent:	   T110.603 TT110.603 M:  0.06073  0.06108  0.00000  0.00000
+instr 89:  iNoteNum = 60.000  iVel = 100.000
+Seeding from current time 2215253151
+Seeding from current time 2215253228
+  rtevent:	   T115.354 TT115.354 M:  0.26781  0.26781  0.00000  0.00000
+  rtevent:	   T120.149 TT120.149 M:  0.08701  0.08701  0.00000  0.00000
+Instr72: C:\Store\applikasjoner\barebones\presets/syncTest_hostBpm.spst
+syncTest_hostBpm.spst
+  rtevent:	   T123.354 TT123.354 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 60.000  iVel = 103.000
+Seeding from current time 2397852692
+Seeding from current time 2397852772
+  rtevent:	   T127.001 TT127.001 M:  0.18854  0.18854  0.00000  0.00000
+  rtevent:	   T134.753 TT134.753 M:  0.02514  0.02514  0.00000  0.00000
+instr 89:  iNoteNum = 60.000  iVel = 93.000
+Seeding from current time 2561091962
+Seeding from current time 2561092043
+  rtevent:	   T138.802 TT138.802 M:  0.30376  0.30376  0.00000  0.00000
+instr 89:  iNoteNum = 62.000  iVel = 83.000
+  rtevent:	   T139.201 TT139.201 M:  0.17627  0.17627  0.00000  0.00000
+  rtevent:	   T139.201 TT139.201 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 63.000  iVel = 115.000
+  rtevent:	   T139.902 TT139.902 M:  0.32370  0.32370  0.00000  0.00000
+instr 89:  iNoteNum = 64.000  iVel = 76.000
+  rtevent:	   T140.251 TT140.251 M:  0.15832  0.15832  0.00000  0.00000
+instr 89:  iNoteNum = 65.000  iVel = 95.000
+  rtevent:	   T142.653 TT142.653 M:  0.16253  0.16253  0.00000  0.00000
+  rtevent:	   T145.022 TT145.022 M:  0.11544  0.11544  0.00000  0.00000
+Set source wave:Cello.wav, segmentOrTableNum:234, voice:1, slot:1
+  rtevent:	   T146.014 TT146.014 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 60.000  iVel = 71.000
+Seeding from current time 2722171398
+Seeding from current time 2722171476
+  rtevent:	   T149.163 TT149.163 M:  0.21719  0.21719  0.00000  0.00000
+  rtevent:	   T154.501 TT154.501 M:  0.09290  0.09290  0.00000  0.00000
+Set source wave:GrSrc_JH2.wav, segmentOrTableNum:262, voice:1, slot:2
+  rtevent:	   T157.801 TT157.801 M:  0.00000  0.00000  0.00000  0.00000
+Set source wave:GrSrc_JH2.wav, segmentOrTableNum:262, voice:1, slot:3
+  rtevent:	   T160.299 TT160.299 M:  0.00000  0.00000  0.00000  0.00000
+Set source wave:Cello.wav, segmentOrTableNum:234, voice:1, slot:4
+  rtevent:	   T161.353 TT161.353 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 57.000  iVel = 88.000
+Seeding from current time 2941970445
+Seeding from current time 2941970519
+  rtevent:	   T163.802 TT163.802 M:  0.20491  0.20491  0.00000  0.00000
+  rtevent:	   T170.413 TT170.413 M:  0.00116  0.00116  0.00000  0.00000
+instr 89:  iNoteNum = 60.000  iVel = 74.000
+Seeding from current time 3071556019
+Seeding from current time 3071556103
+  rtevent:	   T174.462 TT174.462 M:  0.37532  0.37532  0.00000  0.00000
+instr 89:  iNoteNum = 59.000  iVel = 86.000
+  rtevent:	   T174.512 TT174.512 M:  0.08373  0.08373  0.00000  0.00000
+instr 89:  iNoteNum = 57.000  iVel = 103.000
+  rtevent:	   T175.313 TT175.313 M:  0.14858  0.14858  0.00000  0.00000
+instr 89:  iNoteNum = 55.000  iVel = 100.000
+  rtevent:	   T175.363 TT175.363 M:  0.14858  0.14858  0.00000  0.00000
+  rtevent:	   T175.363 TT175.363 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 53.000  iVel = 93.000
+  rtevent:	   T175.363 TT175.363 M:  0.00000  0.00000  0.00000  0.00000
+  rtevent:	   T175.363 TT175.363 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 89:
+instr 89:  iNoteNum = 52.000  iVel = 81.000
+  rtevent:	   T175.363 TT175.363 M:  0.00000  0.00000  0.00000  0.00000
+  rtevent:	   T175.363 TT175.363 M:  0.00000  0.00000  0.00000  0.00000
+new alloc for instr 89:
+instr 89:  iNoteNum = 50.000  iVel = 67.000
+  rtevent:	   T175.412 TT175.412 M:  0.09461  0.09461  0.00000  0.00000
+  rtevent:	   T175.412 TT175.412 M:  0.00000  0.00000  0.00000  0.00000
+instr 89:  iNoteNum = 49.000  iVel = 103.000
+  rtevent:	   T176.014 TT176.014 M:  0.14858  0.14858  0.00000  0.00000
+  rtevent:	   T176.710 TT176.710 M:  0.00819  0.00819  0.00000  0.00000
+instr 89:  iNoteNum = 48.000  iVel = 95.000
+Seeding from current time 3161762907
+Seeding from current time 3161762990
+  rtevent:	   T177.213 TT177.213 M:  0.20670  0.20670  0.00000  0.00000
+  rtevent:	   T182.661 TT182.661 M:  0.01142  0.01142  0.00000  0.00000
+instr 89:  iNoteNum = 60.000  iVel = 86.000
+Seeding from current time 3246962051
+Seeding from current time 3246962135
+  rtevent:	   T187.662 TT187.662 M:  0.18290  0.18290  0.00000  0.00000
+inactive allocs returned to freespace
+end of score.		   overall amps:  0.37532  0.37532  0.00000  0.00000
+0 errors in performance
+Elapsed time at end of performance: real: 215.368s, CPU: 215.356s

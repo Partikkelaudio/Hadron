@@ -1,0 +1,12 @@
+Hadron Particle Synthesizer
+version 1.3 VST/AU/MFL release notes
+
+Hadron Particle Synthesizer has been extensively tested on a variety of plugin hosts. To the best of our knowledge, it should just work with all plugin hosts on both Windows and OSX. There are still some minor issues we’ve yet not ironed out, and these are listed below. Please don’t waste your time investigating and reporting these problems. For any problems or issues not listed below, we’re happy to be notified at support@partikkelaudio.com  
+
+1. Menus behind windows in Reaper
+When using Hadron under Reaper, the source wave and states menu lists (those that appear when the menu is clicked) appear behind the Hadron GUI window. One must move the Hadron GUI windows to access the menu items (the menu list remains in place if the Hadron window is moved)
+There is a quick workaround. Plugins have a "pinned-on-top" feature that prevents them from disappearing behind the application if one clicks outside the plugin GUI. This feature is on by default, but can be turned off by unpinning the GUI. Use the pin icon in upper right corner of the GUI. When unpinned the popup menus appear as expected.
+
+2. Problem loading both AU and VST version in Bias Peak 5.2
+When first inserting the VST version, removing it and inserting the AU version, the latter won't load. Removing the AU version and the re-inserting the VST version works. It's the same the other way around.
+

@@ -1,0 +1,27 @@
+
+
+** Time based grain delays
+- buffer shuffler
+
+
+*** Analog monoparticles
+(alle er gr states)
+- grFmGrains og 2 og 3
+- grSimpleFM
+- FM freq trappefunksjon
+	- test for å finne 2-3 varianter som kan brukes til flere states
+	- felles variasjoner på trappestates
+		- dvs. expression control routing 1 med trappefunc 1, expr routing 2 med trappefunc 1, etc
+		- dvs det blir mange states, i et slags matriseforhold til hverandre
+		- enkelte states vil være morf-pitch-kompatible med hverandre, i familier
+			- gjenspeiles i states navn
+- FM_tines type FM index envelope
+
+- detuned saw type synth
+	- detune source 2 ?
+	- sakte modulasjon av samplepos2 ? (mix 50%)
+	* ctrl
+	- grain pitch (700, exp curve)
+	- grain ad_ratio 0.06
+	- lfo rate
+	- lfo amount + offset

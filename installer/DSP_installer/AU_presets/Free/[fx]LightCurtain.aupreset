@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>data</key>
+	<data>
+	AAAAAAAAAAAAAAALAAAAAAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAAwAAAAAAAAAEAAAA
+	AAAAAAUAAAAAAAAABgAAAAAAAAAHAAAAAAAAAAgAAAAAAAAACQAAAAAAAAAKAAAAAA==
+	</data>
+	<key>jucePluginState</key>
+	<data>
+	VkMyIZQBAAA8UEFSVElLS0VMU0VUVElOR1MgcGx1Z2luVmVyc2lvbj0iMyIgbmFtZT0i
+	W2Z4XURhcmtNYXR0ZXIiIGV4cHJlc3Npb24xPSIwLjMwMDAwMDAxMiIgZXhwcmVzc2lv
+	bjI9IjAuMzQ5OTk5OTk0IiBleHByZXNzaW9uMz0iMC4yNTk5OTk5OSIgZXhwcmVzc2lv
+	bjQ9IjAuNTI5OTk5OTcxIiBwcmVzZXRYPSIwIiBwcmVzZXRZPSIwLjU2OTk5OTk5MyIg
+	bWFzdGVyTGV2ZWw9IjAuOTc2MzE1Nzk2IiBzdGF0ZTE9Imd0UGFydGljbGVDbG91ZCIg
+	c3RhdGUyPSJ0ZnhQaXRjaE1vZEZNRWNobyIgc3RhdGUzPSJmeFR3aW5QZWFrcyIgc3Rh
+	dGU0PSJmeEdyYWluRmxhbmdlciIgc291bmQxPSJBdWRpbyBpbnB1dCIgc291bmQyPSJB
+	dWRpbyBpbnB1dCIgc291bmQzPSJBdWRpbyBpbnB1dCIgc291bmQ0PSJBdWRpbyBpbnB1
+	dCIvPgAA
+	</data>
+	<key>manufacturer</key>
+	<integer>1348551029</integer>
+	<key>name</key>
+	<string>[fx]LightCurtain (optional midi trigger)-1</string>
+	<key>subtype</key>
+	<integer>1635085670</integer>
+	<key>type</key>
+	<integer>1635085670</integer>
+	<key>version</key>
+	<integer>0</integer>
+</dict>
+</plist>

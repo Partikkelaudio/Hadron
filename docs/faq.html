@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	<link rel="stylesheet" type="text/css" href="hadron.css" />
+	<link rel="icon" href="images/favicon.ico" />
+
+	<title>Hadron States Documentation</title></head>
+
+
+<body>
+	<div id="headUC">
+	</div>
+
+	<div class="clear">
+	</div>
+
+	<div id="bodywrap">
+		<div id="innerbody">
+			<img src="images/pagetitles/title.png" alt="Hadron States Documentation" class="titleimage" />
+
+			<div class="clear">
+			</div>
+
+			<div id="leftmenu">
+				<a href="index.html"><h2>Main index<br /></h2></a>
+				<a href="index_states.html"><h2>State Documentation Index</h2></a>
+
+			</div>
+
+			<div id="rightcontent">
+				<h1>Frequently asked questions</h1>
+				<h2>Why is the device itself free, while the presets and states are not?</h2>
+				<p>The Hadron device/plugin is released as open source and is provided free of charge. 
+				We have a firm belief in the power of open source software, and you can even delve into the code and change anything you don’t like.</p>
+				<p>The parameter states provide a sound design library for Hadron, these are not free. 
+				They are carefully crafted to provide production-ready functionality, and you can buy states to cover your sound design 
+				needs with  Hadron.  In some ways this is comparable to a buying sample CDs for your sampler. When you buy Hadron states from us, 
+				you are licensed to use them in your own sound productions in any way you like.</p>
+				<p> A small collection of states is included for free when you download the Hadron device/plugin, 
+				to get you started and to whet your appetite for more states. When you buy more states you support our development 
+				of new preset packs and additional functionality in future versions of Hadron.</p>
+				<p>We can also design custom states for you, if our current preset packs don’t cover your needs. 
+				Such custom states could later be offered to other customers in new preset packs, or, if you like, 
+				we can keep them privately available for you so you can be sure your sound processing arsenal is unique. 
+				Pricing for custom states will depend on whether you want to keep them private or if you’ll let us sell them to others. 
+				We could also agree on a scheme where we keep the states private for a specific period of time, and after this period we 
+				include them in our collection of preset packs available to other customers.
+				If you have specific ideas for new states, don’t hesitate to contact us.
+				</p>
+				<h2>The installation procedure seemed to work fine, but Hadron is stuck at the "loading" stage. What's wrong? (Max For Live)</h2>
+				<p>When Hadron loads, the GUI is greyed out and it displays "loading". If this lasts for more than a few seconds, there is probably a problem that prevents Hadron from completing startup. If you use Ableton Live, you may need to restart Live after installation for Hadron to load properly. This is because we install some custom Max objects and sometimes Max will need to start a fresh for these to be picked up correctly by Max. Restarting Live once after installation will make sure you let Max initialize these objects. If you still have a problem, right-click (control-click on osx) the Hadron device title bar, and select "Show Max Window" from the popup menu. The Max window will most likely have an error in it. Even if this window contains text only, you can't copy and paste the text. So, do a screenshot of this window and send it to our support email support@partikkelaudio.com. It is most probably a minor configuration mismatch between Hadron and your system, with this info we'll sort it out quickly.</p>
+				<h2>The installation procedure seemed to work fine, but Hadron is stuck at the "loading" stage. What's wrong? (VST)</h2>
+				<p>When Hadron loads, the GUI is greyed out and it displays "loading". If this lasts for more than a few seconds, there is probably a problem that prevents Hadron from completing startup. You can enable debug logging by editing the file "hadron_vst.config" found in your Hadron installation directory (e.g. C:/Program Files x86)/Hadron on windows). Set Enable_logging="1" for both options in the file and set an appropriate path for the log file. Send the log file to our support email support@partikkelaudio.com if you need assistance. It is most probably a minor configuration mismatch between Hadron and your system, with this info we'll sort it out quickly.</p>
+				<h2>Where can I buy more states and presets?</h2>
+				<p> You can buy more states, presets (combination of states) and source sounds at the web site 
+				<a href="http://www.partikkelaudio.com">www.partikkelaudio.com</a></p>
+				<h2>How many new states are in each of these states packs?</h2>
+				<p>This may differ between packs; normally a states pack includes more than 10 states and also a number of device presets combining these states.</p>
+				<h2>What are these "states" and what is the difference between a "state" and a "preset"?</h2>
+				<p>A state is a configuration file for Hadron, containing parameter values for all of Hadrons 209 internal parameters and also routing and mapping setup for the four expression controllers. A preset is the setting of all available graphical user interface controls, like you are used to with any other device. So, a preset contains a selection of 4 states, 4 source waveforms, values for the 4 expression controllers and the XY pad control, and the master volume. The preset also contains the setting for midi input channel (for the effects device</p>
+				<h2>Hadron states names start with the letters "gr", "gt", "fx" and "tfx", what is this?</h2>
+				<p>There are different types of Hadron states. The "fx" category for example is meant to be used to process live audio input, like you would expect from common audio processing effects. For this to work as expected, you should select "audioInput" as the source waveform. The "tfx" states are similar to the "fx" states, with the additional functionality that they will mute audio output until a midi note is sent to Hadron. This way, midi notes can be used to trigger different kinds of effects processing. The midi note data (note number) is also used to affect parameter settings in these states, for example to control the amount of pitch shift etc. Some of the "fx" states can also take midi note data to modify internal parameters, please see the documentation (shift-click on the state name in the Hadron GUI to open documentation for each state) to see which states this applies to. For example, the "fxStopTime" state in the Time Dilation Effects will freeze (by time stretch) audio output upon midi note input and unfreeze when the note is released. The other two types of states, "gr" and "gt" are for particle based synthesizer states, where pitch constitution is mainly defined by "grain rate"  or "grain transpose". For grain rate type states, the number of grains per second defines the perceived fundamental pitch. In grain transpose type states, longer grains are used, so the audio material inside each grain is clearly audible and transposing this material changes the perceived fundamental pitch. For grain transpose state, pitch constitution is largely dependent on the pitch representation in the source wave, if the source wave is unpitched then Hadrons output will also be unpitched (e.g. for percussion type sounds). </p>
+				<h2>What happens when I morph between different states in Hadron?</h2>
+				<p>Morphing between states with the XY control in Hadron interpolates the value for the internal parameter set in Hadron (>200 parameters), and at the same time the routing coefficients and the mapping of the four expression controllers are interpolated. This allows for very flexible and dynamic morphing of the device's functionality. You can morph between states of different types freely. However, not all morph transitions will give nice and smooth morphs. Morphing between very different states may give you some quite unexpected results, as the particle synthesizer can be quite sensitive to changes in certain parameter values while other parameters allow for smoother transitions.</p>
+				<h2>What is the "midi in" setting in the GUI? (Max For Live)</h2>
+				<p>Hadron can be used both as an audio device and as a midi device. In VST plugins you can routinely send midi to an audio effect. Currently it is not possible to have audio and midi input to the same device in Ableton Live, so we had to cheat to make this possible. Hadron is then made as an audio device, allowing audio input, and we use a separate "midi sender" device to enable midi input to the same device via network (udp). To send midi to Hadron, you should load the "Hadron MIDI sender" device on a separate midi track in Live, then select the same midi "channel" on both the midi sender and the Hadron device you want to control. This is not the same as normal midi channels; it is just an internal communications channel between the MIDI sender and the Hadron audio device. We've allowed for 4 separate channels. If you set several Hadron audio devices to the same channel, you can control all of them with a single Midi sender. It is probably more useful to use separate Midi senders for each instance of the Hadron audio device. If you do not need audio input, you can use the instrument version of Hadron (found under Instruments in your Live Library), in this case you do not need to use the midi sender but load the instrument device directly on a midi track.</p>
+
+				<h2>Can I use my own sound files as source sounds?</h2>
+				<p>Source waveforms require an analysis stage to be used with Hadron. The source sounds that are shipped with Hadron were analyzed using a command line tool here at PartikkelAudio. We are working on a small application that will enable you to import and analyze 
+				your own sounds to be used with Hadron. This application will be offered on 
+				<a href="http://www.partikkelaudio.com">www.partikkelaudio.com</a> when it is ready.</p>
+				<h2>But I really want to import my own sounds for use with Hadron, is there a temporary hack to allow this?</h2>
+				<p>Yes. You can use live sampling to record your own sounds into Hadron. In this case the live sampled segments are used exactly in the same manner as the pre-analyzed sound files. When you live sample, the sound is analyzed on the fly. Beware that the live sampling contents is not saved with any Hadron presets or states. The live sampling memory is empty when Hadron starts.</p>
+				<h2>What else can I do to use my own sounds?</h2>
+				<p>In addition to live sampling, you can use "audioInput" as source waveform. In the audioInput mode Hadron is used as a realtime effect for live audio input, like you are used to with other common audio processing effects (reverbs, distortions, flangers, delays etc.).
+				<h2>How can I use live sampling with Hadron?</h2>
+				<p>You'll find four record buttons in the Hadron GUI. They are located just to the left of the four source wave menus. When you click on a record button, Hadron will record sound from its audio input and store it into a source wave called "segment N", where N represents the number of the recording you just made. When you start Hadron, the live sampling memory is blank, and the N counter will start at zero. When you click the record button, the last recorded segment is automatically selected as waveform for that source waveform slot. The record button will turn red while recording is active. You stop recording by clicking on the same button again. Recording will also stop if you enable recording on another source wave slot (mutually exclusive).</p>
+				<h2>How can I know which source sounds are actually used in a state?</h2>
+				<p>Hadron has four source waveform slots, at some times only one of them is used, at other times a mix of all source waves are used. This depends on the states loaded. Each state has a documentation page (available by shift-clicking on the state name in the Hadron GUI), and the source wave slots used are documented there. However, we don't expect any user to read documentation while performing music, so we've provided a metering/display function for this in the GUI. When you look at the source wave menus in the GUI, you'll notice that the color behind the source waveform name is black for some waves and blue for others. Some waves might also have the left half blue and the right half black. Think if this as a horizontal level meter, where the amount of blue area represents the signal level for this source wave. For some states the mix between source waves may change for each single audio particle, so these level meters may move a bit. In other cases you might notice that the source wave meters changes gradually when morphing between different states. Finally, some states let you exert manual control over the source wave mix (e.g. using Expression control 4 in the grLivesampling1 state).</p>
+			 <hr />
+			</div>
+
+			<div class="clear">
+			</div>
+		</div>
+	</div>
+	<div class="clear">
+	</div>
+	<div id="footer">
+		<div id="footercopyright">
+			Copyright © 2010
+			Partikkel Audio ® All Rights Reserved
+		</div>
+
+		<div id="footerlogo">
+			<!-- [ Partikkel Audio Logo ] -->
+		</div>
+	</div>
+	<div class="empty-block">
+	</div>
+</body></html>

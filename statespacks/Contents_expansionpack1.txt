@@ -1,0 +1,14 @@
+
+;; i pakken:
+fxCritterSpray1
+fxOctremolo
+fxParticleSpray
+fxPitchModFMEcho
+fxRisingRobos
+fxSnapper
+fxSprayDelayPitch
+fxStopTime
+fxSyncDelayPitch
+fxTransientPitcher
+***
+

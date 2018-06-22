@@ -1,0 +1,8 @@
+
+WaveMix
+X: setTransFuncTable 1 7 0 2730 1 2730 1 2732 0
+Y: setTransFuncTable 2 7 0 2730 0 2730 1 2732 1
+
+LFO and Randh amp
+LFO  : setTransFuncTable 3 7 0 1365 0.0 1365 0.3 1365 0.3 1365 1 1365 1 1367 0
+Randh: setTransFuncTable 4 7 0 1365 0.1 1365 0.1 1365 1.0 1365 1 1365 0 1367 0

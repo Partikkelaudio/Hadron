@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<link rel="stylesheet" type="text/css" href="hadron.css" />
+	<link rel="icon" href="images/favicon.ico" />
+
+	<title>Hadron States Documentation</title>
+</head>
+
+<body>
+	<div id="headUC">
+	</div>
+
+	<div class="clear">
+	</div>
+
+	<div id="bodywrap">
+		<div id="innerbody">
+			<img src="images/pagetitles/maintitle.png" alt="Hadron States Documentation" class="titleimage">
+
+			<div class="clear">
+			</div>
+
+			<div id="leftmenu">
+				<a href="index_states.html"><h2>State Documentation Index</h2></a>
+
+			</div>
+
+			<div id="rightcontent">
+				<h1>Hadron state description sheet</h1>
+
+				<p><h2>State title</h2>
+				grDualFmStepSyncFlip</p>
+
+				<p><h2>Type of sound</h2>
+				Combined grain rate FM and grain pitch FM. Using a step function for modulation frequency, so the frequency to modulator ratio will be in different integer relationships.
+				A square wave LFO flips back and forth between grain rate and grain pitch FM, by means of manipulating the FM index for the two different modulation techniques.
+				<br>High modulation index will create unstable pitch slides for the grain rate FM sections (alternating).
+				</p>
+				
+				<p><h2>Controllers</h2>
+				Expression1: Grain Pitch, Stereo Octaviation.<br>
+				Expression2: Grain Pitch and Rate FM Frequency Step Function (0.5,1,2,3,4,5,6,7,8).
+				<br>&nbsp;&nbsp; &nbsp;Steps coincide with fractional values of the expression control, 
+				<br>&nbsp;&nbsp; &nbsp;so e.g. an expression value of 0.4 equals an FM ration of 1/4, 
+				<br>&nbsp;&nbsp; &nbsp;while expression value 0.5 equals FM ratio 1/5<br>
+				Expression3: Grain duration and LFO/Step tempo. 
+				<br>&nbsp;&nbsp; &nbsp;Combined mapping where grain duration changes linearly over the fader range, 
+				<br>&nbsp;&nbsp; &nbsp;while the LFO frequency steps back and forth between 1 and 2.<br>
+				Expression4: FM Index (Grain Rate and Pitch)<br></p>
+
+				<p><h2>Midi keyboard control</h2>
+				Note Number: Pitch<br>
+				Velocity: Amp</p>
+
+				<p><h2>Suggested source waveform</h2>
+				Slot1: Sine, other waveforms may be used for a more aggressive timbre<br>
+				Slot2: Sine, other waveforms may be used for a more aggressive timbre<br>
+				Slot3: Sine, other waveforms may be used for a more aggressive timbre<br>
+				Slot4: Sine, other waveforms may be used for a more aggressive timbre<br></p>
+
+				<p>Waveform sources/slots used: 1,2,3,4</p>
+
+				<p><h2>Pitch definition mode</h2>
+				Grain Rate<br>
+				Octave: 0<br>
+				e.g.<br>
+				440Hz at note num 69 = octave 0<br>
+				220Hz at note num 69 = octave -1</p>
+			</div>
+
+			<div class="clear">
+			</div>
+		</div>
+	</div>
+	<div class="clear">
+	</div>
+	<div id="footer">
+		<div id="footercopyright">
+			Copyright &copy; 2010
+			Partikkel Audio &reg; All Rights Reserved
+		</div>
+
+		<div id="footerlogo">
+			<!-- [ Partikkel Audio Logo ] -->
+		</div>
+	</div>
+	<div class="empty-block">
+	</div>
+</body>
+</html>

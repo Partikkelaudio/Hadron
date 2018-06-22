@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+	<link rel="stylesheet" type="text/css" href="hadron.css" />
+	<link rel="icon" href="images/favicon.ico" />
+
+	<title>Hadron States Documentation</title></head>
+<body>
+	<div id="headUC">
+	</div>
+
+	<div class="clear">
+	</div>
+
+	<div id="bodywrap">
+		<div id="innerbody">
+			<img src="images/pagetitles/maintitle.png" alt="Hadron States Documentation" class="titleimage" />
+
+			<div class="clear">
+			</div>
+
+			<div id="leftmenu">
+				<a href="index_states.html"><h2>State Documentation Index</h2></a>
+			</div>
+
+			<div id="rightcontent">
+				<h1>Hadron state description sheet</h1>
+
+				<p></p><h2>State title</h2>
+				gtLivesampling1
+
+				<p></p><h2>Type of sound</h2>
+				Sample manipulation, designed to be used with live sampling but may be
+				just as useful for maipulating stored samples too. Manual control of
+				time pointer (for manual time stretch or "time stops"), pitch transposition via midi key. 
+				<p></p>
+				<h2>Controllers</h2>
+				Expression1:<br />&nbsp;&nbsp; Manual time pointer<br />
+				Expression2: <br />&nbsp; &nbsp;Time pointer LFO and random deviation<br />
+					&nbsp; &nbsp; &nbsp; 0% to 16%: Increase Random deviation a little<br />
+					&nbsp; &nbsp; &nbsp; 16% to 33%: Increase LFO amount a little<br />
+					&nbsp; &nbsp; &nbsp; 33% to 49%: Increase Random deviation to max<br />
+					&nbsp; &nbsp; &nbsp; 49% to 66%: Increase LFO amount to max<br />
+					&nbsp; &nbsp; &nbsp; 66% to 82%: Decrease Random deviation to none<br />
+					&nbsp; &nbsp; &nbsp; 82% to 100%: Decrease LFO amount to none<br />
+				Expression3:<br />&nbsp; &nbsp; Grain Rate<br />
+				Expression4:<br />&nbsp; &nbsp; Wave Mix, crossfade sequentially through source 1,2,3 and 4
+
+				<p></p><h2>Midi keyboard control</h2>
+				Note Number: Transposition<br />
+				Velocity: Amp, Envelope control (softer envelope on softer velocity)<br />
+				Interval: Grain Duration modification
+				<p></p>
+				<h2>Suggested source waveform</h2>
+				Slot1: Any sampled waveform<br />
+				Slot2: Any sampled waveform<br />
+				Slot3: Any sampled waveform<br />
+				Slot4: Any sampled waveform
+
+				<p>Waveform sources/slots used: 1,2,3,4</p>
+
+				<p></p><h2>Pitch definition mode</h2>
+				Grain Transpose<br />Octave: 0<br />
+				Live sampled sources will play back untransposed at middle C.
+				<br />Source waveforms (soundfiles) transposed so that note num 69 (middle A) should give a perceived fundamental of 440Hz<br />The
+				original key stored with each source wave file may be octave displaced,
+				in which case the same octaviation occurs on playback with this state.<br /><br />
+				
+			</div>
+
+			<div class="clear">
+			</div>
+		</div>
+	</div>
+	<div class="clear">
+	</div>
+	<div id="footer">
+		<div id="footercopyright">
+			Copyright © 2010
+			Partikkel Audio ® All Rights Reserved
+		</div>
+
+		<div id="footerlogo">
+			<!-- [ Partikkel Audio Logo ] -->
+		</div>
+	</div>
+	<div class="empty-block">
+	</div>
+</body></html>

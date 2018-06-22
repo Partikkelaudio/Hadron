@@ -1,0 +1,33 @@
+You Max directory could not be found in the standard location.
+Hadron will still need to be installed in it's standard location C:/Program Files/Hadron.
+(Program Files may be in your native language, or it might be appended by (x86) if you're on windows 7)
+
+Due to this you will need to do a few configuration steps manually:
+
+1.
+Look in the Hadron install dir (C:/Program Files/Hadron.) and find the file "HadronConfig.txt",
+edit the pathWIN= line so it says
+ pathWIN=C:/Program Files/Hadron/
+
+Don't delete the other lines, the config file still needs them.
+It may look like this now:
+
+pathWIN=C:/Program Files/Hadron/
+pathOSX=
+debug=0
+debugToConsole=0
+
+Save the file
+
+If your Program Files directory has another name, e.g. "Program Files (x86)", you should use that name in the config file above.
+
+2.
+Copy this file to the Hadron directory in your Live Library (Live8Library\Presets\Audio Effects\Max Audio Effect\PartikkelAudio\Hadron)
+
+If you have trouble finding the path to this directory, you can open Live and locate the Hadron for Live device (in Live Devices/Audio Effects/Max Audio Effect/PartikkelAudio/Hadron), right click on the device name in the device browser in Live and select "Show in Explorer".
+
+3:
+Also copy the same file to the Hadron(instrument) folder, similar to what just you did under 2) above, but now you copy to Live8Library\Presets\Instruments\Max Instrument\PartikkelAudio\Hadron
+
+Thanks for your patience, and we hope you bear with us for the slightly nonstandard installation procedure in your case.
+ Let us know how it works out.

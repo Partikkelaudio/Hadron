@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>data</key>
+	<data>
+	AAAAAAAAAAAAAAALAAAAAAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAAwAAAAAAAAAEAAAA
+	AAAAAAUAAAAAAAAABgAAAAAAAAAHAAAAAAAAAAgAAAAAAAAACQAAAAAAAAAKAAAAAA==
+	</data>
+	<key>jucePluginState</key>
+	<data>
+	VkMyIa0BAAA8UEFSVElLS0VMU0VUVElOR1MgcGx1Z2luVmVyc2lvbj0iMyIgbmFtZT0i
+	W2Z4XURhcmtNYXR0ZXIiIGV4cHJlc3Npb24xPSIwLjIwMDAwMDAwMyIgZXhwcmVzc2lv
+	bjI9IjAuMzQwMDAwMDA0IiBleHByZXNzaW9uMz0iMC41Njk5OTk5OTMiIGV4cHJlc3Np
+	b240PSIwLjE1OTk5OTk5NiIgcHJlc2V0WD0iMC4yODk5OTk5OTIiIHByZXNldFk9IjAu
+	MzQwMDAwMDA0IiBtYXN0ZXJMZXZlbD0iMC45NDg2ODQyMTYiIHN0YXRlMT0iZ3JCYW5k
+	cGFzc0FuaW1hdG9yMSIgc3RhdGUyPSJnckZpbHRlclN5bnRoIiBzdGF0ZTM9ImdyVHJh
+	aW5sZXRGTTFSYW5kbWFzayIgc3RhdGU0PSJnclJlZWR5Rm9ybWFudFN0ZXBTeW5jIiBz
+	b3VuZDE9IkNlbGxvIiBzb3VuZDI9IlZpYkxpbmVEaXN0VG9uZTIiIHNvdW5kMz0iYWhu
+	b2lzZSIgc291bmQ0PSJQYWRXc1NlcTFfQzQiLz4AAA==
+	</data>
+	<key>manufacturer</key>
+	<integer>1348551029</integer>
+	<key>name</key>
+	<string>[synth]QuantumAnalog-1</string>
+	<key>subtype</key>
+	<integer>1635085670</integer>
+	<key>type</key>
+	<integer>1635085670</integer>
+	<key>version</key>
+	<integer>0</integer>
+</dict>
+</plist>

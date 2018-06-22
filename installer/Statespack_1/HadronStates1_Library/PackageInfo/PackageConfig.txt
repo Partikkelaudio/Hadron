@@ -1,0 +1,13 @@
+Ableton#03M
+
+PackageConfigurationInfo
+{
+  String PackageName = "Hadron Efx1 States Pack";
+  String MinimalSoftwareVersion = "8.0";
+  String Product = "States pack 1 for Hadron Particle Synthesizer";
+  String Vendor = "PartikkelAudio";
+  Int Version = 1;
+  Int MajorVersion = 1;
+
+}
+

@@ -1,0 +1,2 @@
+* HadronLiveLibrary is the live library used to build the Live Library pack
+* The library pack is the file HadronLiveLibraryPack.alp

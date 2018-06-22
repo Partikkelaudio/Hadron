@@ -1,0 +1,317 @@
+<pkmkdoc spec="1.12"><properties><title>Hadron DSP</title><build>/Users/berntisak/Code/Hadron/Hadron_DSP_Installer_OSX_ver_1.3.mpkg</build><organization>partikkel.audio</organization><userSees ui="custom"/><min-target os="2"/><domain system="true"/></properties><distribution><versions min-spec="1.000000"/><scripts></scripts></distribution><description>This will install the core Hadron DSP, Max for Live device, documentation, states, samples and necessary frameworks.</description><contents><choice title="Hadron core DSP" id="choice20" description="Installs Hadron core DSP code and states and samples into /Applications/Hadron" starts_selected="true" starts_enabled="false" starts_hidden="false"><pkgref id="partikkel.audio.hadronDsp.Hadron.pkg"/></choice><choice title="Max for Live" id="mflinstall" tooltip="Installs Hadron Max for Live device into your Live library" description="Installs Hadron Max for Live device into your Live library" starts_selected="false" starts_enabled="true" starts_hidden="false"><pkgref id="partikkel.audio.hadronDsp.HadronLiveLibraryPack.pkg"/></choice><choice title="VST" id="vstinstall" tooltip="Installs Hadron VST to default location" description="Installs Hadron VST to default location (/Library/Audio/Plug-Ins/VST)" starts_selected="true" starts_enabled="true" starts_hidden="false"><pkgref id="partikkel.audio.hadronDsp.Hadron-1.pkg"/></choice><choice title="AU" id="auinstall" tooltip="Installs Hadron AU to default location" description="Installs Hadron AU to default location (/Library/Audio/Plug-Ins/Components)" starts_selected="true" starts_enabled="true" starts_hidden="false"><pkgref id="partikkel.audio.hadronDsp.Hadron-2.pkg"/></choice><choice title="VST-presets" id="vstpresets" starts_selected="true" starts_enabled="true" starts_hidden="false"><pkgref id="partikkel.audio.hadronDsp.free.pkg"/></choice><choice title="AU-presets" id="aupresets" starts_selected="true" starts_enabled="true" starts_hidden="false"><pkgref id="partikkel.audio.hadronDsp.Free.pkg"/></choice><choice title="Hadron_1.3_release_notes" id="choice49" starts_selected="true" starts_enabled="false" starts_hidden="true"><pkgref id="partikkel.audio.hadronDsp.Hadron_1.3_release_notes.pkg"/></choice></contents><resources bg-scale="none" bg-align="bottomleft"><locale lang="en"><resource relative="true" mod="true" type="background">hadron-pack-downloads.png</resource><resource mime-type="text/rtf" kind="embedded" type="license"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fnil\fcharset0 LucidaGrande;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\f0\fs26 \cf0 License:\
+The Hadron Particle Synthesizer is covered by a LGPL Licence.\
+The LGPL license can be found in the file lgpl-3.0.txt and below.\
+\
+The Hadron parameters states as can be found in the "/states" directories are covered by a proprietary license, you can obtain a license for personal use by buying the states via partikkelaudio.com\
+\
+ =============  LGPL Licence  =============\
+\
+                   GNU LESSER GENERAL PUBLIC LICENSE\
+                       Version 3, 29 June 2007\
+\
+ Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>\
+ Everyone is permitted to copy and distribute verbatim copies\
+ of this license document, but changing it is not allowed.\
+\
+\
+  This version of the GNU Lesser General Public License incorporates\
+the terms and conditions of version 3 of the GNU General Public\
+License, supplemented by the additional permissions listed below.\
+\
+  0. Additional Definitions.\
+\
+  As used herein, "this License" refers to version 3 of the GNU Lesser\
+General Public License, and the "GNU GPL" refers to version 3 of the GNU\
+General Public License.\
+\
+  "The Library" refers to a covered work governed by this License,\
+other than an Application or a Combined Work as defined below.\
+\
+  An "Application" is any work that makes use of an interface provided\
+by the Library, but which is not otherwise based on the Library.\
+Defining a subclass of a class defined by the Library is deemed a mode\
+of using an interface provided by the Library.\
+\
+  A "Combined Work" is a work produced by combining or linking an\
+Application with the Library.  The particular version of the Library\
+with which the Combined Work was made is also called the "Linked\
+Version".\
+\
+  The "Minimal Corresponding Source" for a Combined Work means the\
+Corresponding Source for the Combined Work, excluding any source code\
+for portions of the Combined Work that, considered in isolation, are\
+based on the Application, and not on the Linked Version.\
+\
+  The "Corresponding Application Code" for a Combined Work means the\
+object code and/or source code for the Application, including any data\
+and utility programs needed for reproducing the Combined Work from the\
+Application, but excluding the System Libraries of the Combined Work.\
+\
+  1. Exception to Section 3 of the GNU GPL.\
+\
+  You may convey a covered work under sections 3 and 4 of this License\
+without being bound by section 3 of the GNU GPL.\
+\
+  2. Conveying Modified Versions.\
+\
+  If you modify a copy of the Library, and, in your modifications, a\
+facility refers to a function or data to be supplied by an Application\
+that uses the facility (other than as an argument passed when the\
+facility is invoked), then you may convey a copy of the modified\
+version:\
+\
+   a) under this License, provided that you make a good faith effort to\
+   ensure that, in the event an Application does not supply the\
+   function or data, the facility still operates, and performs\
+   whatever part of its purpose remains meaningful, or\
+\
+   b) under the GNU GPL, with none of the additional permissions of\
+   this License applicable to that copy.\
+\
+  3. Object Code Incorporating Material from Library Header Files.\
+\
+  The object code form of an Application may incorporate material from\
+a header file that is part of the Library.  You may convey such object\
+code under terms of your choice, provided that, if the incorporated\
+material is not limited to numerical parameters, data structure\
+layouts and accessors, or small macros, inline functions and templates\
+(ten or fewer lines in length), you do both of the following:\
+\
+   a) Give prominent notice with each copy of the object code that the\
+   Library is used in it and that the Library and its use are\
+   covered by this License.\
+\
+   b) Accompany the object code with a copy of the GNU GPL and this license\
+   document.\
+\
+  4. Combined Works.\
+\
+  You may convey a Combined Work under terms of your choice that,\
+taken together, effectively do not restrict modification of the\
+portions of the Library contained in the Combined Work and reverse\
+engineering for debugging such modifications, if you also do each of\
+the following:\
+\
+   a) Give prominent notice with each copy of the Combined Work that\
+   the Library is used in it and that the Library and its use are\
+   covered by this License.\
+\
+   b) Accompany the Combined Work with a copy of the GNU GPL and this license\
+   document.\
+\
+   c) For a Combined Work that displays copyright notices during\
+   execution, include the copyright notice for the Library among\
+   these notices, as well as a reference directing the user to the\
+   copies of the GNU GPL and this license document.\
+\
+   d) Do one of the following:\
+\
+       0) Convey the Minimal Corresponding Source under the terms of this\
+       License, and the Corresponding Application Code in a form\
+       suitable for, and under terms that permit, the user to\
+       recombine or relink the Application with a modified version of\
+       the Linked Version to produce a modified Combined Work, in the\
+       manner specified by section 6 of the GNU GPL for conveying\
+       Corresponding Source.\
+\
+       1) Use a suitable shared library mechanism for linking with the\
+       Library.  A suitable mechanism is one that (a) uses at run time\
+       a copy of the Library already present on the user's computer\
+       system, and (b) will operate properly with a modified version\
+       of the Library that is interface-compatible with the Linked\
+       Version.\
+\
+   e) Provide Installation Information, but only if you would otherwise\
+   be required to provide such information under section 6 of the\
+   GNU GPL, and only to the extent that such information is\
+   necessary to install and execute a modified version of the\
+   Combined Work produced by recombining or relinking the\
+   Application with a modified version of the Linked Version. (If\
+   you use option 4d0, the Installation Information must accompany\
+   the Minimal Corresponding Source and Corresponding Application\
+   Code. If you use option 4d1, you must provide the Installation\
+   Information in the manner specified by section 6 of the GNU GPL\
+   for conveying Corresponding Source.)\
+\
+  5. Combined Libraries.\
+\
+  You may place library facilities that are a work based on the\
+Library side by side in a single library together with other library\
+facilities that are not Applications and are not covered by this\
+License, and convey such a combined library under terms of your\
+choice, if you do both of the following:\
+\
+   a) Accompany the combined library with a copy of the same work based\
+   on the Library, uncombined with any other library facilities,\
+   conveyed under the terms of this License.\
+\
+   b) Give prominent notice with the combined library that part of it\
+   is a work based on the Library, and explaining where to find the\
+   accompanying uncombined form of the same work.\
+\
+  6. Revised Versions of the GNU Lesser General Public License.\
+\
+  The Free Software Foundation may publish revised and/or new versions\
+of the GNU Lesser General Public License from time to time. Such new\
+versions will be similar in spirit to the present version, but may\
+differ in detail to address new problems or concerns.\
+\
+  Each version is given a distinguishing version number. If the\
+Library as you received it specifies that a certain numbered version\
+of the GNU Lesser General Public License "or any later version"\
+applies to it, you have the option of following the terms and\
+conditions either of that published version or of any later version\
+published by the Free Software Foundation. If the Library as you\
+received it does not specify a version number of the GNU Lesser\
+General Public License, you may choose any version of the GNU Lesser\
+General Public License ever published by the Free Software Foundation.\
+\
+  If the Library as you received it specifies that a proxy can decide\
+whether future versions of the GNU Lesser General Public License shall\
+apply, that proxy's public statement of acceptance of any version is\
+permanent authorization for you to choose that version for the\
+Library.\
+}]]></resource><resource mime-type="text/rtf" kind="embedded" type="readme"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fnil\fcharset0 LucidaGrande;\f1\fnil\fcharset0 Cambria;}
+{\colortbl;\red255\green255\blue255;\red79\green129\blue189;\red0\green0\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+
+\f0\b\fs28 \cf0 \
+This is a beta version of Hadron Particle Synthesizer! \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+
+\b0\fs26 \cf0 \
+It's updated with the latest csound version and built for Universal Architecture (supports both 32bit and 64bit)\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+\cf0 -------------------------------------------\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
+Read FAQ, see instructional videos, give us feedback and buy more states at http://www.partikkelaudio.com\
+\
+Thank you for choosing Hadron Particle Synthesizer!\
+\
+\
+Release notes for version 1.3:\
+
+\f1 \cf2 \
+\pard\pardeftab720\ri340\sa200
+
+\fs24 \cf0 Hadron Particle Synthesizer has been extensively tested on a variety of plugin hosts. To the best of our knowledge, it should just work with all plugin hosts on both Windows and OSX. There are still some minor issues we\'92ve yet not ironed out, and these are listed below. Please don\'92t waste your time investigating and reporting these problems. For any problems or issues not listed below, we\'92re happy to be notified at {\field{\*\fldinst{HYPERLINK "mailto:support@partikkelaudio.com"}}{\fldrslt \cf3 \ul \ulc3 support@partikkelaudio.com}}  \
+\pard\pardeftab720\ri340\sa200
+
+\b\fs26 \cf2 \
+\pard\pardeftab720\ri340\sa200
+
+\fs24 \cf0 1. Menus behind windows in Reaper\
+\pard\pardeftab720\ri340\sa200
+
+\b0 \cf0 When using Hadron under Reaper, the source wave and states menu lists (those that appear when the menu is clicked) appear behind the Hadron GUI window. One must move the Hadron GUI windows to access the menu items (the menu list remains in place if the Hadron window is moved)\
+There is a quick workaround. Plugins have a "pinned-on-top" feature that prevents them from disappearing behind the application if one clicks outside the plugin GUI. This feature is on by default, but can be turned off by unpinning the GUI. Use the pin icon in upper right corner of the GUI. When unpinned the popup menus appear as expected.\
+\
+\pard\pardeftab720\ri340\sa200
+
+\b \cf0 2. Problem loading both AU and VST version in Bias Peak 5.2\
+\pard\pardeftab720\ri340\sa200
+
+\b0 \cf0 When first inserting the VST version, removing it and inserting the AU version, the latter won't load. Removing the AU version and the re-inserting the VST version works. It's the same the other way around.\
+\pard\pardeftab720\ri340\sa200
+
+\b \cf0 \
+3. Cubase 6 64bit version will not open saved songs containing Hadron\
+\pard\pardeftab720\ri340\sa200
+
+\b0 \cf0 There is a known issue with running 32-bit plugins in Cubase 64-bit. The internal VSTbridge from Steinberg is not working properly. There is a workaround, though. Use jBridge (http://jstuff.wordpress.com/jbridge/) instead. It is not free, but fairly cheap, and there is a demo download. We have tested it and it handles the saved songs fine.\
+One small issue: When editing the numbers of expressions controllers and xy-pad, the entire GUI disappears while editing so that only the number is visible. Editing still works, though. It is possible to get around this problem as well, by selecting "Switch to separate GUI mode" in the jBridge settings on the Hadron plugin\
+\pard\pardeftab720\ri340\sa200
+
+\b \cf0 4. Hadron VST interface not responding properly in MULAB on OS X\
+\pard\pardeftab720\ri340\sa200
+
+\b0 \cf0 User interface widgets can be controlled via midi and VST preset files can be loaded (*.fxp located in /Library/Audio/Plug-Ins/VST/Hadron). This can be used as a temporary workaround to control Hadron on this platform and host (no known problems in MULAB on Windows).\
+\pard\pardeftab720\ri340\sa200
+
+\b \cf0 5. Hadron not compatible with 64bit version of Logic\
+\pard\pardeftab720\ri340\sa200
+
+\b0 \cf0 You can either run Logic in 32bit or open Hadron through the 32bit AU bridge.\
+\pard\pardeftab720\ri340\sa200
+
+\b \cf0 6. Hadron VST interface not responding properly in MULAB on OS X\
+\pard\pardeftab720\ri340\sa200
+
+\b0 \cf0 User interface widgets can be controlled via midi and VST preset files can be loaded (*.fxp located in /Library/Audio/Plug-Ins/VST/Hadron). This can be used as a temporary workaround to control Hadron on this platform and host (no known problems in MULAB on Windows).\
+\pard\pardeftab720\ri340\sa200
+
+\b \cf0 7. VST and AU plugins cannot be loaded in the same sessions\
+\pard\pardeftab720\ri340\sa200
+
+\b0 \cf0 If you first load the Hadron VST and then the Hadron AU will not load and vice versa.\
+\pard\pardeftab720\ri340\sa200
+
+\b \cf0 8. Ableton Live may need to be restarted after installtion\
+\pard\pardeftab720\ri340\sa200
+
+\b0 \cf0 If you have trouble getting Hadron to work in Ableton Live after installation, you probably need to restart the program.\
+}]]></resource><resource mime-type="text/rtf" kind="embedded" type="welcome"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fnil\fcharset0 LucidaGrande;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+
+\f0\b\fs28 \cf0 \
+This is a beta version of Hadron Particle Synthesizer! \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\b0\fs26 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+\cf0 It's updated with the latest csound version and built for Universal Architecture (supports both 32bit and 64bit)\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+\cf0 -------------------------------------------\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
+This will install the core Hadron DSP, the selected plugins (Max for Live, VST and AU supported), documentation, states, samples and necessary frameworks. \
+\
+All files except the plugin files will be copied to /Applications/Hadron\
+\
+Max for Live device will be installed into your Live Library\
+\
+VST will be copied to default location (/Library/Audio/Plug-Ins/VST)\
+\
+AU will be copied to default location (/Library/Audio/Plug-Ins/Components)}]]></resource><resource mime-type="text/rtf" kind="embedded" type="conclusion"><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fnil\fcharset0 LucidaGrande;}
+{\colortbl;\red255\green255\blue255;}
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+
+\f0\b\fs28 \cf0 \
+This is a beta version of Hadron Particle Synthesizer! \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+
+\b0\fs26 \cf0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc
+\cf0 It's updated with the latest csound version and built for Universal Architecture (supports both 32bit and 64bit)\
+\
+-------------------------------------------\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
+\
+Congratulations on installing the Hadron Synthersizer! \
+\
+If you selected Max for Live, Ableton Live will now start up and install the Live Pack containing the Hadron Max for Live devices. \
+\
+Have fun!\
+\
+Buy more states, download free demo songs and more at \
+	\
+	http://www.partikkelaudio.com\
+\
+Ableton Live users: After the installation has finished, you must restart Live to complete the installation process}]]></resource></locale></resources><requirements><requirement id="sosv" operator="ge" value="'10.5.0'"><message-title>Unsupported OS version</message-title><message>Your OS X system must be at least at version 10.5</message></requirement></requirements><flags/><postinstall><action id="com.apple.packagemaker.actions.openfile"><value>/Applications/Hadron/HadronLiveLibraryPack.alp</value><type>absolute-path</type></action></postinstall><item type="file">01hadron.xml</item><item type="file">02hadronlivelibrarypack.xml</item><item type="file">03hadron.xml</item><item type="file">04hadron.xml</item><item type="file">05free.xml</item><item type="file">06free.xml</item><item type="file">07hadron.xml</item><mod>description</mod><mod>properties.title</mod><mod>properties.userDomain</mod><mod>properties.customizeOption</mod><mod>postinstallActions.actions</mod><mod>properties.systemDomain</mod><mod>properties.anywhereDomain</mod></pkmkdoc>

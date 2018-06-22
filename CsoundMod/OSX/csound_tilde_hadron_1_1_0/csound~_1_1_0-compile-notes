@@ -1,0 +1,10 @@
+- Bug (ambiguous use of "assertion" as namespace and template) in 1.46.0 of boost - use 1.46.1 
+- Had to add to "architecture=x86", "toolset=darwin" and "address-model=32" to bjam parameters when building on Snow Leopard:
+	-> ./bjam serialization toolset=darwin architecture=x86 address-model=32 address-model=32 variant=debug,release link=static threading=multi
+- Darwin folder might be different. "darwin-4.2.1" on my system
+	-> cp  bin.v2/libs/serialization/build/darwin-4.2.1/release/address-model-32/architecture-x86/link-static/threading-multi/libboost_serialization.a ./_libs/
+
+Hadron-specific: 
+	- Had to make sure Info.plist "executable" parameter was "csound~_hadron"
+	- Had to search the project for reference to "csound~" and change two strings to "csound~_hadron"
+	

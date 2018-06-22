@@ -1,0 +1,6 @@
+(func 1 er FM freq ratio step table 1 over 1,2,3,4,5,6,7,8,9)
+
+* func2 er controller mapping for Expression3
+- 0-75% : octaviation gainmask
+- 75-100% stereo sub octaviation channelmask
+setTransFuncTable 2 7 0 4096 0 2048 0.0 1024 0.2 1024 1

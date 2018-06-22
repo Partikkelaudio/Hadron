@@ -1,0 +1,3 @@
+mod matrix edit example:
+"LFO4	to	Partikkel1Samplepos4" 1
+Modulatorname (tab) to (tab) Parametername value

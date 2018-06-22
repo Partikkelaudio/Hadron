@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<link rel="stylesheet" type="text/css" href="hadron.css" />
+	<link rel="icon" href="images/favicon.ico" />
+
+	<title>Hadron States Documentation</title>
+</head>
+
+<body>
+	<div id="headUC">
+	</div>
+
+	<div class="clear">
+	</div>
+
+	<div id="bodywrap">
+		<div id="innerbody">
+			<img src="images/pagetitles/maintitle.png" alt="Hadron States Documentation" class="titleimage">
+
+			<div class="clear">
+			</div>
+
+			<div id="leftmenu">
+				<a href="index_states.html"><h2>State Documentation Index</h2></a>
+
+			</div>
+
+			<div id="rightcontent">
+				<h1>Hadron state description sheet</h1>
+
+				<p><h2>State title</h2>
+				fxStoptime</p>
+
+				<p><h2>Type of sound</h2>
+				Midi triggered “stop time” or “hold” effect. Audio will pass thru Hadron even when no midi notes are sent to it.
+				When Hadron receives a midi note, it will hold the current audio signal until the midi note is released.
+				Maximum hold time is approximately 12 seconds.</p>
+
+				<p><h2>Controllers</h2>
+				Expression1: Time Stop Amount. Full stop when control is at zero, slow down time when the control is increased<br>
+				Expression2: Time LFO Amount, a slowly modulating time pointer activated during time stops<br>
+				Expression3: Time jitter, a random modulation of the time pointer during time stops<br>
+				Expression4: Grain Duration, adjust to fit the type of audio input material. Longer durations will generally give a smoother time stop</p>
+
+				<p><h2>Midi keyboard control</h2>
+				Any midi note input triggers the “stop time” processing.</p>
+
+				<p><h2>Suggested source waveform</h2>
+				Slot1: audioInput<br>
+				Slot2: Not used<br>
+				Slot3: Not used<br>
+				Slot4: Not used</p>
+
+				<p>Waveform sources/slots used: 1</p>
+
+				<p><h2>Pitch definition mode</h2>
+				Not applicable</p>
+			</div>
+
+			<div class="clear">
+			</div>
+		</div>
+	</div>
+	<div class="clear">
+	</div>
+	<div id="footer">
+		<div id="footercopyright">
+			Copyright &copy; 2010
+			Partikkel Audio &reg; All Rights Reserved
+		</div>
+
+		<div id="footerlogo">
+			<!-- [ Partikkel Audio Logo ] -->
+		</div>
+	</div>
+	<div class="empty-block">
+	</div>
+</body>
+</html>

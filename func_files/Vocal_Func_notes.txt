@@ -1,0 +1,15 @@
+Keyboard split points: 51,58,65,72
+Source wave 1 aktiv fra note nr 0 til 51
+- crossfade til source 2 fra note 51 til 58
+- osv
+
+Table size = 8192, dvs ett notenummer dekker 64 tabellindiser.
+Split points indices:
+3264, 3712, 4160, 4608 ... .segment length 448 indiser
+- har også notert 3584, mulig at ett av splitpunktene er kun 5 notenummer langt ?
+
+	3264	3712	4160	4608	8193
+1: 0 	3264  0	448  1 	448  1 	448  0	3585 0
+
+		3712	4160	4608	
+2: 0		3712  0	448  1	448  1	3583 1

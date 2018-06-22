@@ -1,0 +1,40 @@
+16/17.03.2011
+
+- Compiling double version - original framework, but re-added to project: 
+csound~: unable to load object bundle executable2011-03-16 23:53:25.307 MaxMSP[1426:207] Cannot find executable for CFBundle 0x196a6b50 </Applications/Max5/Cycling '74/msp-externals/_my_externals/csound~.mxo> (not loaded)
+
+- Compiling float version - original framework:
+csound~: unable to load object bundle executable 2011-03-17 00:06:47.471 MaxMSP[2469:207] Cannot find executable for CFBundle 0x17548130 </Applications/Max5/Cycling '74/msp-externals/_my_externals/csound~.mxo> (not loaded)- Trying to repair disk permissions: nothing about the Csound framework files or folders
+
+- Compiling original csound~ project:
+	-> Base SDK Missing: chose 10.5
+Internal error occurred while creating dependency graph: ASSERTION FAILURE in /SourceCache/DevToolsBase/DevToolsBase-1763/pbxcore/Target.subproj/PBXTargetBuildContext.m:2073
+Details:  Assertion failed: [filePath isAbsolutePath]
+
+- Compiling double version again - added original framework once more by right clicking on target ("csound~_hadron double")
+csound~: unable to load object bundle executable 2011-03-17 00:27:30.369 MaxMSP[2709:207] Cannot find executable for CFBundle 0x193caed0 </Applications/Max5/Cycling '74/msp-externals/_my_externals/csound~.mxo> (not loaded)
+ 
+- Moved csound~_orig to Desktop temporarily:
+Same error.
+
+Sluttanker: 
+ - Vurdere å innstallere Xcode på nytt uten iOS-support?
+ - Søk opp "...dependency graph" igjen
+ - Søk opp "Cannot find executable..." igjen
+ 
+ 
+ 17.03.2011 - later
+ 
+ - Opened Contents->Info.plist inside csound~.mxo (Double release build with linking to original framework) and changed executable from csound~_hadron to csound~. Must have forgotten to set back somewhere in Xcode
+ 
+ - Compiling double release version again with Hadron Csound framework: Worked!
+ 
+ - Compiling double release Hadron version again renamed to csound~_hadron: Not working (csound~_hadron showing as an jbogus object)
+ 
+ - Searching Xcode project for reference to "csound~": Found two string variables and changed them from csound~ to csound~_hadron. 
+ 
+ - Compiling double release Hadron version again: Worked!
+ 
+ csound~_hadron 1.1.0 build complete!
+ 
+ 

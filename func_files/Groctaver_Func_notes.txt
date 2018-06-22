@@ -1,0 +1,4 @@
+Ctrl2 Grain Rate (CpsAnalysis multiplier)
+setTransFuncTable 1 -7 0.5 1024 0.5 0 0.25 1024 0.25 0 0.125 1024 0.125 0 0.5 1024 0.5 0 1 1024 1 0 2 1024 2 0 4 1024 4
+Ctrl1 AdRatio, Env2, Amp
+setTransFuncTable 3 -7 0 4096 0.75 4096 1

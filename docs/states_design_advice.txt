@@ -1,0 +1,50 @@
+* Rytmiske states, (eller andre states med lav grainrate) trenger rask attack time i envelope for å trigge umiddelbart
+	- Envelope attack lenger enn ca 0.01 kan føre til at første grain skippes
+
+* Vær forsiktig med modulasjons routing av signaler som har amplityde større enn 1, f.eks. output fra pitch analyse.
+Et potensielt problem kan f.eks være hvis dette signalet routes til Multiplier, og signalet fra Multiplier brukes til å kontrollere amplityde i et annet state.
+Ved morphing mellom states vil vi da risikere eksessive amplityder, fordi pitch analyse (Hz) routes delvis til output amplityde.
+- i tilfeller der det er nødvendig å route signaler med høye verdier, anbefales å starte med høyeste modulator, f.eks. bruk Multiplier2 før Multiplier1 for disse signalene, bruk Multiplier1 før Multiplier2 for normaliserte signaler (range 0 til 1).
+
+* For gt states, hvis det ikke er en spesiell grunn for å gjøre det annerledes:
+	MidiNoteOffset	-60.0
+	Partikkel1GrainPitch	1.0
+	Partikkel1GrainPitch1	0.0
+	Partikkel1GrainPitch2	0.0
+	Partikkel1GrainPitch3	0.0
+	Partikkel1GrainPitch4	0.0
+	* Transponering fra midi gjøres med 
+	MidiNoteNum	 to 	Partikkel1GrainPitch1	100.0
+	MidiNoteNum	 to 	Partikkel1GrainPitch2	100.0
+	MidiNoteNum	 to 	Partikkel1GrainPitch3	100.0
+	MidiNoteNum	 to 	Partikkel1GrainPitch4	100.0
+
+* For gr states (source=sample), hvis det ikke er en spesiell grunn for å gjøre det annerledes:
+	Partikkel1Samplepos1	0.3 (alle 4 Samplepos)
+	* hvis det gjøres annerledes, lagre en ekstra versjon av state som er kompatibel
+	* hvor ovenstående restriksjon følges, med navn_samplecompatible 
+
+* For gr states (source=singleCycle), hvis det ikke er en spesiell grunn for å gjøre det annerledes:
+	Partikkel1Samplepos1	0.3 (alle 4 Samplepos)
+	* hvis det gjøres annerledes, lagre en ekstra versjon av state som er kompatibel
+	* hvor ovenstående restriksjon følges, med navn_singlecyclecompatible 
+
+* Forsøk å finne en felles mask lengde som brukes som standard
+
+* Gjør notater on eventuelle func tabeller, helst med parameter for hvordan de ble laget
+	- minstekrav: notere hva de skal gjøre
+	- legges i func_files, med filnavn som henvviser til navn på statefile
+
+
+** Tuning av "grain transpose" IKKE NØDVNEDIG, kun i spesialtilfeller for fase-presis sync til annen sinustone
+	- grain rate må stå i heltallsforhold til grain pitch
+	- hvis ikke vil opplevd pitch forstyrres pga akkumulerte faseforskyvninger ved overlappende grains
+	- f.eks:
+		- 440Hz sine
+		- 440/40 = grain rate 11 Hz
+		- 440/41 = grain rate 10.7317..
+		- osv.
+		- dvs mange mulige grain rates, men grain rate bør mappes/kobles til grain pitch
+	- det er også mulig å synkronisere til halve sykluser av bølgeformen i hvert grain
+		- f.eks. en grain rate som gjør at 40 syklyser av sine wave får eksakt plass innenfor hver grain rate periode
+		- eller 40.5 sykluser får plass, eller 41, 41.5, 42, etc...

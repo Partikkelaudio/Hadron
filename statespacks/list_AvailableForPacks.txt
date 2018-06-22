@@ -1,0 +1,34 @@
+Mellotron samples
+Trond samples
+Coagula samples
+Vocal samples
+Domestic effects (Kran, Bekk, ..)
+Analog synths
+SFX (Planet, PadGap, Spaxx, Tombstone)
+
+
+
+grFmGrains
+grFmGrains2
+grFmGrains3
+grFmRatio
+grFmTineFlute
+grTrainletRandmask
+
+gtPTMsmooth (?)
+gtSineGlass
+gtVocalWowelsBP_oyv
+gtVocalWowels_oyv
+gtSnappitch
+gtTimestretch1 (nytt navn?)
+gtWaveSeq1
+
+tfxVoicePitchHarm
++glissons
+
+t_grTineHammer.spst
+t_gtGlissDemagnetize.spst
+t_gtGlissFalloff_UnevenDrop.spst
+t_gtGlissMagnetize.spst
+(etc)
+

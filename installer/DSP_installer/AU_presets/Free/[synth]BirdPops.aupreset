@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>data</key>
+	<data>
+	AAAAAAAAAAAAAAALAAAAAAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAAwAAAAAAAAAEAAAA
+	AAAAAAUAAAAAAAAABgAAAAAAAAAHAAAAAAAAAAgAAAAAAAAACQAAAAAAAAAKAAAAAA==
+	</data>
+	<key>jucePluginState</key>
+	<data>
+	VkMyIYwBAAA8UEFSVElLS0VMU0VUVElOR1MgcGx1Z2luVmVyc2lvbj0iMyIgbmFtZT0i
+	W2Z4XURhcmtNYXR0ZXIiIGV4cHJlc3Npb24xPSIwLjcyMDAwMDAyOSIgZXhwcmVzc2lv
+	bjI9IjAuNTg5OTk5OTc0IiBleHByZXNzaW9uMz0iMC42NDk5OTk5NzYiIGV4cHJlc3Np
+	b240PSIwLjkzMDAwMDAwNyIgcHJlc2V0WD0iMSIgcHJlc2V0WT0iMCIgbWFzdGVyTGV2
+	ZWw9IjAuOTM1NTI2MzExIiBzdGF0ZTE9ImdyVHJhaW5sZXRGTTFSYW5kbWFzayIgc3Rh
+	dGUyPSJnclRyYWlubGV0UmFuZG1hc2siIHN0YXRlMz0iZ3RTbmFwcGVyUmh5dGhtIiBz
+	dGF0ZTQ9Imd0MTZ0aHNTdGFnZ2VyIiBzb3VuZDE9IlZpYkxpbmVEaXN0VG9uZTMiIHNv
+	dW5kMj0idF9kb29tIiBzb3VuZDM9InRfcmVuZ2l0IiBzb3VuZDQ9IlNpbmUiLz4AaQ==
+	</data>
+	<key>manufacturer</key>
+	<integer>1348551029</integer>
+	<key>name</key>
+	<string>[synth]BirdParticlePops-1</string>
+	<key>subtype</key>
+	<integer>1635085670</integer>
+	<key>type</key>
+	<integer>1635085670</integer>
+	<key>version</key>
+	<integer>0</integer>
+</dict>
+</plist>
