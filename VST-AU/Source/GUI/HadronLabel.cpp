@@ -1,6 +1,3 @@
-//#define JUCE_MODAL_LOOPS_PERMITTED 1 
-// TODO: Temporary solution in order to continue using runModalLoop() here
-
 #include "HadronLabel.h"
 
 HadronLabel::HadronLabel(const String& name, const String& labelText)
@@ -40,45 +37,45 @@ void HadronLabel::focusGained (FocusChangeType cause)
 }
 
 
-void HadronLabel::textEditorReturnKeyPressed(TextEditor& editor)
+void HadronLabel::textEditorReturnKeyPressed(TextEditor& text_ed)
 {
     if (use_modal_editor_) {
-        setText(editor.getText(), sendNotification);
-        editor.exitModalState(0);
+        setText(text_ed.getText(), sendNotification);
+        text_ed.exitModalState(0);
     }
     else {
-        Label::textEditorReturnKeyPressed(editor);
+        Label::textEditorReturnKeyPressed(text_ed);
     }
 }
 
-void HadronLabel::textEditorEscapeKeyPressed(TextEditor& editor)
+void HadronLabel::textEditorEscapeKeyPressed(TextEditor& text_ed)
 {
     if (use_modal_editor_) {
-        editor.exitModalState(0);
+        text_ed.exitModalState(0);
     }
     else {
-        Label::textEditorEscapeKeyPressed(editor);
+        Label::textEditorEscapeKeyPressed(text_ed);
     }
 }
 
-void HadronLabel::textEditorFocusLost(TextEditor& editor)
+void HadronLabel::textEditorFocusLost(TextEditor& text_ed)
 {
     if (use_modal_editor_) {
-        editor.exitModalState(0);
+        text_ed.exitModalState(0);
     }
     else {
-        Label::textEditorFocusLost(editor);
+        Label::textEditorFocusLost(text_ed);
     }
 }
 
 void HadronLabel::showEditorModal()
 {
     ModalComponentManager::Callback* userCallback = 0;
-    ScopedPointer<ModalComponentManager::Callback> userCallbackDeleter (userCallback);
+    std::unique_ptr<ModalComponentManager::Callback> userCallbackDeleter (userCallback);
     Component::SafePointer<Component> prevFocused (Component::getCurrentlyFocusedComponent());
     Component::SafePointer<Component> prevTopLevel ((prevFocused != 0) ? prevFocused->getTopLevelComponent() : 0);
 
-    ScopedPointer <TextEditor> texteditor (createEditorComponent());
+    std::unique_ptr<TextEditor> texteditor (createEditorComponent());
     texteditor->setColour(TextEditor::backgroundColourId, Colours::black);
     texteditor->setWantsKeyboardFocus (true);
     texteditor->setAlwaysOnTop (true);

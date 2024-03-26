@@ -446,8 +446,8 @@ HadronPlugin::createCriticalLog(const String& message)
 {
 	// Set up a default desktop logger to catch critical errors
 	File root = File::getSpecialLocation(File::userDesktopDirectory);
-	log_file_ = new FileLogger(root.getChildFile(String("hadron_vst.log")), String("Hadron critical error"), 0);
-	Logger::setCurrentLogger(log_file_);
+	log_file_.reset(new FileLogger(root.getChildFile(String("hadron_vst.log")), String("Hadron critical error"), 0));
+	Logger::setCurrentLogger(log_file_.get());
 	Logger::writeToLog(message);
 }
 
@@ -669,7 +669,7 @@ HadronPlugin::configureLogging(const File& directory)
 		if (!log_file.existsAsFile())
 			log_file.create();
 
-		log_file_ = new FileLogger(log_file, String("Hadron VST log!"), 0);
+		log_file_.reset(new FileLogger(log_file, String("Hadron VST log!"), 0));
 	}
 	else {
 		// Disable logging

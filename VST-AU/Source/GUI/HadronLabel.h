@@ -18,9 +18,9 @@ private:
     virtual void mouseDoubleClick(const MouseEvent& e);
     virtual void focusGained (FocusChangeType cause);
 
-    virtual void textEditorReturnKeyPressed(TextEditor& editor);
-    virtual void textEditorEscapeKeyPressed(TextEditor& editor);
-    virtual void textEditorFocusLost(TextEditor& editor);
+    virtual void textEditorReturnKeyPressed(TextEditor& text_ed);
+    virtual void textEditorEscapeKeyPressed(TextEditor& text_ed);
+    virtual void textEditorFocusLost(TextEditor& text_ed);
 
     // Hide copy constructor and assignment operator 
     HadronLabel(const HadronLabel&);

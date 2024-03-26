@@ -94,12 +94,12 @@ inline void HadronPad::calculateRatios()
 
 inline int HadronPad::value2posX(double ) const
 {
-    return roundDoubleToInt(floor(value_x_/ratio_x_ + cursor_offset));
+    return roundToInt(floor(value_x_/ratio_x_ + cursor_offset));
 }
 
 inline int HadronPad::value2posY(double ) const
 {
-    return roundDoubleToInt(floor(value_y_/ratio_y_ + cursor_offset));
+    return roundToInt(floor(value_y_/ratio_y_ + cursor_offset));
 }
 
 inline double HadronPad::pos2valueX(int pos_x) const

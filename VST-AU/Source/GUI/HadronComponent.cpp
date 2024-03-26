@@ -330,21 +330,21 @@ void HadronComponent::resized()
 	exprLabel4_.setBounds(458, 228, 32, 17);
 
 	presetSelector1_.setBounds(137, 6, 112, 18);
-	presetSelector2_.setBounds(248, 6, roundFloatToInt((112) * 1.0000f), roundFloatToInt((18) * 1.0000f));
-	presetSelector3_.setBounds(137, 247, roundFloatToInt((112) * 1.0000f), roundFloatToInt((18) * 1.0000f));
-	presetSelector4_.setBounds(248, 247, roundFloatToInt((112) * 1.0000f), roundFloatToInt((18) * 1.0000f));
+	presetSelector2_.setBounds(248, 6, roundToInt((112) * 1.0000f), roundToInt((18) * 1.0000f));
+	presetSelector3_.setBounds(137, 247, roundToInt((112) * 1.0000f), roundToInt((18) * 1.0000f));
+	presetSelector4_.setBounds(248, 247, roundToInt((112) * 1.0000f), roundToInt((18) * 1.0000f));
 
-	sourceWaveSelector1_.setBounds(24, 99, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveSelector2_.setBounds(24, 118, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveSelector3_.setBounds(24, 137, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveSelector4_.setBounds(24, 156, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	trainletLabel_.setBounds(26, 175, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
+	sourceWaveSelector1_.setBounds(24, 99, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveSelector2_.setBounds(24, 118, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveSelector3_.setBounds(24, 137, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveSelector4_.setBounds(24, 156, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	trainletLabel_.setBounds(26, 175, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
 
-	sourceWaveIndicator1_.setBounds(25, 98, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveIndicator2_.setBounds(25, 117, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveIndicator3_.setBounds(25, 136, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveIndicator4_.setBounds(25, 155, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	trainletIndicator_.setBounds(25, 174, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
+	sourceWaveIndicator1_.setBounds(25, 98, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveIndicator2_.setBounds(25, 117, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveIndicator3_.setBounds(25, 136, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveIndicator4_.setBounds(25, 155, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	trainletIndicator_.setBounds(25, 174, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
 
 	recButton1_.setBounds(5, 97, 18, 18);
 	recButton2_.setBounds(5, 116, 18, 18);
