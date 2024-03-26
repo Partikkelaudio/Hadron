@@ -4,6 +4,8 @@
 
 */
 
+#include <cstring>
+
 namespace BinaryData
 {
 
@@ -850,11 +852,12 @@ static const unsigned char temp_binary_data_8[] =
 const char* REC_idle_on_png = (const char*) temp_binary_data_8;
 
 
-const char* getNamedResource (const char*, int&) throw();
-const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw()
+const char* getNamedResource (const char* resourceNameUTF8, int& numBytes);
+const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
 {
     unsigned int hash = 0;
-    if (resourceNameUTF8 != 0)
+
+    if (resourceNameUTF8 != nullptr)
         while (*resourceNameUTF8 != 0)
             hash = 31 * hash + (unsigned int) *resourceNameUTF8++;
 
@@ -873,7 +876,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes) throw
     }
 
     numBytes = 0;
-    return 0;
+    return nullptr;
 }
 
 const char* namedResourceList[] =
@@ -888,5 +891,28 @@ const char* namedResourceList[] =
     "REC_idle_off_png",
     "REC_idle_on_png"
 };
+
+const char* originalFilenames[] =
+{
+    "Background 495 x 269.png",
+    "Documentation Link 18 x 18.png",
+    "Exp slider mask Alpha 32 x 167.png",
+    "Expression Slider Knob 32 x 17.png",
+    "Loading.png",
+    "REC_hover_off.png",
+    "REC_hover_on.png",
+    "REC_idle_off.png",
+    "REC_idle_on.png"
+};
+
+const char* getNamedResourceOriginalFilename (const char* resourceNameUTF8);
+const char* getNamedResourceOriginalFilename (const char* resourceNameUTF8)
+{
+    for (unsigned int i = 0; i < (sizeof (namedResourceList) / sizeof (namedResourceList[0])); ++i)
+        if (strcmp (namedResourceList[i], resourceNameUTF8) == 0)
+            return originalFilenames[i];
+
+    return nullptr;
+}
 
 }

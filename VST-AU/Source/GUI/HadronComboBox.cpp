@@ -4,7 +4,7 @@
 
 HadronComboBox::HadronComboBox(String name)
 	: ComboBox(name)
-    , urlPath_(String::empty)
+    , urlPath_(String())
 {
 }
 

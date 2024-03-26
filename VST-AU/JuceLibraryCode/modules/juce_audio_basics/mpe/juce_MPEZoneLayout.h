@@ -2,86 +2,172 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_MPEZONELAYOUT_H_INCLUDED
-#define JUCE_MPEZONELAYOUT_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
-    This class represents the current MPE zone layout of a device
-    capable of handling MPE.
+    This struct represents an MPE zone.
+
+    It can either be a lower or an upper zone, where:
+      - A lower zone encompasses master channel 1 and an arbitrary number of ascending
+        MIDI channels, increasing from channel 2.
+      - An upper zone encompasses master channel 16 and an arbitrary number of descending
+        MIDI channels, decreasing from channel 15.
+
+    It also defines a pitchbend range (in semitones) to be applied for per-note pitchbends and
+    master pitchbends, respectively.
+
+    @tags{Audio}
+*/
+struct MPEZone
+{
+    enum class Type { lower, upper };
+
+    MPEZone() = default;
+
+    MPEZone (Type type, int memberChannels = 0, int perNotePitchbend = 48, int masterPitchbend = 2)
+        : zoneType (type),
+          numMemberChannels (memberChannels),
+          perNotePitchbendRange (perNotePitchbend),
+          masterPitchbendRange (masterPitchbend)
+    {}
+
+    bool isLowerZone() const noexcept             { return zoneType == Type::lower; }
+    bool isUpperZone() const noexcept             { return zoneType == Type::upper; }
+
+    bool isActive() const noexcept                { return numMemberChannels > 0; }
+
+    int getMasterChannel() const noexcept         { return isLowerZone() ? lowerZoneMasterChannel : upperZoneMasterChannel; }
+    int getFirstMemberChannel() const noexcept    { return isLowerZone() ? lowerZoneMasterChannel + 1 : upperZoneMasterChannel - 1; }
+    int getLastMemberChannel() const noexcept     { return isLowerZone() ? (lowerZoneMasterChannel + numMemberChannels)
+                                                                         : (upperZoneMasterChannel - numMemberChannels); }
+
+    bool isUsingChannelAsMemberChannel (int channel) const noexcept
+    {
+        return isLowerZone() ? (lowerZoneMasterChannel < channel && channel <= getLastMemberChannel())
+                             : (channel < upperZoneMasterChannel && getLastMemberChannel() <= channel);
+    }
+
+    bool isUsing (int channel) const noexcept
+    {
+        return isUsingChannelAsMemberChannel (channel) || channel == getMasterChannel();
+    }
+
+    static auto tie (const MPEZone& z)
+    {
+        return std::tie (z.zoneType,
+                         z.numMemberChannels,
+                         z.perNotePitchbendRange,
+                         z.masterPitchbendRange);
+    }
+
+    bool operator== (const MPEZone& other) const
+    {
+        return tie (*this) == tie (other);
+    }
+
+    bool operator!= (const MPEZone& other) const
+    {
+        return tie (*this) != tie (other);
+    }
+
+    //==============================================================================
+    static constexpr int lowerZoneMasterChannel = 1,
+                         upperZoneMasterChannel = 16;
+
+    Type zoneType = Type::lower;
+
+    int numMemberChannels     = 0;
+    int perNotePitchbendRange = 48;
+    int masterPitchbendRange  = 2;
+};
+
+//==============================================================================
+/**
+    This class represents the current MPE zone layout of a device capable of handling MPE.
+
+    An MPE device can have up to two zones: a lower zone with master channel 1 and
+    allocated MIDI channels increasing from channel 2, and an upper zone with master
+    channel 16 and allocated MIDI channels decreasing from channel 15. MPE mode is
+    enabled on a device when one of these zones is active and disabled when both
+    are inactive.
 
     Use the MPEMessages helper class to convert the zone layout represented
     by this object to MIDI message sequences that you can send to an Expressive
     MIDI device to set its zone layout, add zones etc.
 
-    @see MPEZone, MPEInstrument
+    @see MPEInstrument
+
+    @tags{Audio}
 */
 class JUCE_API  MPEZoneLayout
 {
 public:
-    /** Default constructor.
+    //==============================================================================
+    /** Creates a layout with inactive upper and lower zones. */
+    MPEZoneLayout() = default;
 
-        This will create a layout with no MPE zones.
-        You can add an MPE zone using the method addZone.
-    */
-    MPEZoneLayout() noexcept;
+    /** Creates a layout with the given upper and lower zones. */
+    MPEZoneLayout (MPEZone lower, MPEZone upper);
 
-    /** Copy constuctor.
-        This will not copy the listeners registered to the MPEZoneLayout.
-    */
+    /** Creates a layout with a single upper or lower zone, leaving the other zone uninitialised. */
+    MPEZoneLayout (MPEZone singleZone);
+
     MPEZoneLayout (const MPEZoneLayout& other);
-
-    /** Copy assignment operator.
-        This will not copy the listeners registered to the MPEZoneLayout.
-    */
     MPEZoneLayout& operator= (const MPEZoneLayout& other);
 
-    /** Adds a new MPE zone to the layout.
+    bool operator== (const MPEZoneLayout& other) const { return lowerZone == other.lowerZone && upperZone == other.upperZone; }
+    bool operator!= (const MPEZoneLayout& other) const { return ! operator== (other); }
 
-        @param newZone  The zone to add.
+    //==============================================================================
+    /** Returns a struct representing the lower MPE zone. */
+    MPEZone getLowerZone() const noexcept    { return lowerZone; }
 
-        @return  true if the zone was added without modifying any other zones
-                 added previously to the same zone layout object (if any);
-                 false if any existing MPE zones had to be truncated
-                 or deleted entirely in order to to add this new zone.
-                 (Note: the zone itself will always be added with the channel bounds
-                 that were specified; this will not fail.)
+    /** Returns a struct representing the upper MPE zone. */
+    MPEZone getUpperZone() const noexcept    { return upperZone; }
+
+    /** Sets the lower zone of this layout. */
+    void setLowerZone (int numMemberChannels = 0,
+                       int perNotePitchbendRange = 48,
+                       int masterPitchbendRange = 2) noexcept;
+
+    /** Sets the upper zone of this layout. */
+    void setUpperZone (int numMemberChannels = 0,
+                       int perNotePitchbendRange = 48,
+                       int masterPitchbendRange = 2) noexcept;
+
+    /** Clears the lower and upper zones of this layout, making them both inactive
+        and disabling MPE mode.
     */
-    bool addZone (MPEZone newZone);
-
-    /** Removes all currently present MPE zones. */
     void clearAllZones();
 
+    /** Returns true if either of the zones are active. */
+    bool isActive() const  { return lowerZone.isActive() || upperZone.isActive(); }
+
+    //==============================================================================
     /** Pass incoming MIDI messages to an object of this class if you want the
         zone layout to properly react to MPE RPN messages like an
         MPE device.
+
         MPEMessages::rpnNumber will add or remove zones; RPN 0 will
         set the per-note or master pitchbend ranges.
 
@@ -94,6 +180,7 @@ public:
     /** Pass incoming MIDI buffers to an object of this class if you want the
         zone layout to properly react to MPE RPN messages like an
         MPE device.
+
         MPEMessages::rpnNumber will add or remove zones; RPN 0 will
         set the per-note or master pitchbend ranges.
 
@@ -103,35 +190,6 @@ public:
      */
     void processNextMidiBuffer (const MidiBuffer& buffer);
 
-    /** Returns the current number of MPE zones. */
-    int getNumZones() const noexcept;
-
-    /** Returns a pointer to the MPE zone at the given index, or nullptr if there
-        is no such zone. Zones are sorted by insertion order (most recently added
-        zone last).
-    */
-    MPEZone* getZoneByIndex (int index) const noexcept;
-
-    /** Returns a pointer to the zone which uses the specified channel (1-16),
-        or nullptr if there is no such zone.
-    */
-    MPEZone* getZoneByChannel (int midiChannel) const noexcept;
-
-    /** Returns a pointer to the zone which has the specified channel (1-16)
-        as its master channel, or nullptr if there is no such zone.
-    */
-    MPEZone* getZoneByMasterChannel (int midiChannel) const noexcept;
-
-    /** Returns a pointer to the zone which has the specified channel (1-16)
-        as its first note channel, or nullptr if there is no such zone.
-    */
-    MPEZone* getZoneByFirstNoteChannel (int midiChannel) const noexcept;
-
-    /** Returns a pointer to the zone which has the specified channel (1-16)
-        as one of its note channels, or nullptr if there is no such zone.
-    */
-    MPEZone* getZoneByNoteChannel (int midiChannel) const noexcept;
-
     //==============================================================================
     /** Listener class. Derive from this class to allow your class to be
         notified about changes to the zone layout.
@@ -140,7 +198,7 @@ public:
     {
     public:
         /** Destructor. */
-        virtual ~Listener() {}
+        virtual ~Listener() = default;
 
         /** Implement this callback to be notified about any changes to this
             MPEZoneLayout. Will be called whenever a zone is added, zones are
@@ -156,16 +214,30 @@ public:
     /** Removes a listener. */
     void removeListener (Listener* const listenerToRemove) noexcept;
 
+   #ifndef DOXYGEN
+    using Zone = MPEZone;
+   #endif
+
 private:
     //==============================================================================
-    Array<MPEZone> zones;
+    MPEZone lowerZone { MPEZone::Type::lower, 0 };
+    MPEZone upperZone { MPEZone::Type::upper, 0 };
+
     MidiRPNDetector rpnDetector;
     ListenerList<Listener> listeners;
+
+    //==============================================================================
+    void setZone (bool, int, int, int) noexcept;
 
     void processRpnMessage (MidiRPNMessage);
     void processZoneLayoutRpnMessage (MidiRPNMessage);
     void processPitchbendRangeRpnMessage (MidiRPNMessage);
+
+    void updateMasterPitchbend (MPEZone&, int);
+    void updatePerNotePitchbendRange (MPEZone&, int);
+
+    void sendLayoutChangeMessage();
+    void checkAndLimitZoneParameters (int, int, int&) noexcept;
 };
 
-
-#endif // JUCE_MPEZONELAYOUT_H_INCLUDED
+} // namespace juce

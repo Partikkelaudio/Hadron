@@ -2,34 +2,25 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_TARGETPLATFORM_H_INCLUDED
-#define JUCE_TARGETPLATFORM_H_INCLUDED
+#pragma once
 
 //==============================================================================
 /*  This file figures out which platform is being built, and defines some macros
@@ -66,17 +57,19 @@
 #endif
 
 //==============================================================================
-#if (defined (_WIN32) || defined (_WIN64))
-  #define       JUCE_WIN32 1
+#if defined (_WIN32) || defined (_WIN64)
   #define       JUCE_WINDOWS 1
 #elif defined (JUCE_ANDROID)
   #undef        JUCE_ANDROID
   #define       JUCE_ANDROID 1
+#elif defined (__FreeBSD__) || defined (__OpenBSD__)
+  #define       JUCE_BSD 1
 #elif defined (LINUX) || defined (__linux__)
-  #define     JUCE_LINUX 1
-#elif defined (__APPLE_CPP__) || defined(__APPLE_CC__)
-  #include <CoreFoundation/CoreFoundation.h> // (needed to find out what platform we're using)
-  #include "../native/juce_mac_ClangBugWorkaround.h"
+  #define       JUCE_LINUX 1
+#elif defined (__APPLE_CPP__) || defined (__APPLE_CC__)
+  #define CF_EXCLUDE_CSTD_HEADERS 1
+  #include <TargetConditionals.h> // (needed to find out what platform we're using)
+  #include <AvailabilityMacros.h>
 
   #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     #define     JUCE_IPHONE 1
@@ -84,8 +77,8 @@
   #else
     #define     JUCE_MAC 1
   #endif
-#elif defined (__FreeBSD__)
-  #define       JUCE_BSD 1
+#elif defined (__wasm__)
+  #define       JUCE_WASM 1
 #else
   #error "Unknown platform!"
 #endif
@@ -116,7 +109,11 @@
   /** If defined, this indicates that the processor is little-endian. */
   #define JUCE_LITTLE_ENDIAN 1
 
-  #define JUCE_INTEL 1
+  #if defined (_M_ARM) || defined (_M_ARM64) || defined (__arm__) || defined (__aarch64__)
+    #define JUCE_ARM 1
+  #else
+    #define JUCE_INTEL 1
+  #endif
 #endif
 
 //==============================================================================
@@ -150,17 +147,17 @@
     #define JUCE_INTEL 1
   #endif
 
-  #if JUCE_MAC && MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_5
-    #error "Building for OSX 10.4 is no longer supported!"
-  #endif
-
-  #if JUCE_MAC && ! defined (MAC_OS_X_VERSION_10_6)
-    #error "To build with 10.5 compatibility, use a later SDK and set the deployment target to 10.5"
+  #if JUCE_MAC
+    #if ! defined (MAC_OS_X_VERSION_10_14)
+      #error "The 10.14 SDK (Xcode 10.1+) is required to build JUCE apps. You can create apps that run on macOS 10.9+ by changing the deployment target."
+    #elif MAC_OS_X_VERSION_MIN_REQUIRED < MAC_OS_X_VERSION_10_9
+      #error "Building for OSX 10.8 and earlier is no longer supported!"
+    #endif
   #endif
 #endif
 
 //==============================================================================
-#if JUCE_LINUX || JUCE_ANDROID
+#if JUCE_LINUX || JUCE_ANDROID || JUCE_BSD
 
   #ifdef _DEBUG
     #define JUCE_DEBUG 1
@@ -181,7 +178,7 @@
     #define JUCE_32BIT 1
   #endif
 
-  #if defined (__arm__) || defined (__arm64__)
+  #if defined (__arm__) || defined (__arm64__) || defined (__aarch64__)
     #define JUCE_ARM 1
   #elif __MMX__ || __SSE__ || __amd64__
     #define JUCE_INTEL 1
@@ -191,22 +188,15 @@
 //==============================================================================
 // Compiler type macros.
 
-#ifdef __clang__
+#if defined (__clang__)
   #define JUCE_CLANG 1
+
 #elif defined (__GNUC__)
   #define JUCE_GCC 1
+
 #elif defined (_MSC_VER)
   #define JUCE_MSVC 1
 
-  #if _MSC_VER < 1500
-    #define JUCE_VC8_OR_EARLIER 1
-
-    #if _MSC_VER < 1400
-      #error "Visual Studio 2003 and earlier are no longer supported!"
-    #endif
-  #endif
 #else
   #error unknown compiler
 #endif
-
-#endif   // JUCE_TARGETPLATFORM_H_INCLUDED

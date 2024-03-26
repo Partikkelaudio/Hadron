@@ -38,42 +38,42 @@ namespace {
 
 //==============================================================================
 HadronComponent::HadronComponent(HadronPlugin* const ownerFilter)
-: AudioProcessorEditor(ownerFilter),
-volumeKnob_(),
-volumeLabel_(String::empty, "-70dB"),
-exprSlider1_(),
-exprSlider2_(),
-exprSlider3_(),
-exprSlider4_(),
-exprLabel1_(),
-exprLabel2_(),
-exprLabel3_(),
-exprLabel4_(),
-presetSelector1_(),
-presetSelector2_(),
-presetSelector3_(),
-presetSelector4_(),
-sourceWaveSelector1_(),
-sourceWaveSelector2_(),
-sourceWaveSelector3_(),
-sourceWaveSelector4_(),
-sourceWaveIndicator1_(),
-sourceWaveIndicator2_(),
-sourceWaveIndicator3_(),
-sourceWaveIndicator4_(),
-trainletLabel_(String::empty, "Trainlet"),
-trainletIndicator_(),
-recButton1_(String::empty, DrawableButton::ImageRaw),
-recButton2_(String::empty, DrawableButton::ImageRaw),
-recButton3_(String::empty, DrawableButton::ImageRaw),
-recButton4_(String::empty, DrawableButton::ImageRaw),
-pad_(String::empty),
-cachedImage_Background(ImageCache::getFromMemory(ImageData::background_495_x_269_png, ImageData::background_495_x_269_pngSize)),
-cachedImage_Loading(ImageCache::getFromMemory(ImageData::loading_png, ImageData::loading_pngSize)),
-loadingScreen_(),
-docPath_(String::empty),
-docLink_("", URL("")),
-docLinkBtn_(String::empty, DrawableButton::ImageRaw)
+	: AudioProcessorEditor(ownerFilter),
+	volumeKnob_(),
+	volumeLabel_(String(), "-70dB"),
+	exprSlider1_(),
+	exprSlider2_(),
+	exprSlider3_(),
+	exprSlider4_(),
+	exprLabel1_(),
+	exprLabel2_(),
+	exprLabel3_(),
+	exprLabel4_(),
+	presetSelector1_(),
+	presetSelector2_(),
+	presetSelector3_(),
+	presetSelector4_(),
+	sourceWaveSelector1_(),
+	sourceWaveSelector2_(),
+	sourceWaveSelector3_(),
+	sourceWaveSelector4_(),
+	sourceWaveIndicator1_(),
+	sourceWaveIndicator2_(),
+	sourceWaveIndicator3_(),
+	sourceWaveIndicator4_(),
+	trainletLabel_(String(), "Trainlet"),
+	trainletIndicator_(),
+	recButton1_(String(), DrawableButton::ImageRaw),
+	recButton2_(String(), DrawableButton::ImageRaw),
+	recButton3_(String(), DrawableButton::ImageRaw),
+	recButton4_(String(), DrawableButton::ImageRaw),
+	pad_(String()),
+	cachedImage_Background(ImageCache::getFromMemory(ImageData::background_495_x_269_png, ImageData::background_495_x_269_pngSize)),
+	cachedImage_Loading(ImageCache::getFromMemory(ImageData::loading_png, ImageData::loading_pngSize)),
+	loadingScreen_(),
+	docPath_(String()),
+	docLink_("", URL("")),
+	docLinkBtn_(String(), DrawableButton::ImageRaw)
 {
 	LookAndFeel::setDefaultLookAndFeel(LnF_Hadron_Component::getInstance());
 
@@ -175,7 +175,7 @@ void HadronComponent::writeToLog(String log_text)
 	getFilter()->writeToLog("GUI " + log_text);
 }
 
-void HadronComponent::createVolumeKnob(Slider *knob, Label* label, const Font& font, int focusOrder)
+void HadronComponent::createVolumeKnob(Slider* knob, Label* label, const Font& font, int focusOrder)
 {
 	addAndMakeVisible(knob);
 	knob->setRange(volume_min_value, volume_max_value, volume_step);
@@ -207,7 +207,7 @@ void HadronComponent::createSelector(ComboBox* combo, int)
 	addAndMakeVisible(combo);
 	combo->setEditableText(false);
 	combo->setJustificationType(Justification::left);
-	combo->setTextWhenNothingSelected(String::empty);
+	combo->setTextWhenNothingSelected(String());
 	combo->setTextWhenNoChoicesAvailable("(no choices)");
 	combo->setColour(ComboBox::backgroundColourId, Colour(0x00ffffff));
 	combo->setColour(ComboBox::textColourId, Colour(0xffffffff));
@@ -234,7 +234,7 @@ void HadronComponent::createRecordButton(DrawableButton* button)
 	button->setImages(&recButtonIdleOffImg, &recButtonHoverOffImg, 0, 0, &recButtonIdleOnImg, &recButtonHoverOnImg, 0, 0);
 }
 
-void HadronComponent::createExpressionSlider(Slider *slider, Label* label, const Font& font, int focusOrder)
+void HadronComponent::createExpressionSlider(Slider* slider, Label* label, const Font& font, int focusOrder)
 {
 	addAndMakeVisible(slider);
 	slider->setRange(0, 1, 0.01);
@@ -330,21 +330,21 @@ void HadronComponent::resized()
 	exprLabel4_.setBounds(458, 228, 32, 17);
 
 	presetSelector1_.setBounds(137, 6, 112, 18);
-	presetSelector2_.setBounds(248, 6, roundFloatToInt((112) * 1.0000f), roundFloatToInt((18) * 1.0000f));
-	presetSelector3_.setBounds(137, 247, roundFloatToInt((112) * 1.0000f), roundFloatToInt((18) * 1.0000f));
-	presetSelector4_.setBounds(248, 247, roundFloatToInt((112) * 1.0000f), roundFloatToInt((18) * 1.0000f));
+	presetSelector2_.setBounds(248, 6, roundToInt((112) * 1.0000f), roundToInt((18) * 1.0000f));
+	presetSelector3_.setBounds(137, 247, roundToInt((112) * 1.0000f), roundToInt((18) * 1.0000f));
+	presetSelector4_.setBounds(248, 247, roundToInt((112) * 1.0000f), roundToInt((18) * 1.0000f));
 
-	sourceWaveSelector1_.setBounds(24, 99, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveSelector2_.setBounds(24, 118, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveSelector3_.setBounds(24, 137, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveSelector4_.setBounds(24, 156, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	trainletLabel_.setBounds(26, 175, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
+	sourceWaveSelector1_.setBounds(24, 99, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveSelector2_.setBounds(24, 118, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveSelector3_.setBounds(24, 137, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveSelector4_.setBounds(24, 156, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	trainletLabel_.setBounds(26, 175, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
 
-	sourceWaveIndicator1_.setBounds(25, 98, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveIndicator2_.setBounds(25, 117, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveIndicator3_.setBounds(25, 136, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	sourceWaveIndicator4_.setBounds(25, 155, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
-	trainletIndicator_.setBounds(25, 174, roundFloatToInt((110) * 1.0000f), roundFloatToInt((16) * 1.0000f));
+	sourceWaveIndicator1_.setBounds(25, 98, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveIndicator2_.setBounds(25, 117, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveIndicator3_.setBounds(25, 136, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	sourceWaveIndicator4_.setBounds(25, 155, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
+	trainletIndicator_.setBounds(25, 174, roundToInt((110) * 1.0000f), roundToInt((16) * 1.0000f));
 
 	recButton1_.setBounds(5, 97, 18, 18);
 	recButton2_.setBounds(5, 116, 18, 18);
@@ -354,8 +354,7 @@ void HadronComponent::resized()
 	docLink_.setBounds(5, 246, 18, 18);
 	docLinkBtn_.setBounds(5, 246, 18, 18);
 
-	//loadingScreen_.setBounds (30, 30, 300, 100);
-	loadingScreen_.setBounds(RelativeRectangle("parent.width / 2 - 150, parent.height / 2 - 50, left + 300, top + 100"));
+	RelativeRectangle("parent.width / 2 - 150, parent.height / 2 - 50, left + 300, top + 100").applyToComponent(loadingScreen_);
 	pad_.setBounds(137, 24, 221, 221);
 
 }

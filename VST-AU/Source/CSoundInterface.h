@@ -73,7 +73,7 @@ public:
 	double getVolumeIndicator(unsigned int index) const;
 
 	void setBPM(double value);
-	void process(float** data, int num_channels, int num_samples, const MidiVector& midi);
+	void process(float* const* data, int num_channels, int num_samples, const MidiVector& midi);
 
 private:
 	void    setChannel(const std::string& name, double value);

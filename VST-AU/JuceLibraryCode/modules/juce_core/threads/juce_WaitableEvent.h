@@ -2,43 +2,35 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_WAITABLEEVENT_H_INCLUDED
-#define JUCE_WAITABLEEVENT_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
     Allows threads to wait for events triggered by other threads.
 
-    A thread can call wait() on a WaitableObject, and this will suspend the
-    calling thread until another thread wakes it up by calling the signal()
-    method.
+    A thread can call WaitableEvent::wait() to suspend the calling thread until
+    another thread wakes it up by calling the WaitableEvent::signal() method.
+
+    @tags{Core}
 */
 class JUCE_API  WaitableEvent
 {
@@ -53,13 +45,6 @@ public:
                             the only way to reset it will be by calling the reset() method.
     */
     explicit WaitableEvent (bool manualReset = false) noexcept;
-
-    /** Destructor.
-
-        If other threads are waiting on this object when it gets deleted, this
-        can cause nasty errors, so be careful!
-    */
-    ~WaitableEvent() noexcept;
 
     //==============================================================================
     /** Suspends the calling thread until the event has been signalled.
@@ -76,9 +61,8 @@ public:
         @returns    true if the object has been signalled, false if the timeout expires first.
         @see signal, reset
     */
-    bool wait (int timeOutMilliseconds = -1) const noexcept;
+    bool wait (double timeOutMilliseconds = -1.0) const;
 
-    //==============================================================================
     /** Wakes up any threads that are currently waiting on this object.
 
         If signal() is called when nothing is waiting, the next thread to call wait()
@@ -94,27 +78,22 @@ public:
 
         @see wait, reset
     */
-    void signal() const noexcept;
+    void signal() const;
 
-    //==============================================================================
     /** Resets the event to an unsignalled state.
         If it's not already signalled, this does nothing.
     */
-    void reset() const noexcept;
-
+    void reset() const;
 
 private:
     //==============================================================================
-   #if JUCE_WINDOWS
-    void* handle;
-   #else
-    mutable pthread_cond_t condition;
-    mutable pthread_mutex_t mutex;
-    mutable bool triggered, manualReset;
-   #endif
+    bool useManualReset;
+
+    mutable std::mutex mutex;
+    mutable std::condition_variable condition;
+    mutable std::atomic<bool> triggered { false };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WaitableEvent)
 };
 
-
-#endif   // JUCE_WAITABLEEVENT_H_INCLUDED
+} // namespace juce

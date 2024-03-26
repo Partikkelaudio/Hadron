@@ -2,47 +2,40 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_MIDIMESSAGECOLLECTOR_H_INCLUDED
-#define JUCE_MIDIMESSAGECOLLECTOR_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
     Collects incoming realtime MIDI messages and turns them into blocks suitable for
     processing by a block-based audio callback.
 
-    The class can also be used as either a MidiKeyboardStateListener or a MidiInputCallback
+    The class can also be used as either a MidiKeyboardState::Listener or a MidiInputCallback
     so it can easily use a midi input or keyboard component as its source.
 
     @see MidiMessage, MidiInput
+
+    @tags{Audio}
 */
-class JUCE_API  MidiMessageCollector    : public MidiKeyboardStateListener,
+class JUCE_API  MidiMessageCollector    : public MidiKeyboardState::Listener,
                                           public MidiInputCallback
 {
 public:
@@ -51,7 +44,7 @@ public:
     MidiMessageCollector();
 
     /** Destructor. */
-    ~MidiMessageCollector();
+    ~MidiMessageCollector() override;
 
     //==============================================================================
     /** Clears any messages from the queue.
@@ -87,6 +80,14 @@ public:
     */
     void removeNextBlockOfMessages (MidiBuffer& destBuffer, int numSamples);
 
+    /** Preallocates storage for collected messages.
+
+        This can be called before audio processing begins to ensure that there
+        is sufficient space for the expected MIDI messages, in order to avoid
+        allocations within the audio callback.
+    */
+    void ensureStorageAllocated (size_t bytes);
+
 
     //==============================================================================
     /** @internal */
@@ -98,13 +99,15 @@ public:
 
 private:
     //==============================================================================
-    double lastCallbackTime;
+    double lastCallbackTime = 0;
     CriticalSection midiCallbackLock;
     MidiBuffer incomingMessages;
-    double sampleRate;
+    double sampleRate = 44100.0;
+   #if JUCE_DEBUG
+    bool hasCalledReset = false;
+   #endif
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MidiMessageCollector)
 };
 
-
-#endif   // JUCE_MIDIMESSAGECOLLECTOR_H_INCLUDED
+} // namespace juce

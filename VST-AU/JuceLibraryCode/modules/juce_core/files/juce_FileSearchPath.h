@@ -2,48 +2,44 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_FILESEARCHPATH_H_INCLUDED
-#define JUCE_FILESEARCHPATH_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
     Represents a set of folders that make up a search path.
 
     @see File
+
+    @tags{Core}
 */
 class JUCE_API  FileSearchPath
 {
 public:
     //==============================================================================
     /** Creates an empty search path. */
-    FileSearchPath();
+    FileSearchPath() = default;
+
+    /** Destructor. */
+    ~FileSearchPath() = default;
 
     /** Creates a search path from a string of pathnames.
 
@@ -60,9 +56,6 @@ public:
     /** Copies another search path. */
     FileSearchPath& operator= (const FileSearchPath&);
 
-    /** Destructor. */
-    ~FileSearchPath();
-
     /** Uses a string containing a list of pathnames to re-initialise this list.
 
         This search path is cleared and the semicolon- or comma-separated folders
@@ -78,12 +71,26 @@ public:
 
     /** Returns one of the folders in this search path.
         The file returned isn't guaranteed to actually be a valid directory.
-        @see getNumPaths
+        @see getNumPaths, getRawString
     */
     File operator[] (int index) const;
 
+    /** Returns the unaltered text of the folder at the specified index.
+
+        Unlike operator[], this function returns the exact text that was entered. It does not
+        attempt to convert the path into an absolute path.
+
+        This may be useful if the directory string is expected to understand environment variables
+        or other placeholders that the File constructor doesn't necessarily understand.
+        @see operator[]
+    */
+    String getRawString (int index) const;
+
     /** Returns the search path as a semicolon-separated list of directories. */
     String toString() const;
+
+    /** Returns the search paths, joined with the provided separator. */
+    String toStringWithSeparator (StringRef separator) const;
 
     //==============================================================================
     /** Adds a new directory to the search path.
@@ -123,16 +130,24 @@ public:
     //==============================================================================
     /** Searches the path for a wildcard.
 
-        This will search all the directories in the search path in order, adding any
-        matching files to the results array.
+        This will search all the directories in the search path in order and return
+        an array of the files that were found.
 
-        @param results                  an array to append the results to
         @param whatToLookFor            a value from the File::TypesOfFileToFind enum, specifying whether to
                                         return files, directories, or both.
         @param searchRecursively        whether to recursively search the subdirectories too
         @param wildCardPattern          a pattern to match against the filenames
         @returns the number of files added to the array
         @see File::findChildFiles
+    */
+    Array<File> findChildFiles (int whatToLookFor,
+                                bool searchRecursively,
+                                const String& wildCardPattern = "*") const;
+
+    /** Searches the path for a wildcard.
+        Note that there's a newer, better version of this method which returns the results
+        array, and in almost all cases, you should use that one instead! This one is kept around
+        mainly for legacy code to use.
     */
     int findChildFiles (Array<File>& results,
                         int whatToLookFor,
@@ -167,4 +182,4 @@ private:
     JUCE_LEAK_DETECTOR (FileSearchPath)
 };
 
-#endif   // JUCE_FILESEARCHPATH_H_INCLUDED
+} // namespace juce

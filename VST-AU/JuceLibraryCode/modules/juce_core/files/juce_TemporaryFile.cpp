@@ -2,34 +2,46 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
+namespace juce
+{
+
+// Using Random::getSystemRandom() can be a bit dangerous in multithreaded contexts!
+class LockedRandom
+{
+public:
+    int nextInt()
+    {
+        const ScopedLock lock (mutex);
+        return random.nextInt();
+    }
+
+private:
+    CriticalSection mutex;
+    Random random;
+};
+
+static LockedRandom lockedRandom;
+
 static File createTempFile (const File& parentDirectory, String name,
-                            const String& suffix, const int optionFlags)
+                            const String& suffix, int optionFlags)
 {
     if ((optionFlags & TemporaryFile::useHiddenFile) != 0)
         name = "." + name;
@@ -39,15 +51,16 @@ static File createTempFile (const File& parentDirectory, String name,
 
 TemporaryFile::TemporaryFile (const String& suffix, const int optionFlags)
     : temporaryFile (createTempFile (File::getSpecialLocation (File::tempDirectory),
-                                     "temp_" + String::toHexString (Random::getSystemRandom().nextInt()),
-                                     suffix, optionFlags))
+                                     "temp_" + String::toHexString (lockedRandom.nextInt()),
+                                     suffix, optionFlags)),
+      targetFile()
 {
 }
 
 TemporaryFile::TemporaryFile (const File& target, const int optionFlags)
     : temporaryFile (createTempFile (target.getParentDirectory(),
                                      target.getFileNameWithoutExtension()
-                                       + "_temp" + String::toHexString (Random::getSystemRandom().nextInt()),
+                                       + "_temp" + String::toHexString (lockedRandom.nextInt()),
                                      target.getFileExtension(), optionFlags)),
       targetFile (target)
 {
@@ -109,7 +122,7 @@ bool TemporaryFile::deleteTemporaryFile() const
     // Have a few attempts at deleting the file before giving up..
     for (int i = 5; --i >= 0;)
     {
-        if (temporaryFile.deleteFile())
+        if (temporaryFile.isDirectory() ? temporaryFile.deleteRecursively() : temporaryFile.deleteFile())
             return true;
 
         Thread::sleep (50);
@@ -117,3 +130,5 @@ bool TemporaryFile::deleteTemporaryFile() const
 
     return false;
 }
+
+} // namespace juce

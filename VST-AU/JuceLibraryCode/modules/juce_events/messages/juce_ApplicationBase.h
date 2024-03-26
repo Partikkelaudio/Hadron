@@ -2,35 +2,26 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_APPLICATIONBASE_H_INCLUDED
-#define JUCE_APPLICATIONBASE_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -58,7 +49,7 @@
 
             void initialise (const String& commandLine) override
             {
-                myMainWindow = new MyApplicationWindow();
+                myMainWindow.reset (new MyApplicationWindow());
                 myMainWindow->setBounds (100, 100, 400, 500);
                 myMainWindow->setVisible (true);
             }
@@ -79,7 +70,7 @@
             }
 
         private:
-            ScopedPointer<MyApplicationWindow> myMainWindow;
+            std::unique_ptr<MyApplicationWindow> myMainWindow;
         };
 
         // this generates boilerplate code to launch our app class:
@@ -87,6 +78,8 @@
     @endcode
 
     @see JUCEApplication, START_JUCE_APPLICATION
+
+    @tags{Events}
 */
 class JUCE_API  JUCEApplicationBase
 {
@@ -111,12 +104,14 @@ public:
 
     /** Checks whether multiple instances of the app are allowed.
 
-        If you application class returns true for this, more than one instance is
+        If your application class returns true for this, more than one instance is
         permitted to run (except on the Mac where this isn't possible).
 
-        If it's false, the second instance won't start, but it you will still get a
+        If it's false, the second instance won't start, but you will still get a
         callback to anotherInstanceStarted() to tell you about this - which
         gives you a chance to react to what the user was trying to do.
+
+        @see anotherInstanceStarted
     */
     virtual bool moreThanOneInstanceAllowed() = 0;
 
@@ -158,6 +153,9 @@ public:
     /** Indicates that the user has tried to start up another instance of the app.
 
         This will get called even if moreThanOneInstanceAllowed() is false.
+        It is currently only implemented on Windows and Mac.
+
+        @see moreThanOneInstanceAllowed
     */
     virtual void anotherInstanceStarted (const String& commandLine) = 0;
 
@@ -196,6 +194,29 @@ public:
     virtual void unhandledException (const std::exception*,
                                      const String& sourceFilename,
                                      int lineNumber) = 0;
+
+    /** Called by the operating system to indicate that you should reduce your memory
+        footprint.
+
+        You should override this method to free up some memory gracefully, if possible,
+        otherwise the host may forcibly kill your app.
+
+        At the moment this method is only called on iOS.
+    */
+    virtual void memoryWarningReceived()     { jassertfalse; }
+
+    //==============================================================================
+    /** This will be called when the back button on a device is pressed. The return value
+        should be used to indicate whether the back button event has been handled by
+        the application, for example if you want to implement custom navigation instead
+        of the standard behaviour on Android.
+
+        This is currently only implemented on Android devices.
+
+        @returns  true if the event has been handled, or false if the default OS
+                  behaviour should happen
+     */
+    virtual bool backButtonPressed() { return false; }
 
     //==============================================================================
     /** Signals that the main message loop should stop and the application should terminate.
@@ -258,11 +279,15 @@ public:
    #ifndef DOXYGEN
     // The following methods are for internal use only...
     static int main();
-    static int main (int argc, const char* argv[], void*);
+    static int main (int argc, const char* argv[]);
 
     static void appWillTerminateByForce();
-    typedef JUCEApplicationBase* (*CreateInstanceFunction)();
+    using CreateInstanceFunction = JUCEApplicationBase* (*)();
     static CreateInstanceFunction createInstance;
+
+   #if JUCE_IOS
+    static void* iOSCustomDelegate;
+   #endif
 
     virtual bool initialiseApp();
     int shutdownApp();
@@ -273,20 +298,18 @@ public:
 private:
     //==============================================================================
     static JUCEApplicationBase* appInstance;
-    int appReturnValue;
-    bool stillInitialising;
+    int appReturnValue = 0;
+    bool stillInitialising = true;
 
     struct MultipleInstanceHandler;
-    friend struct MultipleInstanceHandler;
-    friend struct ContainerDeletePolicy<MultipleInstanceHandler>;
-    ScopedPointer<MultipleInstanceHandler> multipleInstanceHandler;
+    std::unique_ptr<MultipleInstanceHandler> multipleInstanceHandler;
 
     JUCE_DECLARE_NON_COPYABLE (JUCEApplicationBase)
 };
 
 
 //==============================================================================
-#if JUCE_CATCH_UNHANDLED_EXCEPTIONS || defined (DOXYGEN)
+#if JUCE_CATCH_UNHANDLED_EXCEPTIONS || DOXYGEN
 
  /** The JUCE_TRY/JUCE_CATCH_EXCEPTION wrappers can be used to pass any uncaught exceptions to
      the JUCEApplicationBase::sendUnhandledException() method.
@@ -307,5 +330,4 @@ private:
  #define JUCE_CATCH_EXCEPTION
 #endif
 
-
-#endif   // JUCE_APPLICATIONBASE_H_INCLUDED
+} // namespace juce

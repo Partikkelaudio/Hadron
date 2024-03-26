@@ -102,7 +102,7 @@ private:
 
 	String hadron_path_;
 	String csound_log_path_;
-	ScopedPointer<FileLogger> log_file_;
+	std::unique_ptr<FileLogger> log_file_;
 
 	StringArray states_;
 	StringPairArray sounds_;

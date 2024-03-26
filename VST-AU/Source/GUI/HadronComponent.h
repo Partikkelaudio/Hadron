@@ -19,10 +19,10 @@ class HadronPlugin;
 
 class HadronComponent : public AudioProcessorEditor,
 	public ChangeListener,
-	public SliderListener,
-	public ComboBoxListener,
-	public ButtonListener,
-	public LabelListener,
+	public Slider::Listener,
+	public ComboBox::Listener,
+	public Button::Listener,
+	public Label::Listener,
 	public Timer
 {
 public:

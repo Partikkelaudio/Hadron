@@ -3,10 +3,10 @@
 #include "HadronLabel.h"
 
 
-class HadronPad : public Component, public ChangeBroadcaster, public LabelListener
+class HadronPad : public Component, public ChangeBroadcaster, public Label::Listener
 {
 public:
-	HadronPad(String name = String::empty);
+	HadronPad(String name = String());
 	~HadronPad();
 
     /** Changes the current xy values.

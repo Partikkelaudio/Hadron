@@ -2,34 +2,28 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_PLATFORMDEFS_H_INCLUDED
-#define JUCE_PLATFORMDEFS_H_INCLUDED
+#pragma once
+
+namespace juce
+{
 
 //==============================================================================
 /*  This file defines miscellaneous macros for debugging, assertions, etc.
@@ -44,8 +38,8 @@
  #endif
 #endif
 
-/** This macro defines the C calling convention used as the standard for Juce calls. */
-#if JUCE_MSVC
+/** This macro defines the C calling convention used as the standard for JUCE calls. */
+#if JUCE_WINDOWS
  #define JUCE_CALLTYPE   __stdcall
  #define JUCE_CDECL      __cdecl
 #else
@@ -56,14 +50,16 @@
 //==============================================================================
 // Debugging and assertion macros
 
-#if JUCE_LOG_ASSERTIONS || JUCE_DEBUG
- #define JUCE_LOG_CURRENT_ASSERTION    juce::logAssertion (__FILE__, __LINE__);
-#else
- #define JUCE_LOG_CURRENT_ASSERTION
+#ifndef JUCE_LOG_CURRENT_ASSERTION
+ #if JUCE_LOG_ASSERTIONS || JUCE_DEBUG
+  #define JUCE_LOG_CURRENT_ASSERTION    juce::logAssertion (__FILE__, __LINE__);
+ #else
+  #define JUCE_LOG_CURRENT_ASSERTION
+ #endif
 #endif
 
 //==============================================================================
-#if JUCE_IOS || JUCE_LINUX || JUCE_ANDROID
+#if JUCE_IOS || JUCE_LINUX || JUCE_BSD
   /** This will try to break into the debugger if the app is currently being debugged.
       If called by an app that's not being debugged, the behaviour isn't defined - it may
       crash or not, depending on the platform.
@@ -75,20 +71,24 @@
     #pragma intrinsic (__debugbreak)
   #endif
   #define JUCE_BREAK_IN_DEBUGGER        { __debugbreak(); }
-#elif JUCE_GCC || JUCE_MAC
+#elif JUCE_INTEL && (JUCE_GCC || JUCE_CLANG || JUCE_MAC)
   #if JUCE_NO_INLINE_ASM
    #define JUCE_BREAK_IN_DEBUGGER       { }
   #else
    #define JUCE_BREAK_IN_DEBUGGER       { asm ("int $3"); }
   #endif
+#elif JUCE_ARM && JUCE_MAC
+  #define JUCE_BREAK_IN_DEBUGGER        { __builtin_debugtrap(); }
+#elif JUCE_ANDROID
+  #define JUCE_BREAK_IN_DEBUGGER        { __builtin_trap(); }
 #else
   #define JUCE_BREAK_IN_DEBUGGER        { __asm int 3 }
 #endif
 
 #if JUCE_CLANG && defined (__has_feature) && ! defined (JUCE_ANALYZER_NORETURN)
  #if __has_feature (attribute_analyzer_noreturn)
-  inline void __attribute__((analyzer_noreturn)) juce_assert_noreturn() {}
-  #define JUCE_ANALYZER_NORETURN juce_assert_noreturn();
+  inline void __attribute__ ((analyzer_noreturn)) juce_assert_noreturn() {}
+  #define JUCE_ANALYZER_NORETURN juce::juce_assert_noreturn();
  #endif
 #endif
 
@@ -96,8 +96,28 @@
  #define JUCE_ANALYZER_NORETURN
 #endif
 
+/** Used to silence Wimplicit-fallthrough on Clang and GCC where available
+    as there are a few places in the codebase where we need to do this
+    deliberately and want to ignore the warning.
+*/
+#if JUCE_CLANG
+ #if __has_cpp_attribute(clang::fallthrough)
+  #define JUCE_FALLTHROUGH [[clang::fallthrough]];
+ #else
+  #define JUCE_FALLTHROUGH
+ #endif
+#elif JUCE_GCC
+ #if __GNUC__ >= 7
+  #define JUCE_FALLTHROUGH [[gnu::fallthrough]];
+ #else
+  #define JUCE_FALLTHROUGH
+ #endif
+#else
+ #define JUCE_FALLTHROUGH
+#endif
+
 //==============================================================================
-#if JUCE_MSVC && ! DOXYGEN
+#if JUCE_MSVC && ! defined (DOXYGEN)
  #define JUCE_BLOCK_WITH_FORCED_SEMICOLON(x) \
    __pragma(warning(push)) \
    __pragma(warning(disable:4127)) \
@@ -122,14 +142,14 @@
       that have important side-effects!
       @see Logger::outputDebugString
   */
-  #define DBG(textToWrite)          JUCE_BLOCK_WITH_FORCED_SEMICOLON (juce::String tempDbgBuf; tempDbgBuf << textToWrite; juce::Logger::outputDebugString (tempDbgBuf);)
+  #define DBG(textToWrite)              JUCE_BLOCK_WITH_FORCED_SEMICOLON (juce::String tempDbgBuf; tempDbgBuf << textToWrite; juce::Logger::outputDebugString (tempDbgBuf);)
 
   //==============================================================================
   /** This will always cause an assertion failure.
       It is only compiled in a debug build, (unless JUCE_LOG_ASSERTIONS is enabled for your build).
       @see jassert
   */
-  #define jassertfalse              JUCE_BLOCK_WITH_FORCED_SEMICOLON (JUCE_LOG_CURRENT_ASSERTION; if (juce::juce_isRunningUnderDebugger()) JUCE_BREAK_IN_DEBUGGER; JUCE_ANALYZER_NORETURN)
+  #define jassertfalse                  JUCE_BLOCK_WITH_FORCED_SEMICOLON (JUCE_LOG_CURRENT_ASSERTION; if (juce::juce_isRunningUnderDebugger()) JUCE_BREAK_IN_DEBUGGER; JUCE_ANALYZER_NORETURN)
 
   //==============================================================================
   /** Platform-independent assertion macro.
@@ -139,25 +159,33 @@
       correct behaviour of your program!
       @see jassertfalse
   */
-  #define jassert(expression)       JUCE_BLOCK_WITH_FORCED_SEMICOLON (if (! (expression)) jassertfalse;)
+  #define jassert(expression)           JUCE_BLOCK_WITH_FORCED_SEMICOLON (if (! (expression)) jassertfalse;)
+
+  /** Platform-independent assertion macro which suppresses ignored-variable
+      warnings in all build modes. You should probably use a plain jassert()
+      and [[maybe_unused]] by default.
+  */
+  #define jassertquiet(expression)      JUCE_BLOCK_WITH_FORCED_SEMICOLON (if (! (expression)) jassertfalse;)
 
 #else
   //==============================================================================
   // If debugging is disabled, these dummy debug and assertion macros are used..
 
   #define DBG(textToWrite)
-  #define jassertfalse              JUCE_BLOCK_WITH_FORCED_SEMICOLON (JUCE_LOG_CURRENT_ASSERTION)
+  #define jassertfalse                  JUCE_BLOCK_WITH_FORCED_SEMICOLON (JUCE_LOG_CURRENT_ASSERTION;)
 
   #if JUCE_LOG_ASSERTIONS
-   #define jassert(expression)      JUCE_BLOCK_WITH_FORCED_SEMICOLON (if (! (expression)) jassertfalse;)
+   #define jassert(expression)          JUCE_BLOCK_WITH_FORCED_SEMICOLON (if (! (expression)) jassertfalse;)
+   #define jassertquiet(expression)     JUCE_BLOCK_WITH_FORCED_SEMICOLON (if (! (expression)) jassertfalse;)
   #else
-   #define jassert(expression)      JUCE_BLOCK_WITH_FORCED_SEMICOLON ( ; )
+   #define jassert(expression)          JUCE_BLOCK_WITH_FORCED_SEMICOLON ( ; )
+   #define jassertquiet(expression)     JUCE_BLOCK_WITH_FORCED_SEMICOLON (if (false) (void) (expression);)
   #endif
 
 #endif
 
 //==============================================================================
-#if ! DOXYGEN
+#ifndef DOXYGEN
  #define JUCE_JOIN_MACRO_HELPER(a, b) a ## b
  #define JUCE_STRINGIFY_MACRO_HELPER(a) #a
 #endif
@@ -172,31 +200,8 @@
 #define JUCE_STRINGIFY(item)  JUCE_STRINGIFY_MACRO_HELPER (item)
 
 //==============================================================================
-#if JUCE_COMPILER_SUPPORTS_STATIC_ASSERT
-  /** A compile-time assertion macro.
-     If the expression parameter is false, the macro will cause a compile error. (The actual error
-     message that the compiler generates may be completely bizarre and seem to have no relation to
-     the place where you put the static_assert though!)
-  */
-  #define static_jassert(expression) static_assert(expression, #expression);
-#else
- #ifndef DOXYGEN
-  namespace juce
-  {
-     template <bool b> struct JuceStaticAssert;
-     template <>       struct JuceStaticAssert<true> { static void dummy() {} };
-  }
- #endif
-
-  /** A compile-time assertion macro.
-      If the expression parameter is false, the macro will cause a compile error. (The actual error
-      message that the compiler generates may be completely bizarre and seem to have no relation to
-      the place where you put the static_assert though!)
-  */
-  #define static_jassert(expression)      juce::JuceStaticAssert<expression>::dummy();
-#endif
-
-/** This is a shorthand macro for declaring stubs for a class's copy constructor and operator=.
+/** This is a shorthand macro for deleting a class's copy constructor and
+    copy assignment operator.
 
     For example, instead of
     @code
@@ -221,8 +226,15 @@
     };@endcode
 */
 #define JUCE_DECLARE_NON_COPYABLE(className) \
-    className (const className&) JUCE_DELETED_FUNCTION;\
-    className& operator= (const className&) JUCE_DELETED_FUNCTION;
+    className (const className&) = delete;\
+    className& operator= (const className&) = delete;
+
+/** This is a shorthand macro for deleting a class's move constructor and
+    move assignment operator.
+*/
+#define JUCE_DECLARE_NON_MOVEABLE(className) \
+    className (className&&) = delete;\
+    className& operator= (className&&) = delete;
 
 /** This is a shorthand way of writing both a JUCE_DECLARE_NON_COPYABLE and
     JUCE_LEAK_DETECTOR macro for a class.
@@ -236,8 +248,8 @@
 */
 #define JUCE_PREVENT_HEAP_ALLOCATION \
    private: \
-    static void* operator new (size_t) JUCE_DELETED_FUNCTION; \
-    static void operator delete (void*) JUCE_DELETED_FUNCTION;
+    static void* operator new (size_t) = delete; \
+    static void operator delete (void*) = delete;
 
 //==============================================================================
 #if JUCE_MSVC && ! defined (DOXYGEN)
@@ -271,7 +283,7 @@
   #if JUCE_MSVC
    #define forcedinline       __forceinline
   #else
-   #define forcedinline       inline __attribute__((always_inline))
+   #define forcedinline       inline __attribute__ ((always_inline))
   #endif
 #endif
 
@@ -284,35 +296,18 @@
 #endif
 
 //==============================================================================
-// Cross-compiler deprecation macros..
-#ifdef DOXYGEN
- /** This macro can be used to wrap a function which has been deprecated. */
- #define JUCE_DEPRECATED(functionDef)
- #define JUCE_DEPRECATED_WITH_BODY(functionDef, body)
-#elif JUCE_MSVC && ! JUCE_NO_DEPRECATION_WARNINGS
- #define JUCE_DEPRECATED(functionDef)                   __declspec(deprecated) functionDef
- #define JUCE_DEPRECATED_WITH_BODY(functionDef, body)   __declspec(deprecated) functionDef body
-#elif (JUCE_GCC || JUCE_CLANG) && ! JUCE_NO_DEPRECATION_WARNINGS
- #define JUCE_DEPRECATED(functionDef)                   functionDef __attribute__ ((deprecated))
- #define JUCE_DEPRECATED_WITH_BODY(functionDef, body)   functionDef __attribute__ ((deprecated)) body
-#else
- #define JUCE_DEPRECATED(functionDef)                   functionDef
- #define JUCE_DEPRECATED_WITH_BODY(functionDef, body)   functionDef body
-#endif
-
-//==============================================================================
-#if JUCE_ANDROID && ! DOXYGEN
+#if JUCE_ANDROID && ! defined (DOXYGEN)
  #define JUCE_MODAL_LOOPS_PERMITTED 0
 #elif ! defined (JUCE_MODAL_LOOPS_PERMITTED)
  /** Some operating environments don't provide a modal loop mechanism, so this flag can be
      used to disable any functions that try to run a modal loop. */
- #define JUCE_MODAL_LOOPS_PERMITTED 1
+ #define JUCE_MODAL_LOOPS_PERMITTED 0
 #endif
 
 //==============================================================================
 #if JUCE_GCC || JUCE_CLANG
- #define JUCE_PACKED __attribute__((packed))
-#elif ! DOXYGEN
+ #define JUCE_PACKED __attribute__ ((packed))
+#elif ! defined (DOXYGEN)
  #define JUCE_PACKED
 #endif
 
@@ -320,9 +315,9 @@
 #if JUCE_GCC || DOXYGEN
  /** This can be appended to a function declaration to tell gcc to disable associative
      math optimisations which break some floating point algorithms. */
- #define JUCE_NO_ASSOCIATIVE_MATH_OPTIMISATIONS   __attribute__((__optimize__("no-associative-math")))
+ #define JUCE_NO_ASSOCIATIVE_MATH_OPTIMISATIONS   __attribute__ ((__optimize__ ("no-associative-math")))
 #else
  #define JUCE_NO_ASSOCIATIVE_MATH_OPTIMISATIONS
 #endif
 
-#endif   // JUCE_PLATFORMDEFS_H_INCLUDED
+} // namespace juce

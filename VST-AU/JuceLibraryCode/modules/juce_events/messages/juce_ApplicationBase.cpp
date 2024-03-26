@@ -2,38 +2,35 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-JUCEApplicationBase::CreateInstanceFunction JUCEApplicationBase::createInstance = 0;
+namespace juce
+{
+
+JUCEApplicationBase::CreateInstanceFunction JUCEApplicationBase::createInstance = nullptr;
 JUCEApplicationBase* JUCEApplicationBase::appInstance = nullptr;
 
+#if JUCE_IOS
+void* JUCEApplicationBase::iOSCustomDelegate = nullptr;
+#endif
+
 JUCEApplicationBase::JUCEApplicationBase()
-    : appReturnValue (0),
-      stillInitialising (true)
 {
     jassert (isStandaloneApp() && appInstance == nullptr);
     appInstance = this;
@@ -56,7 +53,7 @@ void JUCEApplicationBase::appWillTerminateByForce()
     JUCE_AUTORELEASEPOOL
     {
         {
-            const ScopedPointer<JUCEApplicationBase> app (appInstance);
+            const std::unique_ptr<JUCEApplicationBase> app (appInstance);
 
             if (app != nullptr)
                 app->shutdownApp();
@@ -76,8 +73,16 @@ void JUCEApplicationBase::sendUnhandledException (const std::exception* const e,
                                                   const char* const sourceFile,
                                                   const int lineNumber)
 {
-    if (JUCEApplicationBase* const app = JUCEApplicationBase::getInstance())
+    if (auto* app = JUCEApplicationBase::getInstance())
+    {
+        // If you hit this assertion then the __FILE__ macro is providing a
+        // relative path instead of an absolute path. On Windows this will be
+        // a path relative to the build directory rather than the currently
+        // running application. To fix this you must compile with the /FC flag.
+        jassert (File::isAbsolutePath (sourceFile));
+
         app->unhandledException (e, sourceFile, lineNumber);
+    }
 }
 
 //==============================================================================
@@ -86,9 +91,8 @@ void JUCEApplicationBase::sendUnhandledException (const std::exception* const e,
 #endif
 
 #if JUCE_HANDLE_MULTIPLE_INSTANCES
-struct JUCEApplicationBase::MultipleInstanceHandler  : public ActionListener
+struct JUCEApplicationBase::MultipleInstanceHandler final : public ActionListener
 {
-public:
     MultipleInstanceHandler (const String& appName)
         : appLock ("juceAppLock_" + appName)
     {
@@ -99,19 +103,21 @@ public:
         if (appLock.enter (0))
             return false;
 
-        JUCEApplicationBase* const app = JUCEApplicationBase::getInstance();
-        jassert (app != nullptr);
+        if (auto* app = JUCEApplicationBase::getInstance())
+        {
+            MessageManager::broadcastMessage (app->getApplicationName() + "/" + app->getCommandLineParameters());
+            return true;
+        }
 
-        MessageManager::broadcastMessage (app->getApplicationName()
-                                            + "/" + app->getCommandLineParameters());
-        return true;
+        jassertfalse;
+        return false;
     }
 
     void actionListenerCallback (const String& message) override
     {
-        if (JUCEApplicationBase* const app = JUCEApplicationBase::getInstance())
+        if (auto* app = JUCEApplicationBase::getInstance())
         {
-            const String appName (app->getApplicationName());
+            auto appName = app->getApplicationName();
 
             if (message.startsWith (appName + "/"))
                 app->anotherInstanceStarted (message.substring (appName.length() + 1));
@@ -128,7 +134,7 @@ bool JUCEApplicationBase::sendCommandLineToPreexistingInstance()
 {
     jassert (multipleInstanceHandler == nullptr); // this must only be called once!
 
-    multipleInstanceHandler = new MultipleInstanceHandler (getApplicationName());
+    multipleInstanceHandler.reset (new MultipleInstanceHandler (getApplicationName()));
     return multipleInstanceHandler->sendCommandLineToPreexistingInstance();
 }
 
@@ -139,8 +145,8 @@ struct JUCEApplicationBase::MultipleInstanceHandler {};
 //==============================================================================
 #if JUCE_ANDROID
 
-StringArray JUCEApplicationBase::getCommandLineParameterArray() { return StringArray(); }
-String JUCEApplicationBase::getCommandLineParameters()          { return String(); }
+StringArray JUCEApplicationBase::getCommandLineParameterArray() { return {}; }
+String JUCEApplicationBase::getCommandLineParameters()          { return {}; }
 
 #else
 
@@ -156,9 +162,9 @@ String JUCE_CALLTYPE JUCEApplicationBase::getCommandLineParameters()
 StringArray JUCE_CALLTYPE JUCEApplicationBase::getCommandLineParameterArray()
 {
     StringArray s;
-
     int argc = 0;
-    if (LPWSTR* const argv = CommandLineToArgvW (GetCommandLineW(), &argc))
+
+    if (auto argv = CommandLineToArgvW (GetCommandLineW(), &argc))
     {
         s = StringArray (argv + 1, argc - 1);
         LocalFree (argv);
@@ -169,12 +175,16 @@ StringArray JUCE_CALLTYPE JUCEApplicationBase::getCommandLineParameterArray()
 
 #else
 
-#if JUCE_IOS
+#if JUCE_IOS && JUCE_MODULE_AVAILABLE_juce_gui_basics
  extern int juce_iOSMain (int argc, const char* argv[], void* classPtr);
 #endif
 
 #if JUCE_MAC
  extern void initialiseNSApplication();
+#endif
+
+#if (JUCE_LINUX || JUCE_BSD) && JUCE_MODULE_AVAILABLE_juce_gui_extra && (! defined (JUCE_WEB_BROWSER) || JUCE_WEB_BROWSER)
+ extern "C" int juce_gtkWebkitMain (int argc, const char* const* argv);
 #endif
 
 #if JUCE_WINDOWS
@@ -189,14 +199,12 @@ String JUCEApplicationBase::getCommandLineParameters()
 {
     String argString;
 
-    for (int i = 1; i < juce_argc; ++i)
+    for (const auto& arg : getCommandLineParameterArray())
     {
-        String arg (juce_argv[i]);
-
-        if (arg.containsChar (' ') && ! arg.isQuotedString())
-            arg = arg.quoted ('"');
-
-        argString << arg << ' ';
+        const auto withQuotes = arg.containsChar (' ') && ! arg.isQuotedString()
+                              ? arg.quoted ('"')
+                              : arg;
+        argString << withQuotes << ' ';
     }
 
     return argString.trim();
@@ -204,10 +212,15 @@ String JUCEApplicationBase::getCommandLineParameters()
 
 StringArray JUCEApplicationBase::getCommandLineParameterArray()
 {
-    return StringArray (juce_argv + 1, juce_argc - 1);
+    StringArray result;
+
+    for (int i = 1; i < juce_argc; ++i)
+        result.add (CharPointer_UTF8 (juce_argv[i]));
+
+    return result;
 }
 
-int JUCEApplicationBase::main (int argc, const char* argv[], void* customDelegate)
+int JUCEApplicationBase::main (int argc, const char* argv[])
 {
     JUCE_AUTORELEASEPOOL
     {
@@ -218,10 +231,14 @@ int JUCEApplicationBase::main (int argc, const char* argv[], void* customDelegat
         initialiseNSApplication();
        #endif
 
-       #if JUCE_IOS
-        return juce_iOSMain (argc, argv, customDelegate);
+       #if (JUCE_LINUX || JUCE_BSD) && JUCE_MODULE_AVAILABLE_juce_gui_extra && (! defined (JUCE_WEB_BROWSER) || JUCE_WEB_BROWSER)
+        if (argc >= 2 && String (argv[1]) == "--juce-gtkwebkitfork-child")
+            return juce_gtkWebkitMain (argc, argv);
+       #endif
+
+       #if JUCE_IOS && JUCE_MODULE_AVAILABLE_juce_gui_basics
+        return juce_iOSMain (argc, argv, iOSCustomDelegate);
        #else
-        ignoreUnused (customDelegate);
 
         return JUCEApplicationBase::main();
        #endif
@@ -236,7 +253,7 @@ int JUCEApplicationBase::main()
     ScopedJuceInitialiser_GUI libraryInitialiser;
     jassert (createInstance != nullptr);
 
-    const ScopedPointer<JUCEApplicationBase> app (createInstance());
+    const std::unique_ptr<JUCEApplicationBase> app (createInstance());
     jassert (app != nullptr);
 
     if (! app->initialiseApp())
@@ -265,17 +282,17 @@ bool JUCEApplicationBase::initialiseApp()
     }
    #endif
 
-   #if JUCE_WINDOWS && JUCE_STANDALONE_APPLICATION && (! defined (_CONSOLE)) && (! JUCE_MINGW)
-    if (AttachConsole (ATTACH_PARENT_PROCESS) != 0)
+   #if JUCE_WINDOWS && (! defined (_CONSOLE)) && (! JUCE_MINGW)
+    if (isStandaloneApp() && AttachConsole (ATTACH_PARENT_PROCESS) != 0)
     {
         // if we've launched a GUI app from cmd.exe or PowerShell, we need this to enable printf etc.
         // However, only reassign stdout, stderr, stdin if they have not been already opened by
         // a redirect or similar.
         FILE* ignore;
 
-        if (_fileno(stdout) < 0) freopen_s (&ignore, "CONOUT$", "w", stdout);
-        if (_fileno(stderr) < 0) freopen_s (&ignore, "CONOUT$", "w", stderr);
-        if (_fileno(stdin)  < 0) freopen_s (&ignore, "CONIN$",  "r", stdin);
+        if (_fileno (stdout) < 0) freopen_s (&ignore, "CONOUT$", "w", stdout);
+        if (_fileno (stderr) < 0) freopen_s (&ignore, "CONOUT$", "w", stderr);
+        if (_fileno (stdin)  < 0) freopen_s (&ignore, "CONIN$",  "r", stdin);
     }
    #endif
 
@@ -288,8 +305,8 @@ bool JUCEApplicationBase::initialiseApp()
         return false;
 
    #if JUCE_HANDLE_MULTIPLE_INSTANCES
-    if (multipleInstanceHandler != nullptr)
-        MessageManager::getInstance()->registerBroadcastListener (multipleInstanceHandler);
+    if (auto* mih = multipleInstanceHandler.get())
+        MessageManager::getInstance()->registerBroadcastListener (mih);
    #endif
 
     return true;
@@ -300,8 +317,8 @@ int JUCEApplicationBase::shutdownApp()
     jassert (JUCEApplicationBase::getInstance() == this);
 
    #if JUCE_HANDLE_MULTIPLE_INSTANCES
-    if (multipleInstanceHandler != nullptr)
-        MessageManager::getInstance()->deregisterBroadcastListener (multipleInstanceHandler);
+    if (auto* mih = multipleInstanceHandler.get())
+        MessageManager::getInstance()->deregisterBroadcastListener (mih);
    #endif
 
     JUCE_TRY
@@ -311,6 +328,8 @@ int JUCEApplicationBase::shutdownApp()
     }
     JUCE_CATCH_EXCEPTION
 
-    multipleInstanceHandler = nullptr;
+    multipleInstanceHandler.reset();
     return getApplicationReturnValue();
 }
+
+} // namespace juce

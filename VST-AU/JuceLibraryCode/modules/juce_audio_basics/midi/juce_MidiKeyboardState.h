@@ -2,97 +2,47 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_MIDIKEYBOARDSTATE_H_INCLUDED
-#define JUCE_MIDIKEYBOARDSTATE_H_INCLUDED
-
-class MidiKeyboardState;
-
-
-//==============================================================================
-/**
-    Receives events from a MidiKeyboardState object.
-
-    @see MidiKeyboardState
-*/
-class JUCE_API  MidiKeyboardStateListener
+namespace juce
 {
-public:
-    //==============================================================================
-    MidiKeyboardStateListener() noexcept        {}
-    virtual ~MidiKeyboardStateListener()        {}
-
-    //==============================================================================
-    /** Called when one of the MidiKeyboardState's keys is pressed.
-
-        This will be called synchronously when the state is either processing a
-        buffer in its MidiKeyboardState::processNextMidiBuffer() method, or
-        when a note is being played with its MidiKeyboardState::noteOn() method.
-
-        Note that this callback could happen from an audio callback thread, so be
-        careful not to block, and avoid any UI activity in the callback.
-    */
-    virtual void handleNoteOn (MidiKeyboardState* source,
-                               int midiChannel, int midiNoteNumber, float velocity) = 0;
-
-    /** Called when one of the MidiKeyboardState's keys is released.
-
-        This will be called synchronously when the state is either processing a
-        buffer in its MidiKeyboardState::processNextMidiBuffer() method, or
-        when a note is being played with its MidiKeyboardState::noteOff() method.
-
-        Note that this callback could happen from an audio callback thread, so be
-        careful not to block, and avoid any UI activity in the callback.
-    */
-    virtual void handleNoteOff (MidiKeyboardState* source,
-                                int midiChannel, int midiNoteNumber, float velocity) = 0;
-};
-
 
 //==============================================================================
 /**
     Represents a piano keyboard, keeping track of which keys are currently pressed.
 
     This object can parse a stream of midi events, using them to update its idea
-    of which keys are pressed for each individiual midi channel.
+    of which keys are pressed for each individual midi channel.
 
     When keys go up or down, it can broadcast these events to listener objects.
 
     It also allows key up/down events to be triggered with its noteOn() and noteOff()
     methods, and midi messages for these events will be merged into the
     midi stream that gets processed by processNextMidiBuffer().
+
+    @tags{Audio}
 */
 class JUCE_API  MidiKeyboardState
 {
 public:
     //==============================================================================
     MidiKeyboardState();
-    ~MidiKeyboardState();
 
     //==============================================================================
     /** Resets the state of the object.
@@ -139,7 +89,7 @@ public:
         It will also trigger a synchronous callback to the listeners to tell them that the key has
         gone up.
 
-        But if the note isn't acutally down for the given channel, this method will in fact do nothing.
+        But if the note isn't actually down for the given channel, this method will in fact do nothing.
     */
     void noteOff (int midiChannel, int midiNoteNumber, float velocity);
 
@@ -184,28 +134,62 @@ public:
                                 bool injectIndirectEvents);
 
     //==============================================================================
+    /** Receives events from a MidiKeyboardState object. */
+    class JUCE_API Listener
+    {
+    public:
+        //==============================================================================
+        virtual ~Listener() = default;
+
+        //==============================================================================
+        /** Called when one of the MidiKeyboardState's keys is pressed.
+
+            This will be called synchronously when the state is either processing a
+            buffer in its MidiKeyboardState::processNextMidiBuffer() method, or
+            when a note is being played with its MidiKeyboardState::noteOn() method.
+
+            Note that this callback could happen from an audio callback thread, so be
+            careful not to block, and avoid any UI activity in the callback.
+        */
+        virtual void handleNoteOn (MidiKeyboardState* source,
+                                   int midiChannel, int midiNoteNumber, float velocity) = 0;
+
+        /** Called when one of the MidiKeyboardState's keys is released.
+
+            This will be called synchronously when the state is either processing a
+            buffer in its MidiKeyboardState::processNextMidiBuffer() method, or
+            when a note is being played with its MidiKeyboardState::noteOff() method.
+
+            Note that this callback could happen from an audio callback thread, so be
+            careful not to block, and avoid any UI activity in the callback.
+        */
+        virtual void handleNoteOff (MidiKeyboardState* source,
+                                    int midiChannel, int midiNoteNumber, float velocity) = 0;
+    };
+
     /** Registers a listener for callbacks when keys go up or down.
         @see removeListener
     */
-    void addListener (MidiKeyboardStateListener* listener);
+    void addListener (Listener* listener);
 
     /** Deregisters a listener.
         @see addListener
     */
-    void removeListener (MidiKeyboardStateListener* listener);
+    void removeListener (Listener* listener);
 
 private:
     //==============================================================================
     CriticalSection lock;
-    uint16 noteStates [128];
+    std::atomic<uint16> noteStates[128];
     MidiBuffer eventsToAdd;
-    Array <MidiKeyboardStateListener*> listeners;
+    ListenerList<Listener> listeners;
 
-    void noteOnInternal (int midiChannel, int midiNoteNumber, float velocity);
+    void noteOnInternal  (int midiChannel, int midiNoteNumber, float velocity);
     void noteOffInternal (int midiChannel, int midiNoteNumber, float velocity);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MidiKeyboardState)
 };
 
+using MidiKeyboardStateListener = MidiKeyboardState::Listener;
 
-#endif   // JUCE_MIDIKEYBOARDSTATE_H_INCLUDED
+} // namespace juce

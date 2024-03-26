@@ -2,37 +2,41 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2015 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of either:
-   a) the GPL v2 (or any later version)
-   b) the Affero GPL v3
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Details of these licenses can be found at: www.gnu.org/licenses
+   By using JUCE, you agree to the terms of both the JUCE 7 End-User License
+   Agreement and JUCE Privacy Policy.
 
-   JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-   A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+   End User License Agreement: www.juce.com/juce-7-licence
+   Privacy Policy: www.juce.com/juce-privacy-policy
 
-   ------------------------------------------------------------------------------
+   Or: You may also use this code under the terms of the GPL v3 (see
+   www.gnu.org/licenses).
 
-   To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
+
+namespace juce
+{
 
 FileBrowserComponent::FileBrowserComponent (int flags_,
                                             const File& initialFileOrDirectory,
                                             const FileFilter* fileFilter_,
                                             FilePreviewComponent* previewComp_)
-   : FileFilter (String()),
+   : FileFilter ({}),
      fileFilter (fileFilter_),
      flags (flags_),
      previewComp (previewComp_),
      currentPathBox ("path"),
      fileLabel ("f", TRANS ("file:")),
-     thread ("Juce FileBrowser"),
+     thread ("JUCE FileBrowser"),
      wasProcessActive (true)
 {
     // You need to specify one or other of the open/save flags..
@@ -59,12 +63,16 @@ FileBrowserComponent::FileBrowserComponent (int flags_,
         filename = initialFileOrDirectory.getFileName();
     }
 
-    fileList = new DirectoryContentsList (this, thread);
+    // The thread must be started before the DirectoryContentsList attempts to scan any file
+    thread.startThread (Thread::Priority::low);
+
+    fileList.reset (new DirectoryContentsList (this, thread));
+    fileList->setDirectory (currentRoot, true, true);
 
     if ((flags & useTreeView) != 0)
     {
-        FileTreeComponent* const tree = new FileTreeComponent (*fileList);
-        fileListComponent = tree;
+        auto tree = new FileTreeComponent (*fileList);
+        fileListComponent.reset (tree);
 
         if ((flags & canSelectMultipleItems) != 0)
             tree->setMultiSelectEnabled (true);
@@ -73,8 +81,8 @@ FileBrowserComponent::FileBrowserComponent (int flags_,
     }
     else
     {
-        FileListComponent* const list = new FileListComponent (*fileList);
-        fileListComponent = list;
+        auto list = new FileListComponent (*fileList);
+        fileListComponent.reset (list);
         list->setOutlineThickness (1);
 
         if ((flags & canSelectMultipleItems) != 0)
@@ -88,36 +96,42 @@ FileBrowserComponent::FileBrowserComponent (int flags_,
     addAndMakeVisible (currentPathBox);
     currentPathBox.setEditableText (true);
     resetRecentPaths();
-    currentPathBox.addListener (this);
+    currentPathBox.onChange = [this] { updateSelectedPath(); };
 
     addAndMakeVisible (filenameBox);
     filenameBox.setMultiLine (false);
     filenameBox.setSelectAllWhenFocused (true);
     filenameBox.setText (filename, false);
-    filenameBox.addListener (this);
+    filenameBox.onTextChange = [this] { sendListenerChangeMessage(); };
+    filenameBox.onReturnKey  = [this] { changeFilename(); };
+    filenameBox.onFocusLost  = [this]
+    {
+        if (! isSaveMode())
+            selectionChanged();
+    };
+
     filenameBox.setReadOnly ((flags & (filenameBoxIsReadOnly | canSelectMultipleItems)) != 0);
 
     addAndMakeVisible (fileLabel);
     fileLabel.attachToComponent (&filenameBox, true);
 
-    addAndMakeVisible (goUpButton = getLookAndFeel().createFileBrowserGoUpButton());
-    goUpButton->addListener (this);
-    goUpButton->setTooltip (TRANS ("Go up to parent directory"));
-
     if (previewComp != nullptr)
         addAndMakeVisible (previewComp);
 
+    lookAndFeelChanged();
+
     setRoot (currentRoot);
 
-    thread.startThread (4);
+    if (filename.isNotEmpty())
+        setFileName (filename);
 
     startTimer (2000);
 }
 
 FileBrowserComponent::~FileBrowserComponent()
 {
-    fileListComponent = nullptr;
-    fileList = nullptr;
+    fileListComponent.reset();
+    fileList.reset();
     thread.stopThread (10000);
 }
 
@@ -140,7 +154,7 @@ bool FileBrowserComponent::isSaveMode() const noexcept
 
 int FileBrowserComponent::getNumSelectedFiles() const noexcept
 {
-    if (chosenFiles.size() == 0 && currentFileIsValid())
+    if (chosenFiles.isEmpty() && currentFileIsValid())
         return 1;
 
     return chosenFiles.size();
@@ -159,12 +173,12 @@ File FileBrowserComponent::getSelectedFile (int index) const noexcept
 
 bool FileBrowserComponent::currentFileIsValid() const
 {
-    const File f (getSelectedFile (0));
+    auto f = getSelectedFile (0);
 
-    if (isSaveMode())
-        return (flags & canSelectDirectories) != 0 || ! f.isDirectory();
+    if ((flags & canSelectDirectories) == 0 && f.isDirectory())
+        return false;
 
-    return f.exists();
+    return isSaveMode() || f.exists();
 }
 
 File FileBrowserComponent::getHighlightedFile() const noexcept
@@ -217,7 +231,7 @@ void FileBrowserComponent::setRoot (const File& newRootDirectory)
         String path (newRootDirectory.getFullPathName());
 
         if (path.isEmpty())
-            path = File::separatorString;
+            path = File::getSeparatorString();
 
         StringArray rootNames, rootPaths;
         getRoots (rootNames, rootPaths);
@@ -243,12 +257,13 @@ void FileBrowserComponent::setRoot (const File& newRootDirectory)
     currentRoot = newRootDirectory;
     fileList->setDirectory (currentRoot, true, true);
 
-    if (FileTreeComponent* tree = dynamic_cast<FileTreeComponent*> (fileListComponent.get()))
+    if (auto* tree = dynamic_cast<FileTreeComponent*> (fileListComponent.get()))
         tree->refresh();
 
-    String currentRootName (currentRoot.getFullPathName());
+    auto currentRootName = currentRoot.getFullPathName();
+
     if (currentRootName.isEmpty())
-        currentRootName = File::separatorString;
+        currentRootName = File::getSeparatorString();
 
     currentPathBox.setText (currentRootName, dontSendNotification);
 
@@ -258,7 +273,7 @@ void FileBrowserComponent::setRoot (const File& newRootDirectory)
     if (callListeners)
     {
         Component::BailOutChecker checker (this);
-        listeners.callChecked (checker, &FileBrowserListener::browserRootChanged, currentRoot);
+        listeners.callChecked (checker, [&] (FileBrowserListener& l) { l.browserRootChanged (currentRoot); });
     }
 }
 
@@ -308,9 +323,9 @@ void FileBrowserComponent::setFileFilter (const FileFilter* const newFileFilter)
 
 String FileBrowserComponent::getActionVerb() const
 {
-    return isSaveMode() ? ((flags & canSelectDirectories) != 0 ? TRANS("Choose")
-                                                               : TRANS("Save"))
-                        : TRANS("Open");
+    return isSaveMode() ? ((flags & canSelectDirectories) != 0 ? TRANS ("Choose")
+                                                               : TRANS ("Save"))
+                        : TRANS ("Open");
 }
 
 void FileBrowserComponent::setFilenameBoxLabel (const String& name)
@@ -325,15 +340,37 @@ FilePreviewComponent* FileBrowserComponent::getPreviewComponent() const noexcept
 
 DirectoryContentsDisplayComponent* FileBrowserComponent::getDisplayComponent() const noexcept
 {
-    return fileListComponent;
+    return fileListComponent.get();
 }
 
 //==============================================================================
 void FileBrowserComponent::resized()
 {
     getLookAndFeel()
-        .layoutFileBrowserComponent (*this, fileListComponent, previewComp,
-                                     &currentPathBox, &filenameBox, goUpButton);
+        .layoutFileBrowserComponent (*this, fileListComponent.get(), previewComp,
+                                     &currentPathBox, &filenameBox, goUpButton.get());
+}
+
+//==============================================================================
+void FileBrowserComponent::lookAndFeelChanged()
+{
+    goUpButton.reset (getLookAndFeel().createFileBrowserGoUpButton());
+
+    if (auto* buttonPtr = goUpButton.get())
+    {
+        addAndMakeVisible (*buttonPtr);
+        buttonPtr->onClick = [this] { goUp(); };
+        buttonPtr->setTooltip (TRANS ("Go up to parent directory"));
+    }
+
+    currentPathBox.setColour (ComboBox::backgroundColourId,    findColour (currentPathBoxBackgroundColourId));
+    currentPathBox.setColour (ComboBox::textColourId,          findColour (currentPathBoxTextColourId));
+    currentPathBox.setColour (ComboBox::arrowColourId,         findColour (currentPathBoxArrowColourId));
+
+    filenameBox.setColour (TextEditor::backgroundColourId,     findColour (filenameBoxBackgroundColourId));
+    filenameBox.applyColourToAllText (findColour (filenameBoxTextColourId));
+
+    resized();
 }
 
 //==============================================================================
@@ -347,7 +384,7 @@ void FileBrowserComponent::sendListenerChangeMessage()
     // You shouldn't delete the browser when the file gets changed!
     jassert (! checker.shouldBailOut());
 
-    listeners.callChecked (checker, &FileBrowserListener::selectionChanged);
+    listeners.callChecked (checker, [] (FileBrowserListener& l) { l.selectionChanged(); });
 }
 
 void FileBrowserComponent::selectionChanged()
@@ -381,7 +418,7 @@ void FileBrowserComponent::selectionChanged()
 void FileBrowserComponent::fileClicked (const File& f, const MouseEvent& e)
 {
     Component::BailOutChecker checker (this);
-    listeners.callChecked (checker, &FileBrowserListener::fileClicked, f, e);
+    listeners.callChecked (checker, [&] (FileBrowserListener& l) { l.fileClicked (f, e); });
 }
 
 void FileBrowserComponent::fileDoubleClicked (const File& f)
@@ -391,20 +428,20 @@ void FileBrowserComponent::fileDoubleClicked (const File& f)
         setRoot (f);
 
         if ((flags & canSelectDirectories) != 0 && (flags & doNotClearFileNameOnRootChange) == 0)
-            filenameBox.setText (String());
+            filenameBox.setText ({});
     }
     else
     {
         Component::BailOutChecker checker (this);
-        listeners.callChecked (checker, &FileBrowserListener::fileDoubleClicked, f);
+        listeners.callChecked (checker, [&] (FileBrowserListener& l) { l.fileDoubleClicked (f); });
     }
 }
 
 void FileBrowserComponent::browserRootChanged (const File&) {}
 
-bool FileBrowserComponent::keyPressed (const KeyPress& key)
+bool FileBrowserComponent::keyPressed ([[maybe_unused]] const KeyPress& key)
 {
-   #if JUCE_LINUX || JUCE_WINDOWS
+   #if JUCE_LINUX || JUCE_BSD || JUCE_WINDOWS
     if (key.getModifiers().isCommandDown()
          && (key.getKeyCode() == 'H' || key.getKeyCode() == 'h'))
     {
@@ -414,21 +451,15 @@ bool FileBrowserComponent::keyPressed (const KeyPress& key)
     }
    #endif
 
-    ignoreUnused (key);
     return false;
 }
 
 //==============================================================================
-void FileBrowserComponent::textEditorTextChanged (TextEditor&)
+void FileBrowserComponent::changeFilename()
 {
-    sendListenerChangeMessage();
-}
-
-void FileBrowserComponent::textEditorReturnKeyPressed (TextEditor&)
-{
-    if (filenameBox.getText().containsChar (File::separator))
+    if (filenameBox.getText().containsChar (File::getSeparatorChar()))
     {
-        const File f (currentRoot.getChildFile (filenameBox.getText()));
+        auto f = currentRoot.getChildFile (filenameBox.getText());
 
         if (f.isDirectory())
         {
@@ -436,7 +467,7 @@ void FileBrowserComponent::textEditorReturnKeyPressed (TextEditor&)
             chosenFiles.clear();
 
             if ((flags & doNotClearFileNameOnRootChange) == 0)
-                filenameBox.setText (String());
+                filenameBox.setText ({});
         }
         else
         {
@@ -452,36 +483,21 @@ void FileBrowserComponent::textEditorReturnKeyPressed (TextEditor&)
     }
 }
 
-void FileBrowserComponent::textEditorEscapeKeyPressed (TextEditor&)
-{
-}
-
-void FileBrowserComponent::textEditorFocusLost (TextEditor&)
-{
-    if (! isSaveMode())
-        selectionChanged();
-}
-
 //==============================================================================
-void FileBrowserComponent::buttonClicked (Button*)
+void FileBrowserComponent::updateSelectedPath()
 {
-    goUp();
-}
-
-void FileBrowserComponent::comboBoxChanged (ComboBox*)
-{
-    const String newText (currentPathBox.getText().trim().unquoted());
+    auto newText = currentPathBox.getText().trim().unquoted();
 
     if (newText.isNotEmpty())
     {
-        const int index = currentPathBox.getSelectedId() - 1;
+        auto index = currentPathBox.getSelectedId() - 1;
 
         StringArray rootNames, rootPaths;
         getRoots (rootNames, rootPaths);
 
-        if (rootPaths [index].isNotEmpty())
+        if (rootPaths[index].isNotEmpty())
         {
-            setRoot (File (rootPaths [index]));
+            setRoot (File (rootPaths[index]));
         }
         else
         {
@@ -513,7 +529,7 @@ void FileBrowserComponent::getDefaultRoots (StringArray& rootNames, StringArray&
 
     for (int i = 0; i < roots.size(); ++i)
     {
-        const File& drive = roots.getReference(i);
+        const File& drive = roots.getReference (i);
 
         String name (drive.getFullPathName());
         rootPaths.add (name);
@@ -523,53 +539,47 @@ void FileBrowserComponent::getDefaultRoots (StringArray& rootNames, StringArray&
             String volume (drive.getVolumeLabel());
 
             if (volume.isEmpty())
-                volume = TRANS("Hard Drive");
+                volume = TRANS ("Hard Drive");
 
             name << " [" << volume << ']';
         }
         else if (drive.isOnCDRomDrive())
         {
-            name << " [" << TRANS("CD/DVD drive") << ']';
+            name << " [" << TRANS ("CD/DVD drive") << ']';
         }
 
         rootNames.add (name);
     }
 
-    rootPaths.add (String());
-    rootNames.add (String());
+    rootPaths.add ({});
+    rootNames.add ({});
 
     rootPaths.add (File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName());
-    rootNames.add (TRANS("Documents"));
+    rootNames.add (TRANS ("Documents"));
     rootPaths.add (File::getSpecialLocation (File::userMusicDirectory).getFullPathName());
-    rootNames.add (TRANS("Music"));
+    rootNames.add (TRANS ("Music"));
     rootPaths.add (File::getSpecialLocation (File::userPicturesDirectory).getFullPathName());
-    rootNames.add (TRANS("Pictures"));
+    rootNames.add (TRANS ("Pictures"));
     rootPaths.add (File::getSpecialLocation (File::userDesktopDirectory).getFullPathName());
-    rootNames.add (TRANS("Desktop"));
+    rootNames.add (TRANS ("Desktop"));
 
    #elif JUCE_MAC
     rootPaths.add (File::getSpecialLocation (File::userHomeDirectory).getFullPathName());
-    rootNames.add (TRANS("Home folder"));
+    rootNames.add (TRANS ("Home folder"));
     rootPaths.add (File::getSpecialLocation (File::userDocumentsDirectory).getFullPathName());
-    rootNames.add (TRANS("Documents"));
+    rootNames.add (TRANS ("Documents"));
     rootPaths.add (File::getSpecialLocation (File::userMusicDirectory).getFullPathName());
-    rootNames.add (TRANS("Music"));
+    rootNames.add (TRANS ("Music"));
     rootPaths.add (File::getSpecialLocation (File::userPicturesDirectory).getFullPathName());
-    rootNames.add (TRANS("Pictures"));
+    rootNames.add (TRANS ("Pictures"));
     rootPaths.add (File::getSpecialLocation (File::userDesktopDirectory).getFullPathName());
-    rootNames.add (TRANS("Desktop"));
+    rootNames.add (TRANS ("Desktop"));
 
-    rootPaths.add (String());
-    rootNames.add (String());
+    rootPaths.add ({});
+    rootNames.add ({});
 
-    Array<File> volumes;
-    File vol ("/Volumes");
-    vol.findChildFiles (volumes, File::findDirectories, false);
-
-    for (int i = 0; i < volumes.size(); ++i)
+    for (auto& volume : File ("/Volumes").findChildFiles (File::findDirectories, false))
     {
-        const File& volume = volumes.getReference(i);
-
         if (volume.isDirectory() && ! volume.getFileName().startsWithChar ('.'))
         {
             rootPaths.add (volume.getFullPathName());
@@ -581,9 +591,9 @@ void FileBrowserComponent::getDefaultRoots (StringArray& rootNames, StringArray&
     rootPaths.add ("/");
     rootNames.add ("/");
     rootPaths.add (File::getSpecialLocation (File::userHomeDirectory).getFullPathName());
-    rootNames.add (TRANS("Home folder"));
+    rootNames.add (TRANS ("Home folder"));
     rootPaths.add (File::getSpecialLocation (File::userDesktopDirectory).getFullPathName());
-    rootNames.add (TRANS("Desktop"));
+    rootNames.add (TRANS ("Desktop"));
    #endif
 }
 
@@ -594,7 +604,7 @@ void FileBrowserComponent::getRoots (StringArray& rootNames, StringArray& rootPa
 
 void FileBrowserComponent::timerCallback()
 {
-    const bool isProcessActive = Process::isForegroundProcess();
+    const auto isProcessActive = detail::WindowingHelpers::isForegroundOrEmbeddedProcess (this);
 
     if (wasProcessActive != isProcessActive)
     {
@@ -604,3 +614,11 @@ void FileBrowserComponent::timerCallback()
             refresh();
     }
 }
+
+//==============================================================================
+std::unique_ptr<AccessibilityHandler> FileBrowserComponent::createAccessibilityHandler()
+{
+    return std::make_unique<AccessibilityHandler> (*this, AccessibilityRole::group);
+}
+
+} // namespace juce

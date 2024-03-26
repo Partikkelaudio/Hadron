@@ -2,40 +2,34 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_WINDOWSREGISTRY_H_INCLUDED
-#define JUCE_WINDOWSREGISTRY_H_INCLUDED
+namespace juce
+{
 
 #if JUCE_WINDOWS || DOXYGEN
 
 /**
     Contains some static helper functions for manipulating the MS Windows registry
     (Only available on Windows, of course!)
+
+    @tags{Core}
 */
 class JUCE_API  WindowsRegistry
 {
@@ -96,13 +90,13 @@ public:
     static bool JUCE_CALLTYPE valueExists (const String& regValuePath, WoW64Mode mode = WoW64_Default);
 
     /** Returns true if the given key exists in the registry. */
-    static bool JUCE_CALLTYPE keyExists (const String& regValuePath, WoW64Mode mode = WoW64_Default);
+    static bool JUCE_CALLTYPE keyExists (const String& regKeyPath, WoW64Mode mode = WoW64_Default);
 
     /** Deletes a registry value. */
-    static void JUCE_CALLTYPE deleteValue (const String& regValuePath, WoW64Mode mode = WoW64_Default);
+    static bool JUCE_CALLTYPE deleteValue (const String& regValuePath, WoW64Mode mode = WoW64_Default);
 
     /** Deletes a registry key (which is registry-talk for 'folder'). */
-    static void JUCE_CALLTYPE deleteKey (const String& regKeyPath, WoW64Mode mode = WoW64_Default);
+    static bool JUCE_CALLTYPE deleteKey (const String& regKeyPath, WoW64Mode mode = WoW64_Default);
 
     /** Creates a file association in the registry.
 
@@ -129,15 +123,18 @@ public:
                                                        bool registerForCurrentUserOnly,
                                                        WoW64Mode mode = WoW64_Default);
 
+   #ifndef DOXYGEN
     // DEPRECATED: use the other methods with a WoW64Mode parameter of WoW64_64bit instead.
-    JUCE_DEPRECATED (static String getValueWow64 (const String&, const String& defaultValue = String()));
-    JUCE_DEPRECATED (static bool valueExistsWow64 (const String&));
-    JUCE_DEPRECATED (static bool keyExistsWow64 (const String&));
+    [[deprecated]] static String getValueWow64 (const String&, const String& defaultValue = String());
+    [[deprecated]] static bool valueExistsWow64 (const String&);
+    [[deprecated]] static bool keyExistsWow64 (const String&);
+   #endif
 
 private:
-    WindowsRegistry() JUCE_DELETED_FUNCTION;
+    WindowsRegistry() = delete;
     JUCE_DECLARE_NON_COPYABLE (WindowsRegistry)
 };
 
 #endif
-#endif   // JUCE_WINDOWSREGISTRY_H_INCLUDED
+
+} // namespace juce

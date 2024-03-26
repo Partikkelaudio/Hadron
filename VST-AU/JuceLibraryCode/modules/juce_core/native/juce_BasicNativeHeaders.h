@@ -2,34 +2,25 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_BASICNATIVEHEADERS_H_INCLUDED
-#define JUCE_BASICNATIVEHEADERS_H_INCLUDED
+#pragma once
 
 #undef T
 
@@ -37,53 +28,24 @@
 #if JUCE_MAC || JUCE_IOS
 
  #if JUCE_IOS
+  #if JUCE_MODULE_AVAILABLE_juce_opengl
+   #define GLES_SILENCE_DEPRECATION 1
+  #endif
+
+  #define Component CarbonDummyCompName
   #import <Foundation/Foundation.h>
+  #undef Component
+
   #import <UIKit/UIKit.h>
   #import <CoreData/CoreData.h>
   #import <MobileCoreServices/MobileCoreServices.h>
   #include <sys/fcntl.h>
  #else
-  #import <Cocoa/Cocoa.h>
-  #if (! defined MAC_OS_X_VERSION_10_12) || MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_12
-   #define NSEventModifierFlagCommand       NSCommandKeyMask
-   #define NSEventModifierFlagControl       NSControlKeyMask
-   #define NSEventModifierFlagHelp          NSHelpKeyMask
-   #define NSEventModifierFlagNumericPad    NSNumericPadKeyMask
-   #define NSEventModifierFlagOption        NSAlternateKeyMask
-   #define NSEventModifierFlagShift         NSShiftKeyMask
-   #define NSCompositingOperationSourceOver NSCompositeSourceOver
-   #define NSEventMaskApplicationDefined    NSApplicationDefinedMask
-   #define NSEventTypeApplicationDefined    NSApplicationDefined
-   #define NSEventTypeCursorUpdate          NSCursorUpdate
-   #define NSEventTypeMouseMoved            NSMouseMoved
-   #define NSEventTypeLeftMouseDown         NSLeftMouseDown
-   #define NSEventTypeRightMouseDown        NSRightMouseDown
-   #define NSEventTypeOtherMouseDown        NSOtherMouseDown
-   #define NSEventTypeLeftMouseUp           NSLeftMouseUp
-   #define NSEventTypeRightMouseUp          NSRightMouseUp
-   #define NSEventTypeOtherMouseUp          NSOtherMouseUp
-   #define NSEventTypeLeftMouseDragged      NSLeftMouseDragged
-   #define NSEventTypeRightMouseDragged     NSRightMouseDragged
-   #define NSEventTypeOtherMouseDragged     NSOtherMouseDragged
-   #define NSEventTypeScrollWheel           NSScrollWheel
-   #define NSEventTypeKeyDown               NSKeyDown
-   #define NSEventTypeKeyUp                 NSKeyUp
-   #define NSEventTypeFlagsChanged          NSFlagsChanged
-   #define NSEventMaskAny                   NSAnyEventMask
-   #define NSWindowStyleMaskBorderless      NSBorderlessWindowMask
-   #define NSWindowStyleMaskClosable        NSClosableWindowMask
-   #define NSWindowStyleMaskFullScreen      NSFullScreenWindowMask
-   #define NSWindowStyleMaskMiniaturizable  NSMiniaturizableWindowMask
-   #define NSWindowStyleMaskResizable       NSResizableWindowMask
-   #define NSWindowStyleMaskTitled          NSTitledWindowMask
-   #define NSAlertStyleCritical             NSCriticalAlertStyle
-   #define NSControlSizeRegular             NSRegularControlSize
-   #define NSEventTypeMouseEntered          NSMouseEntered
-   #define NSEventTypeMouseExited           NSMouseExited
-   #define NSAlertStyleInformational        NSInformationalAlertStyle
-   #define NSEventTypeTabletPoint           NSTabletPoint
-   #define NSEventTypeTabletProximity       NSTabletProximity
+  #if JUCE_MODULE_AVAILABLE_juce_opengl
+   #define GL_SILENCE_DEPRECATION 1
   #endif
+
+  #import <Cocoa/Cocoa.h>
   #import <CoreAudio/HostTime.h>
   #include <sys/dir.h>
  #endif
@@ -105,6 +67,7 @@
  #include <objc/runtime.h>
  #include <objc/objc.h>
  #include <objc/message.h>
+ #include <poll.h>
 
 //==============================================================================
 #elif JUCE_WINDOWS
@@ -122,17 +85,20 @@
 
  #define NOMINMAX
 
+ #define _WINSOCK_DEPRECATED_NO_WARNINGS 1
  #define STRICT 1
  #define WIN32_LEAN_AND_MEAN 1
  #if JUCE_MINGW
-  #define _WIN32_WINNT 0x0501
+  #if ! defined (_WIN32_WINNT)
+   #define _WIN32_WINNT 0x0600
+  #endif
  #else
   #define _WIN32_WINNT 0x0602
  #endif
  #define _UNICODE 1
  #define UNICODE 1
  #ifndef _WIN32_IE
-  #define _WIN32_IE 0x0500
+  #define _WIN32_IE 0x0501
  #endif
 
  #include <windows.h>
@@ -142,13 +108,18 @@
  #include <ctime>
  #include <wininet.h>
  #include <nb30.h>
+ #include <winsock2.h>
+ #include <ws2tcpip.h>
  #include <iphlpapi.h>
+ #include <accctrl.h>
+ #include <aclapi.h>
  #include <mapi.h>
  #include <float.h>
  #include <process.h>
  #include <shlobj.h>
  #include <shlwapi.h>
  #include <mmsystem.h>
+ #include <winioctl.h>
 
  #if JUCE_MINGW
   #include <basetyps.h>
@@ -169,10 +140,10 @@
 
  #if JUCE_MSVC
   #pragma warning (pop)
-  #pragma warning (4: 4511 4512 4100 /*4365*/)  // (enable some warnings that are turned off in VC8)
+  #pragma warning (4: 4511 4512 4100)
  #endif
 
- #if JUCE_MSVC && ! JUCE_DONT_AUTOLINK_TO_WIN32_LIBRARIES
+ #if ! JUCE_MINGW && ! JUCE_DONT_AUTOLINK_TO_WIN32_LIBRARIES
   #pragma comment (lib, "kernel32.lib")
   #pragma comment (lib, "user32.lib")
   #pragma comment (lib, "wininet.lib")
@@ -211,33 +182,71 @@
 
 //==============================================================================
 #elif JUCE_LINUX
- #include <sched.h>
- #include <pthread.h>
- #include <sys/time.h>
- #include <errno.h>
- #include <sys/stat.h>
- #include <sys/dir.h>
- #include <sys/ptrace.h>
- #include <sys/vfs.h>
- #include <sys/wait.h>
- #include <sys/mman.h>
- #include <fnmatch.h>
- #include <utime.h>
- #include <pwd.h>
- #include <fcntl.h>
- #include <dlfcn.h>
- #include <netdb.h>
  #include <arpa/inet.h>
- #include <netinet/in.h>
- #include <sys/types.h>
- #include <sys/ioctl.h>
- #include <sys/socket.h>
+ #include <dlfcn.h>
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <fnmatch.h>
  #include <net/if.h>
- #include <sys/sysinfo.h>
- #include <sys/file.h>
- #include <sys/prctl.h>
+ #include <netdb.h>
+ #include <netinet/in.h>
+ #include <pthread.h>
+ #include <pwd.h>
+ #include <sched.h>
  #include <signal.h>
  #include <stddef.h>
+ #include <sys/dir.h>
+ #include <sys/file.h>
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+ #include <sys/prctl.h>
+ #include <sys/ptrace.h>
+ #include <sys/socket.h>
+ #include <sys/stat.h>
+ #include <sys/syscall.h>
+ #include <sys/sysinfo.h>
+ #include <sys/time.h>
+ #include <sys/types.h>
+ #include <sys/vfs.h>
+ #include <sys/wait.h>
+ #include <sys/timerfd.h>
+ #include <sys/eventfd.h>
+ #include <utime.h>
+ #include <poll.h>
+
+//==============================================================================
+#elif JUCE_BSD
+ #include <arpa/inet.h>
+ #include <dirent.h>
+ #include <dlfcn.h>
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <fnmatch.h>
+ #include <ifaddrs.h>
+ #include <langinfo.h>
+ #include <net/if.h>
+ #include <net/if_dl.h>
+ #include <netdb.h>
+ #include <netinet/in.h>
+ #include <pthread.h>
+ #include <pwd.h>
+ #include <sched.h>
+ #include <signal.h>
+ #include <stddef.h>
+ #include <sys/file.h>
+ #include <sys/ioctl.h>
+ #include <sys/mman.h>
+ #include <sys/mount.h>
+ #include <sys/ptrace.h>
+ #include <sys/socket.h>
+ #include <sys/stat.h>
+ #include <sys/sysctl.h>
+ #include <sys/time.h>
+ #include <sys/types.h>
+ #include <sys/user.h>
+ #include <sys/wait.h>
+ #include <utime.h>
+ #include <poll.h>
 
 //==============================================================================
 #elif JUCE_ANDROID
@@ -258,6 +267,14 @@
  #include <dirent.h>
  #include <fnmatch.h>
  #include <sys/wait.h>
+ #include <sys/timerfd.h>
+ #include <sys/eventfd.h>
+ #include <android/api-level.h>
+ #include <poll.h>
+
+ // If you are getting include errors here, then you need to re-build
+ // the Projucer and re-save your .jucer file.
+ #include <cpu-features.h>
 #endif
 
 // Need to clear various moronic redefinitions made by system headers..
@@ -265,5 +282,3 @@
 #undef min
 #undef direct
 #undef check
-
-#endif   // JUCE_BASICNATIVEHEADERS_H_INCLUDED
