@@ -2,29 +2,29 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2015 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of either:
-   a) the GPL v2 (or any later version)
-   b) the Affero GPL v3
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Details of these licenses can be found at: www.gnu.org/licenses
+   By using JUCE, you agree to the terms of both the JUCE 7 End-User License
+   Agreement and JUCE Privacy Policy.
 
-   JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-   A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+   End User License Agreement: www.juce.com/juce-7-licence
+   Privacy Policy: www.juce.com/juce-privacy-policy
 
-   ------------------------------------------------------------------------------
+   Or: You may also use this code under the terms of the GPL v3 (see
+   www.gnu.org/licenses).
 
-   To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_TABLELISTBOX_H_INCLUDED
-#define JUCE_TABLELISTBOX_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -34,15 +34,17 @@
     table cells, and reacting to events.
 
     @see TableListBox
+
+    @tags{GUI}
 */
 class JUCE_API  TableListBoxModel
 {
 public:
     //==============================================================================
-    TableListBoxModel()  {}
+    TableListBoxModel() = default;
 
     /** Destructor. */
-    virtual ~TableListBoxModel()  {}
+    virtual ~TableListBoxModel() = default;
 
     //==============================================================================
     /** This must return the number of rows currently in the table.
@@ -185,11 +187,10 @@ public:
     */
     virtual var getDragSourceDescription (const SparseSet<int>& currentlySelectedRows);
 
-private:
-   #if JUCE_CATCH_DEPRECATED_CODE_MISUSE
-    // This method's signature has changed to take a MouseEvent parameter - please update your code!
-    JUCE_DEPRECATED_WITH_BODY (virtual int backgroundClicked(), { return 0; })
-   #endif
+    /** Called when starting a drag operation on a list row to determine whether the item may be
+        dragged to other windows. Returns true by default.
+    */
+    virtual bool mayDragToExternalWindows() const   { return true; }
 };
 
 
@@ -202,6 +203,8 @@ private:
 
 
     @see TableListBoxModel, TableHeaderComponent
+
+    @tags{GUI}
 */
 class JUCE_API  TableListBox   : public ListBox,
                                  private ListBoxModel,
@@ -220,7 +223,7 @@ public:
                   TableListBoxModel* model = nullptr);
 
     /** Destructor. */
-    ~TableListBox();
+    ~TableListBox() override;
 
     //==============================================================================
     /** Changes the TableListBoxModel that is being used for this table.
@@ -230,7 +233,7 @@ public:
     void setModel (TableListBoxModel* newModel);
 
     /** Returns the model currently in use. */
-    TableListBoxModel* getModel() const noexcept                    { return model; }
+    TableListBoxModel* getTableListBoxModel() const noexcept        { return model; }
 
     //==============================================================================
     /** Returns the header component being used in this table. */
@@ -241,7 +244,7 @@ public:
         when it's no longer needed.
         The pointer passed in may not be null.
     */
-    void setHeader (TableHeaderComponent* newHeader);
+    void setHeader (std::unique_ptr<TableHeaderComponent> newHeader);
 
     /** Changes the height of the table header component.
         @see getHeaderHeight
@@ -328,22 +331,26 @@ public:
     void tableColumnDraggingChanged (TableHeaderComponent*, int) override;
     /** @internal */
     void resized() override;
+    /** @internal */
+    std::unique_ptr<AccessibilityHandler> createAccessibilityHandler() override;
 
+    /** Returns the model currently in use. */
+    [[deprecated ("This function hides the non-virtual ListBox::getModel, use getTableListBoxModel instead")]]
+    TableListBoxModel* getModel() const noexcept  { return getTableListBoxModel(); }
 
 private:
     //==============================================================================
     class Header;
     class RowComp;
 
-    TableHeaderComponent* header;
+    TableHeaderComponent* header = nullptr;
     TableListBoxModel* model;
-    int columnIdNowBeingDragged;
-    bool autoSizeOptionsShown;
+    int columnIdNowBeingDragged = 0;
+    bool autoSizeOptionsShown = true;
 
     void updateColumnComponents() const;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TableListBox)
 };
 
-
-#endif   // JUCE_TABLELISTBOX_H_INCLUDED
+} // namespace juce

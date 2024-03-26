@@ -2,47 +2,36 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_ARRAYALLOCATIONBASE_H_INCLUDED
-#define JUCE_ARRAYALLOCATIONBASE_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
     Implements some basic array storage allocation functions.
 
-    This class isn't really for public use - it's used by the other
-    array classes, but might come in handy for some purposes.
+    This class isn't really for public use - it used to be part of the
+    container classes but has since been superseded by ArrayBase. Eventually
+    it will be removed from the API.
 
-    It inherits from a critical section class to allow the arrays to use
-    the "empty base class optimisation" pattern to reduce their footprint.
-
-    @see Array, OwnedArray, ReferenceCountedArray
+    @tags{Core}
 */
 template <class ElementType, class TypeOfCriticalSectionToUse>
 class ArrayAllocationBase  : public TypeOfCriticalSectionToUse
@@ -50,30 +39,23 @@ class ArrayAllocationBase  : public TypeOfCriticalSectionToUse
 public:
     //==============================================================================
     /** Creates an empty array. */
-    ArrayAllocationBase() noexcept
-        : numAllocated (0)
-    {
-    }
+    ArrayAllocationBase() = default;
 
     /** Destructor. */
-    ~ArrayAllocationBase() noexcept
-    {
-    }
+    ~ArrayAllocationBase() = default;
 
-   #if JUCE_COMPILER_SUPPORTS_MOVE_SEMANTICS
-    ArrayAllocationBase (ArrayAllocationBase<ElementType, TypeOfCriticalSectionToUse>&& other) noexcept
-        : elements (static_cast<HeapBlock<ElementType>&&> (other.elements)),
+    ArrayAllocationBase (ArrayAllocationBase&& other) noexcept
+        : elements (std::move (other.elements)),
           numAllocated (other.numAllocated)
     {
     }
 
-    ArrayAllocationBase& operator= (ArrayAllocationBase<ElementType, TypeOfCriticalSectionToUse>&& other) noexcept
+    ArrayAllocationBase& operator= (ArrayAllocationBase&& other) noexcept
     {
-        elements = static_cast<HeapBlock<ElementType>&&> (other.elements);
+        elements = std::move (other.elements);
         numAllocated = other.numAllocated;
         return *this;
     }
-   #endif
 
     //==============================================================================
     /** Changes the amount of storage allocated.
@@ -83,7 +65,7 @@ public:
 
         @param numElements  the number of elements that are needed
     */
-    void setAllocatedSize (const int numElements)
+    void setAllocatedSize (int numElements)
     {
         if (numAllocated != numElements)
         {
@@ -104,7 +86,7 @@ public:
 
         @param minNumElements  the minimum number of elements that are needed
     */
-    void ensureAllocatedSize (const int minNumElements)
+    void ensureAllocatedSize (int minNumElements)
     {
         if (minNumElements > numAllocated)
             setAllocatedSize ((minNumElements + minNumElements / 2 + 8) & ~7);
@@ -115,14 +97,14 @@ public:
     /** Minimises the amount of storage allocated so that it's no more than
         the given number of elements.
     */
-    void shrinkToNoMoreThan (const int maxNumElements)
+    void shrinkToNoMoreThan (int maxNumElements)
     {
         if (maxNumElements < numAllocated)
             setAllocatedSize (maxNumElements);
     }
 
     /** Swap the contents of two objects. */
-    void swapWith (ArrayAllocationBase <ElementType, TypeOfCriticalSectionToUse>& other) noexcept
+    void swapWith (ArrayAllocationBase& other) noexcept
     {
         elements.swapWith (other.elements);
         std::swap (numAllocated, other.numAllocated);
@@ -130,11 +112,10 @@ public:
 
     //==============================================================================
     HeapBlock<ElementType> elements;
-    int numAllocated;
+    int numAllocated = 0;
 
 private:
     JUCE_DECLARE_NON_COPYABLE (ArrayAllocationBase)
 };
 
-
-#endif   // JUCE_ARRAYALLOCATIONBASE_H_INCLUDED
+} // namespace juce

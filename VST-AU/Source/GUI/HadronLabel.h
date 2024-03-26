@@ -5,8 +5,8 @@
 class HadronLabel : public Label
 {
 public:
-	HadronLabel(const String& name = String::empty,
-                const String& labelText = String::empty);
+	HadronLabel(const String& name = String(),
+                const String& labelText = String());
 	~HadronLabel();
 
 private:

@@ -2,31 +2,35 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2015 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of either:
-   a) the GPL v2 (or any later version)
-   b) the Affero GPL v3
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Details of these licenses can be found at: www.gnu.org/licenses
+   By using JUCE, you agree to the terms of both the JUCE 7 End-User License
+   Agreement and JUCE Privacy Policy.
 
-   JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-   A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+   End User License Agreement: www.juce.com/juce-7-licence
+   Privacy Policy: www.juce.com/juce-privacy-policy
 
-   ------------------------------------------------------------------------------
+   Or: You may also use this code under the terms of the GPL v3 (see
+   www.gnu.org/licenses).
 
-   To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
+
+namespace juce
+{
 
 namespace RelativeRectangleHelpers
 {
     inline void skipComma (String::CharPointerType& s)
     {
-        s = s.findEndOfWhitespace();
+        s.incrementToEndOfWhitespace();
 
         if (*s == ',')
             ++s;
@@ -47,6 +51,11 @@ namespace RelativeRectangleHelpers
                 case RelativeCoordinate::StandardStrings::right:
                 case RelativeCoordinate::StandardStrings::top:
                 case RelativeCoordinate::StandardStrings::bottom:   return false;
+                case RelativeCoordinate::StandardStrings::width:
+                case RelativeCoordinate::StandardStrings::height:
+                case RelativeCoordinate::StandardStrings::parent:
+                case RelativeCoordinate::StandardStrings::unknown:
+
                 default: break;
             }
 
@@ -55,7 +64,7 @@ namespace RelativeRectangleHelpers
         else
         {
             for (int i = e.getNumInputs(); --i >= 0;)
-                if (dependsOnSymbolsOtherThanThis (e.getInput(i)))
+                if (dependsOnSymbolsOtherThanThis (e.getInput (i)))
                     return true;
         }
 
@@ -107,12 +116,12 @@ bool RelativeRectangle::operator!= (const RelativeRectangle& other) const noexce
 
 //==============================================================================
 // An expression context that can evaluate expressions using "this"
-class RelativeRectangleLocalScope  : public Expression::Scope
+class RelativeRectangleLocalScope final : public Expression::Scope
 {
 public:
     RelativeRectangleLocalScope (const RelativeRectangle& rect_)  : rect (rect_) {}
 
-    Expression getSymbolValue (const String& symbol) const
+    Expression getSymbolValue (const String& symbol) const override
     {
         switch (RelativeCoordinate::StandardStrings::getTypeOf (symbol))
         {
@@ -122,6 +131,10 @@ public:
             case RelativeCoordinate::StandardStrings::top:      return rect.top.getExpression();
             case RelativeCoordinate::StandardStrings::right:    return rect.right.getExpression();
             case RelativeCoordinate::StandardStrings::bottom:   return rect.bottom.getExpression();
+            case RelativeCoordinate::StandardStrings::width:
+            case RelativeCoordinate::StandardStrings::height:
+            case RelativeCoordinate::StandardStrings::parent:
+            case RelativeCoordinate::StandardStrings::unknown:
             default: break;
         }
 
@@ -184,7 +197,7 @@ void RelativeRectangle::renameSymbol (const Expression::Symbol& oldSymbol, const
 }
 
 //==============================================================================
-class RelativeRectangleComponentPositioner  : public RelativeCoordinatePositionerBase
+class RelativeRectangleComponentPositioner final : public RelativeCoordinatePositionerBase
 {
 public:
     RelativeRectangleComponentPositioner (Component& comp, const RelativeRectangle& r)
@@ -260,3 +273,5 @@ void RelativeRectangle::applyToComponent (Component& component) const
         component.setBounds (resolve (nullptr).getSmallestIntegerContainer());
     }
 }
+
+} // namespace juce

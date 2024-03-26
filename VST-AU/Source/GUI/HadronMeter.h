@@ -5,7 +5,7 @@
 class HadronMeter : public Component
 {
 public:
-	HadronMeter(String name = String::empty);
+    HadronMeter(String name = String());
 	~HadronMeter();
 
     void setValue(double value_x);

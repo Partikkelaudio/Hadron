@@ -2,55 +2,44 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_MPEINSTRUMENT_H_INCLUDED
-#define JUCE_MPEINSTRUMENT_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
-/*
+/**
     This class represents an instrument handling MPE.
 
-    It has an MPE zone layout and maintans a state of currently
+    It has an MPE zone layout and maintains a state of currently
     active (playing) notes and the values of their dimensions of expression.
 
     You can trigger and modulate notes:
-     - by passing MIDI messages with the method processNextMidiEvent;
-     - by directly calling the methods noteOn, noteOff etc.
+      - by passing MIDI messages with the method processNextMidiEvent;
+      - by directly calling the methods noteOn, noteOff etc.
 
     The class implements the channel and note management logic specified in
     MPE. If you pass it a message, it will know what notes on what
     channels (if any) should be affected by that message.
 
-    The class has a Listener class with the three callbacks MPENoteAdded,
-    MPENoteChanged, and MPENoteFinished. Implement such a
-    Listener class to react to note changes and trigger some functionality for
-    your application that depends on the MPE note state.
+    The class has a Listener class that can be used to react to note and
+    state changes and trigger some functionality for your application.
     For example, you can use this class to write an MPE visualiser.
 
     If you want to write a real-time audio synth with MPE functionality,
@@ -58,18 +47,23 @@
     the ability to render audio and to manage voices.
 
     @see MPENote, MPEZoneLayout, MPESynthesiser
+
+    @tags{Audio}
 */
 class JUCE_API  MPEInstrument
 {
 public:
-
     /** Constructor.
-        This will construct an MPE instrument with initially no MPE zones.
 
-        In order to process incoming MIDI, call setZoneLayout, define the layout
-        via MIDI RPN messages, or set the instrument to legacy mode.
+        This will construct an MPE instrument with inactive lower and upper zones.
+
+        In order to process incoming MIDI messages call setZoneLayout, use the MPEZoneLayout
+        constructor, define the layout via MIDI RPN messages, or set the instrument to legacy mode.
     */
     MPEInstrument() noexcept;
+
+    /** Constructs an MPE instrument with the specified zone layout. */
+    MPEInstrument (MPEZoneLayout layout);
 
     /** Destructor. */
     virtual ~MPEInstrument();
@@ -93,16 +87,26 @@ public:
 
     /** Returns true if the given MIDI channel (1-16) is a note channel in any
         of the MPEInstrument's MPE zones; false otherwise.
+
         When in legacy mode, this will return true if the given channel is
         contained in the current legacy mode channel range; false otherwise.
     */
-    bool isNoteChannel (int midiChannel) const noexcept;
+    bool isMemberChannel (int midiChannel) const noexcept;
 
-    /** Returns true if the given MIDI channel (1-16) is a master channel in any
-        of the MPEInstrument's MPE zones; false otherwise.
-        When in legacy mode, this will always return false.
+    /** Returns true if the given MIDI channel (1-16) is a master channel (channel
+        1 or 16).
+
+        In legacy mode, this will always return false.
     */
     bool isMasterChannel (int midiChannel) const noexcept;
+
+    /** Returns true if the given MIDI channel (1-16) is used by any of the
+        MPEInstrument's MPE zones; false otherwise.
+
+        When in legacy mode, this will return true if the given channel is
+        contained in the current legacy mode channel range; false otherwise.
+     */
+    bool isUsingChannel (int midiChannel) const noexcept;
 
     //==============================================================================
     /** The MPE note tracking mode. In case there is more than one note playing
@@ -114,10 +118,10 @@ public:
     */
     enum TrackingMode
     {
-        lastNotePlayedOnChannel, //! The most recent note on the channel that is still played (key down and/or sustained)
-        lowestNoteOnChannel,     //! The lowest note (by initialNote) on the channel with the note key still down
-        highestNoteOnChannel,    //! The highest note (by initialNote) on the channel with the note key still down
-        allNotesOnChannel        //! All notes on the channel (key down and/or sustained)
+        lastNotePlayedOnChannel, /**< The most recent note on the channel that is still played (key down and/or sustained). */
+        lowestNoteOnChannel,     /**< The lowest note (by initialNote) on the channel with the note key still down. */
+        highestNoteOnChannel,    /**< The highest note (by initialNote) on the channel with the note key still down. */
+        allNotesOnChannel        /**< All notes on the channel (key down and/or sustained). */
     };
 
     /** Set the MPE tracking mode for the pressure dimension. */
@@ -141,19 +145,23 @@ public:
     //==============================================================================
     /** Request a note-on on the given channel, with the given initial note
         number and velocity.
+
         If the message arrives on a valid note channel, this will create a
         new MPENote and call the noteAdded callback.
     */
     virtual void noteOn (int midiChannel, int midiNoteNumber, MPEValue midiNoteOnVelocity);
 
-    /** Request a note-off. If there is a matching playing note, this will
-        release the note (except if it is sustained by a sustain or sostenuto
-        pedal) and call the noteReleased callback.
+    /** Request a note-off.
+
+        If there is a matching playing note, this will release the note
+        (except if it is sustained by a sustain or sostenuto pedal) and call
+        the noteReleased callback.
     */
     virtual void noteOff (int midiChannel, int midiNoteNumber, MPEValue midiNoteOffVelocity);
 
     /** Request a pitchbend on the given channel with the given value (in units
         of MIDI pitchwheel position).
+
         Internally, this will determine whether the pitchwheel move is a
         per-note pitchbend or a master pitchbend (depending on midiChannel),
         take the correct per-note or master pitchbend range of the affected MPE
@@ -162,6 +170,7 @@ public:
     virtual void pitchbend (int midiChannel, MPEValue pitchbend);
 
     /** Request a pressure change on the given channel with the given value.
+
         This will modify the pressure dimension of the note currently held down
         on this channel (if any). If the channel is a zone master channel,
         the pressure change will be broadcast to all notes in this zone.
@@ -170,66 +179,77 @@ public:
 
     /** Request a third dimension (timbre) change on the given channel with the
         given value.
+
         This will modify the timbre dimension of the note currently held down
         on this channel (if any). If the channel is a zone master channel,
         the timbre change will be broadcast to all notes in this zone.
     */
     virtual void timbre (int midiChannel, MPEValue value);
 
-    /** Request a sustain pedal press or release. If midiChannel is a zone's
-        master channel, this will act on all notes in that zone; otherwise,
-        nothing will happen.
+    /** Request a poly-aftertouch change for a given note number.
+
+        The change will be broadcast to all notes sharing the channel and note
+        number of the change message.
+     */
+    virtual void polyAftertouch (int midiChannel, int midiNoteNumber, MPEValue value);
+
+    /** Request a sustain pedal press or release.
+
+        If midiChannel is a zone's master channel, this will act on all notes in
+        that zone; otherwise, nothing will happen.
     */
     virtual void sustainPedal (int midiChannel, bool isDown);
 
-    /** Request a sostenuto pedal press or release. If midiChannel is a zone's
-        master channel, this will act on all notes in that zone; otherwise,
-        nothing will happen.
+    /** Request a sostenuto pedal press or release.
+
+        If midiChannel is a zone's master channel, this will act on all notes in
+        that zone; otherwise, nothing will happen.
     */
     virtual void sostenutoPedal (int midiChannel, bool isDown);
 
     /** Discard all currently playing notes.
+
         This will also call the noteReleased listener callback for all of them.
     */
     void releaseAllNotes();
 
     //==============================================================================
-    /** Returns the number of MPE notes currently played by the
-        instrument.
-    */
+    /** Returns the number of MPE notes currently played by the instrument. */
     int getNumPlayingNotes() const noexcept;
 
-    /** Returns the note at the given index. If there is no such note, returns
-        an invalid MPENote. The notes are sorted such that the most recently
-        added note is the last element.
+    /** Returns the note at the given index.
+
+        If there is no such note, returns an invalid MPENote. The notes are sorted
+        such that the most recently added note is the last element.
     */
     MPENote getNote (int index) const noexcept;
 
     /** Returns the note currently playing on the given midiChannel with the
-        specified initial MIDI note number, if there is such a note.
-        Otherwise, this returns an invalid MPENote
-        (check with note.isValid() before use!)
+        specified initial MIDI note number, if there is such a note. Otherwise,
+        this returns an invalid MPENote (check with note.isValid() before use!)
     */
     MPENote getNote (int midiChannel, int midiNoteNumber) const noexcept;
 
+    /** Returns the note with a given ID. */
+    MPENote getNoteWithID (uint16 noteID) const noexcept;
+
     /** Returns the most recent note that is playing on the given midiChannel
         (this will be the note which has received the most recent note-on without
-        a corresponding note-off), if there is such a note.
-        Otherwise, this returns an invalid MPENote
-        (check with note.isValid() before use!)
+        a corresponding note-off), if there is such a note. Otherwise, this returns an
+        invalid MPENote (check with note.isValid() before use!)
     */
     MPENote getMostRecentNote (int midiChannel) const noexcept;
 
-    /** Returns the most recent note that is not the note passed in.
-        If there is no such note, this returns an invalid MPENote
-        (check with note.isValid() before use!)
+    /** Returns the most recent note that is not the note passed in. If there is no
+        such note, this returns an invalid MPENote (check with note.isValid() before use!).
+
         This helper method might be useful for some custom voice handling algorithms.
     */
     MPENote getMostRecentNoteOtherThan (MPENote otherThanThisNote) const noexcept;
 
     //==============================================================================
-    /** Derive from this class to be informed about any changes in the expressive
-        MIDI notes played by this instrument.
+    /** Derive from this class to be informed about any changes in the MPE notes played
+        by this instrument, and any changes to its zone layout.
 
         Note: This listener type receives its callbacks immediately, and not
         via the message thread (so you might be for example in the MIDI thread).
@@ -240,56 +260,65 @@ public:
     {
     public:
         /** Destructor. */
-        virtual ~Listener() {}
+        virtual ~Listener() = default;
 
-        /** Implement this callback to be informed whenever a new expressive
-            MIDI note is triggered.
+        /** Implement this callback to be informed whenever a new expressive MIDI
+            note is triggered.
         */
-        virtual void noteAdded (MPENote newNote) = 0;
+        virtual void noteAdded (MPENote newNote);
 
-        /** Implement this callback to be informed whenever a currently
-            playing MPE note's pressure value changes.
+        /** Implement this callback to be informed whenever a currently playing
+            MPE note's pressure value changes.
         */
-        virtual void notePressureChanged (MPENote changedNote) = 0;
+        virtual void notePressureChanged (MPENote changedNote);
 
-        /** Implement this callback to be informed whenever a currently
-            playing MPE note's pitchbend value changes.
+        /** Implement this callback to be informed whenever a currently playing
+            MPE note's pitchbend value changes.
+
             Note: This can happen if the note itself is bent, if there is a
             master channel pitchbend event, or if both occur simultaneously.
             Call MPENote::getFrequencyInHertz to get the effective note frequency.
         */
-        virtual void notePitchbendChanged (MPENote changedNote) = 0;
+        virtual void notePitchbendChanged (MPENote changedNote);
 
-        /** Implement this callback to be informed whenever a currently
-            playing MPE note's timbre value changes.
+        /** Implement this callback to be informed whenever a currently playing
+            MPE note's timbre value changes.
         */
-        virtual void noteTimbreChanged (MPENote changedNote) = 0;
+        virtual void noteTimbreChanged (MPENote changedNote);
 
         /** Implement this callback to be informed whether a currently playing
             MPE note's key state (whether the key is down and/or the note is
             sustained) has changed.
-            Note: if the key state changes to MPENote::off, noteReleased is
+
+            Note: If the key state changes to MPENote::off, noteReleased is
             called instead.
         */
-        virtual void noteKeyStateChanged (MPENote changedNote) = 0;
+        virtual void noteKeyStateChanged (MPENote changedNote);
 
         /** Implement this callback to be informed whenever an MPE note
             is released (either by a note-off message, or by a sustain/sostenuto
             pedal release for a note that already received a note-off),
             and should therefore stop playing.
         */
-        virtual void noteReleased (MPENote finishedNote) = 0;
+        virtual void noteReleased (MPENote finishedNote);
+
+        /** Implement this callback to be informed whenever the MPE zone layout
+            or legacy mode settings of this instrument have been changed.
+        */
+        virtual void zoneLayoutChanged();
     };
 
     //==============================================================================
     /** Adds a listener. */
-    void addListener (Listener* listenerToAdd) noexcept;
+    void addListener (Listener* listenerToAdd);
 
     /** Removes a listener. */
-    void removeListener (Listener* listenerToRemove) noexcept;
+    void removeListener (Listener* listenerToRemove);
 
     //==============================================================================
-    /** Puts the instrument into legacy mode.
+    /** Puts the instrument into legacy mode. If legacy mode is already enabled this method
+        does nothing.
+
         As a side effect, this will discard all currently playing notes,
         and call noteReleased for all of them.
 
@@ -326,28 +355,30 @@ public:
     /** Re-sets the pitchbend range in semitones (0-96) to be used for notes when in legacy mode. */
     void setLegacyModePitchbendRange (int pitchbendRange);
 
-private:
+protected:
     //==============================================================================
     CriticalSection lock;
+
+private:
+    //==============================================================================
     Array<MPENote> notes;
     MPEZoneLayout zoneLayout;
     ListenerList<Listener> listeners;
 
     uint8 lastPressureLowerBitReceivedOnChannel[16];
     uint8 lastTimbreLowerBitReceivedOnChannel[16];
-    bool isNoteChannelSustained[16];
+    bool isMemberChannelSustained[16];
 
     struct LegacyMode
     {
-        bool isEnabled;
+        bool isEnabled = false;
         Range<int> channelRange;
-        int pitchbendRange;
+        int pitchbendRange = 2;
     };
 
     struct MPEDimension
     {
-        MPEDimension() noexcept  : trackingMode (lastNotePlayedOnChannel) {}
-        TrackingMode trackingMode;
+        TrackingMode trackingMode = lastNotePlayedOnChannel;
         MPEValue lastValueReceivedOnChannel[16];
         MPEValue MPENote::* value;
         MPEValue& getValue (MPENote& note) noexcept   { return note.*(value); }
@@ -356,10 +387,12 @@ private:
     LegacyMode legacyMode;
     MPEDimension pitchbendDimension, pressureDimension, timbreDimension;
 
+    void resetLastReceivedValues();
+
     void updateDimension (int midiChannel, MPEDimension&, MPEValue);
-    void updateDimensionMaster (MPEZone&, MPEDimension&, MPEValue);
+    void updateDimensionMaster (bool, MPEDimension&, MPEValue);
     void updateDimensionForNote (MPENote&, MPEDimension&, MPEValue);
-    void callListenersDimensionChanged (MPENote&, MPEDimension&);
+    void callListenersDimensionChanged (const MPENote&, const MPEDimension&);
     MPEValue getInitialValueForNewNote (int midiChannel, MPEDimension&) const;
 
     void processMidiNoteOnMessage (const MidiMessage&);
@@ -367,22 +400,27 @@ private:
     void processMidiPitchWheelMessage (const MidiMessage&);
     void processMidiChannelPressureMessage (const MidiMessage&);
     void processMidiControllerMessage (const MidiMessage&);
-    void processMidiAllNotesOffMessage (const MidiMessage&);
+    void processMidiResetAllControllersMessage (const MidiMessage&);
+    void processMidiAfterTouchMessage (const MidiMessage&);
     void handlePressureMSB (int midiChannel, int value) noexcept;
     void handlePressureLSB (int midiChannel, int value) noexcept;
     void handleTimbreMSB (int midiChannel, int value) noexcept;
     void handleTimbreLSB (int midiChannel, int value) noexcept;
     void handleSustainOrSostenuto (int midiChannel, bool isDown, bool isSostenuto);
 
-    MPENote* getNotePtr (int midiChannel, int midiNoteNumber) const noexcept;
-    MPENote* getNotePtr (int midiChannel, TrackingMode) const noexcept;
-    MPENote* getLastNotePlayedPtr (int midiChannel) const noexcept;
-    MPENote* getHighestNotePtr (int midiChannel) const noexcept;
-    MPENote* getLowestNotePtr (int midiChannel) const noexcept;
+    const MPENote* getNotePtr (int midiChannel, int midiNoteNumber) const noexcept;
+    MPENote* getNotePtr (int midiChannel, int midiNoteNumber) noexcept;
+    const MPENote* getNotePtr (int midiChannel, TrackingMode) const noexcept;
+    MPENote* getNotePtr (int midiChannel, TrackingMode) noexcept;
+    const MPENote* getLastNotePlayedPtr (int midiChannel) const noexcept;
+    MPENote* getLastNotePlayedPtr (int midiChannel) noexcept;
+    const MPENote* getHighestNotePtr (int midiChannel) const noexcept;
+    MPENote* getHighestNotePtr (int midiChannel) noexcept;
+    const MPENote* getLowestNotePtr (int midiChannel) const noexcept;
+    MPENote* getLowestNotePtr (int midiChannel) noexcept;
     void updateNoteTotalPitchbend (MPENote&);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MPEInstrument)
 };
 
-
-#endif // JUCE_MPE_H_INCLUDED
+} // namespace juce

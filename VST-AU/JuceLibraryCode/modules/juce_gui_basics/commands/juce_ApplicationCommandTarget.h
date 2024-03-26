@@ -2,29 +2,29 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2015 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of either:
-   a) the GPL v2 (or any later version)
-   b) the Affero GPL v3
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Details of these licenses can be found at: www.gnu.org/licenses
+   By using JUCE, you agree to the terms of both the JUCE 7 End-User License
+   Agreement and JUCE Privacy Policy.
 
-   JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-   A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+   End User License Agreement: www.juce.com/juce-7-licence
+   Privacy Policy: www.juce.com/juce-privacy-policy
 
-   ------------------------------------------------------------------------------
+   Or: You may also use this code under the terms of the GPL v3 (see
+   www.gnu.org/licenses).
 
-   To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_APPLICATIONCOMMANDTARGET_H_INCLUDED
-#define JUCE_APPLICATIONCOMMANDTARGET_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -40,6 +40,8 @@
     ApplicationCommandManager::getFirstCommandTarget().
 
     @see ApplicationCommandManager, ApplicationCommandInfo
+
+    @tags{GUI}
 */
 class JUCE_API  ApplicationCommandTarget
 {
@@ -58,7 +60,7 @@ public:
     struct JUCE_API  InvocationInfo
     {
         //==============================================================================
-        InvocationInfo (const CommandID commandID);
+        InvocationInfo (CommandID commandID);
 
         //==============================================================================
         /** The UID of the command that should be performed. */
@@ -193,15 +195,15 @@ public:
         @see perform, ApplicationCommandManager::invoke
     */
     bool invoke (const InvocationInfo& invocationInfo,
-                 const bool asynchronously);
+                 bool asynchronously);
 
     /** Invokes a given command directly on this target.
 
         This is just an easy way to call invoke() without having to fill out the InvocationInfo
         structure.
     */
-    bool invokeDirectly (const CommandID commandID,
-                         const bool asynchronously);
+    bool invokeDirectly (CommandID commandID,
+                         bool asynchronously);
 
     //==============================================================================
     /** Searches this target and all subsequent ones for the first one that can handle
@@ -210,14 +212,14 @@ public:
         This will use getNextCommandTarget() to determine the chain of targets to try
         after this one.
     */
-    ApplicationCommandTarget* getTargetForCommand (const CommandID commandID);
+    ApplicationCommandTarget* getTargetForCommand (CommandID commandID);
 
     /** Checks whether this command can currently be performed by this target.
 
         This will return true only if a call to getCommandInfo() doesn't set the
         isDisabled flag to indicate that the command is inactive.
     */
-    bool isCommandActive (const CommandID commandID);
+    bool isCommandActive (CommandID commandID);
 
     /** If this object is a Component, this method will search upwards in its current
         UI hierarchy for the next parent component that implements the
@@ -230,16 +232,13 @@ public:
 
 private:
     //==============================================================================
-    WeakReference<ApplicationCommandTarget>::Master masterReference;
-    friend class WeakReference<ApplicationCommandTarget>;
-
     class CommandMessage;
     friend class CommandMessage;
 
     bool tryToInvoke (const InvocationInfo&, bool async);
 
+    JUCE_DECLARE_WEAK_REFERENCEABLE (ApplicationCommandTarget)
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ApplicationCommandTarget)
 };
 
-
-#endif   // JUCE_APPLICATIONCOMMANDTARGET_H_INCLUDED
+} // namespace juce

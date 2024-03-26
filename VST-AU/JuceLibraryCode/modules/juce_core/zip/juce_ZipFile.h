@@ -2,35 +2,26 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_ZIPFILE_H_INCLUDED
-#define JUCE_ZIPFILE_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -38,6 +29,8 @@
 
     This can enumerate the items in a ZIP file and can create suitable stream objects
     to read each one.
+
+    @tags{Core}
 */
 class JUCE_API  ZipFile
 {
@@ -86,6 +79,15 @@ public:
 
         /** The last time the file was modified. */
         Time fileTime;
+
+        /** True if the zip entry is a symbolic link. */
+        bool isSymbolicLink;
+
+        /** Platform specific data. Depending on how the zip file was created this
+            may contain macOS and Linux file types, permissions and
+            setuid/setgid/sticky bits.
+        */
+        uint32 externalFileAttributes;
     };
 
     //==============================================================================
@@ -104,7 +106,7 @@ public:
 
         @see ZipFile::ZipEntry
     */
-    int getIndexOfFileName (const String& fileName) const noexcept;
+    int getIndexOfFileName (const String& fileName, bool ignoreCase = false) const noexcept;
 
     /** Returns a structure that describes one of the entries in the zip file.
 
@@ -113,7 +115,7 @@ public:
 
         @see ZipFile::ZipEntry
     */
-    const ZipEntry* getEntry (const String& fileName) const noexcept;
+    const ZipEntry* getEntry (const String& fileName, bool ignoreCase = false) const noexcept;
 
     /** Sorts the list of entries, based on the filename. */
     void sortEntriesByFilename();
@@ -177,6 +179,25 @@ public:
                             const File& targetDirectory,
                             bool shouldOverwriteFiles = true);
 
+    enum class OverwriteFiles { no, yes };
+    enum class FollowSymlinks { no, yes };
+
+    /** Uncompresses one of the entries from the zip file.
+
+        This will expand the entry and write it in a target directory. The entry's path is used to
+        determine which subfolder of the target should contain the new file.
+
+        @param index                the index of the entry to uncompress - this must be a valid index
+                                    between 0 and (getNumEntries() - 1).
+        @param targetDirectory      the root folder to uncompress into
+        @param overwriteFiles       whether to overwrite existing files with similarly-named ones
+        @param followSymlinks       whether to follow symlinks inside the target directory
+        @returns success if all the files are successfully unzipped
+    */
+    Result uncompressEntry (int index,
+                            const File& targetDirectory,
+                            OverwriteFiles overwriteFiles,
+                            FollowSymlinks followSymlinks);
 
     //==============================================================================
     /** Used to create a new zip file.
@@ -227,8 +248,7 @@ public:
 
         //==============================================================================
     private:
-        class Item;
-        friend struct ContainerDeletePolicy<Item>;
+        struct Item;
         OwnedArray<Item> items;
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Builder)
@@ -236,24 +256,22 @@ public:
 
 private:
     //==============================================================================
-    class ZipInputStream;
-    class ZipEntryHolder;
-    friend class ZipInputStream;
-    friend class ZipEntryHolder;
+    struct ZipInputStream;
+    struct ZipEntryHolder;
 
     OwnedArray<ZipEntryHolder> entries;
     CriticalSection lock;
-    InputStream* inputStream;
-    ScopedPointer<InputStream> streamToDelete;
-    ScopedPointer<InputSource> inputSource;
+    InputStream* inputStream = nullptr;
+    std::unique_ptr<InputStream> streamToDelete;
+    std::unique_ptr<InputSource> inputSource;
 
    #if JUCE_DEBUG
     struct OpenStreamCounter
     {
-        OpenStreamCounter() : numOpenStreams (0) {}
+        OpenStreamCounter() = default;
         ~OpenStreamCounter();
 
-        int numOpenStreams;
+        int numOpenStreams = 0;
     };
 
     OpenStreamCounter streamCounter;
@@ -264,4 +282,4 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ZipFile)
 };
 
-#endif   // JUCE_ZIPFILE_H_INCLUDED
+} // namespace juce

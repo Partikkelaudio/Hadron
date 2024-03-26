@@ -1,3 +1,6 @@
+//#define JUCE_MODAL_LOOPS_PERMITTED 1 
+// TODO: Temporary solution in order to continue using runModalLoop() here
+
 #include "HadronLabel.h"
 
 HadronLabel::HadronLabel(const String& name, const String& labelText)

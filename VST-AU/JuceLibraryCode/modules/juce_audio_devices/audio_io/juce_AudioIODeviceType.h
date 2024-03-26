@@ -2,35 +2,26 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_AUDIOIODEVICETYPE_H_INCLUDED
-#define JUCE_AUDIOIODEVICETYPE_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -64,6 +55,8 @@
     AudioDeviceManager class.
 
     @see AudioIODevice, AudioDeviceManager
+
+    @tags{Audio}
 */
 class JUCE_API  AudioIODeviceType
 {
@@ -87,9 +80,8 @@ public:
 
         The scanForDevices() method must have been called to create this list.
 
-        @param wantInputNames     only really used by DirectSound where devices are split up
-                                  into inputs and outputs, this indicates whether to use
-                                  the input or output name to refer to a pair of devices.
+        @param wantInputNames    for devices which have separate inputs and outputs
+                                 this determines which list of names is returned
     */
     virtual StringArray getDeviceNames (bool wantInputNames = false) const = 0;
 
@@ -124,7 +116,7 @@ public:
     /**
         A class for receiving events when audio devices are inserted or removed.
 
-        You can register an AudioIODeviceType::Listener with an~AudioIODeviceType object
+        You can register an AudioIODeviceType::Listener with an AudioIODeviceType object
         using the AudioIODeviceType::addListener() method, and it will be called when
         devices of that type are added or removed.
 
@@ -133,7 +125,7 @@ public:
     class Listener
     {
     public:
-        virtual ~Listener() {}
+        virtual ~Listener() = default;
 
         /** Called when the list of available audio devices changes. */
         virtual void audioDeviceListChanged() = 0;
@@ -156,8 +148,8 @@ public:
     static AudioIODeviceType* createAudioIODeviceType_CoreAudio();
     /** Creates an iOS device type if it's available on this platform, or returns null. */
     static AudioIODeviceType* createAudioIODeviceType_iOSAudio();
-    /** Creates a WASAPI device type if it's available on this platform, or returns null. */
-    static AudioIODeviceType* createAudioIODeviceType_WASAPI (bool exclusiveMode);
+    /** Creates a WASAPI device type in the specified mode if it's available on this platform, or returns null. */
+    static AudioIODeviceType* createAudioIODeviceType_WASAPI (WASAPIDeviceMode deviceMode);
     /** Creates a DirectSound device type if it's available on this platform, or returns null. */
     static AudioIODeviceType* createAudioIODeviceType_DirectSound();
     /** Creates an ASIO device type if it's available on this platform, or returns null. */
@@ -170,6 +162,15 @@ public:
     static AudioIODeviceType* createAudioIODeviceType_Android();
     /** Creates an Android OpenSLES device type if it's available on this platform, or returns null. */
     static AudioIODeviceType* createAudioIODeviceType_OpenSLES();
+    /** Creates an Oboe device type if it's available on this platform, or returns null. */
+    static AudioIODeviceType* createAudioIODeviceType_Oboe();
+    /** Creates a Bela device type if it's available on this platform, or returns null. */
+    static AudioIODeviceType* createAudioIODeviceType_Bela();
+
+   #ifndef DOXYGEN
+    [[deprecated ("You should call the method which takes a WASAPIDeviceMode instead.")]]
+    static AudioIODeviceType* createAudioIODeviceType_WASAPI (bool exclusiveMode);
+   #endif
 
 protected:
     explicit AudioIODeviceType (const String& typeName);
@@ -184,5 +185,4 @@ private:
     JUCE_DECLARE_NON_COPYABLE (AudioIODeviceType)
 };
 
-
-#endif   // JUCE_AUDIOIODEVICETYPE_H_INCLUDED
+} // namespace juce

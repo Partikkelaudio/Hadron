@@ -433,7 +433,7 @@ CSoundInterface::processMidiMessage(const Midi& message) {
 }
 
 void 
-CSoundInterface::process(float** data, int num_channels, int num_samples, const MidiVector& midi) {
+CSoundInterface::process(float* const* data, int num_channels, int num_samples, const MidiVector& midi) {
 
   if (processing()) {
 

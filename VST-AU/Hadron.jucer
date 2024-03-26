@@ -8,11 +8,12 @@
               pluginIsSynth="0" pluginWantsMidiIn="1" pluginProducesMidiOut="0"
               pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="1"
               pluginAUExportPrefix="HadronAU" pluginRTASCategory="" aaxIdentifier="com.partikkelaudio.Hadron"
-              pluginAAXCategory="AAX_ePlugInCategory_Dynamics" jucerVersion="5.2.0"
-              companyName="PartikkelAudio" companyWebsite="http://www.partikkelaudio.com"
+              pluginAAXCategory="2" companyName="PartikkelAudio" companyWebsite="http://www.partikkelaudio.com"
               companyEmail="support@partikkelaudio.com" pluginIsMidiEffectPlugin="0"
               buildAUv3="0" displaySplashScreen="1" reportAppUsage="1" splashScreenColour="Dark"
-              buildStandalone="0" enableIAA="0" cppLanguageStandard="11" companyCopyright="PartikkelAudio">
+              buildStandalone="0" enableIAA="0" companyCopyright="PartikkelAudio"
+              pluginFormats="buildAU,buildVST" pluginCharacteristicsValue="pluginWantsMidiIn,pluginEditorRequiresKeys"
+              jucerFormatVersion="1">
   <MAINGROUP id="Gv4qAB" name="Hadron">
     <GROUP id="{89A23580-A705-2E15-2713-4244A7B401A4}" name="Source">
       <GROUP id="{F069A601-866C-F859-8675-696C916B3CDE}" name="GUI">
@@ -77,10 +78,10 @@
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="10.6 SDK" osxArchitecture="64BitUniversal"
                        isDebug="1" optimisation="1" targetName="Hadron" headerPath="../../../CsoundMod/OSX_framework/CsoundLib64.framework/Versions/6.0/Headers"
-                       enablePluginBinaryCopyStep="1"/>
+                       enablePluginBinaryCopyStep="1" macOSDeploymentTarget="10.6"/>
         <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="10.6 SDK" osxArchitecture="64BitUniversal"
                        isDebug="0" optimisation="2" targetName="Hadron" headerPath="../../../CsoundMod/OSX_framework/CsoundLib64.framework/Versions/6.0/Headers"
-                       enablePluginBinaryCopyStep="1"/>
+                       enablePluginBinaryCopyStep="1" macOSDeploymentTarget="10.6"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="JuceLibraryCode\modules"/>
@@ -96,60 +97,37 @@
         <MODULEPATH id="juce_audio_plugin_client" path="JuceLibraryCode\modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2013 targetFolder="Builds\win-x86" vstFolder=".\vstsdk2.4" externalLibraries="csound64_hadron32.lib&#10;delayimp.lib"
-            extraLinkerFlags="/DELAYLOAD:&quot;csound64_hadron32.dll&quot;">
+    <VS2022 targetFolder="Builds/VisualStudio2022" vstLegacyFolder="..\..\vst2.4"
+            externalLibraries="csound64_hadron${WIN_PLATFORM}.lib&#10;delayimp.lib"
+            extraDefs="JUCE_MODAL_LOOPS_PERMITTED=1">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug-x86" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="hadron32" headerPath="..\..\..\CsoundMod\win\csound_hadron\include"
-                       libraryPath="..\..\..\CsoundMod\win\csound_hadron\bin32" intermediatesPath=".\Debug-x86\Temp"
-                       debugInformationFormat="ProgramDatabase" enablePluginBinaryCopyStep="0"/>
-        <CONFIGURATION name="Release-x86" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="hadron32" headerPath="..\..\..\CsoundMod\win\csound_hadron\include"
-                       libraryPath="..\..\..\CsoundMod\win\csound_hadron\bin32" intermediatesPath=".\Release-x86\Temp"
-                       postbuildCommand="copy .\Release-x86\hadron32.dll .\" debugInformationFormat="ProgramDatabase"
-                       enablePluginBinaryCopyStep="0" linkTimeOptimisation="1"/>
+        <CONFIGURATION isDebug="1" name="Debug32" targetName="hadron32" headerPath="..\..\..\CsoundMod\win\csound_hadron\include"
+                       libraryPath="..\..\..\CsoundMod\win\csound_hadron\bin32" extraLinkerFlags="/DELAYLOAD:&quot;csound64_hadron32.dll&quot;"
+                       winArchitecture="Win32" defines="WIN_PLATFORM=32"/>
+        <CONFIGURATION isDebug="0" name="Release32" headerPath="..\..\..\CsoundMod\win\csound_hadron\include"
+                       libraryPath="..\..\..\CsoundMod\win\csound_hadron\bin32" extraLinkerFlags="/DELAYLOAD:&quot;csound64_hadron32.dll&quot;"
+                       winArchitecture="Win32" defines="WIN_PLATFORM=32" targetName="hadron32"/>
+        <CONFIGURATION isDebug="1" name="Debug64" targetName="hadron64" headerPath="..\..\..\CsoundMod\win\csound_hadron\include"
+                       libraryPath="..\..\..\CsoundMod\win\csound_hadron\bin64" defines="WIN_PLATFORM=64"
+                       extraCompilerFlags="/DELAYLOAD:&quot;csound64_hadron64.dll&quot;"/>
+        <CONFIGURATION isDebug="0" name="Release64" targetName="hadron64" headerPath="..\..\..\CsoundMod\win\csound_hadron\include"
+                       libraryPath="..\..\..\CsoundMod\win\csound_hadron\bin64" defines="WIN_PLATFORM=64"
+                       extraCompilerFlags="/DELAYLOAD:&quot;csound64_hadron64.dll&quot;"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_gui_extra" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_gui_basics" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_graphics" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_events" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_data_structures" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_core" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_audio_processors" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_audio_formats" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_audio_devices" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_audio_basics" path="JuceLibraryCode\modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+        <MODULEPATH id="juce_audio_devices" path="../../juce"/>
+        <MODULEPATH id="juce_audio_formats" path="../../juce"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../juce"/>
+        <MODULEPATH id="juce_audio_processors" path="../../juce"/>
+        <MODULEPATH id="juce_core" path="../../juce"/>
+        <MODULEPATH id="juce_data_structures" path="../../juce"/>
+        <MODULEPATH id="juce_events" path="../../juce"/>
+        <MODULEPATH id="juce_graphics" path="../../juce"/>
+        <MODULEPATH id="juce_gui_basics" path="../../juce"/>
+        <MODULEPATH id="juce_gui_extra" path="../../juce"/>
       </MODULEPATHS>
-    </VS2013>
-    <VS2013 targetFolder="Builds\win-x64" vstFolder=".\vstsdk2.4" extraLinkerFlags="/DELAYLOAD:&quot;csound64_hadron64.dll&quot;"
-            externalLibraries="csound64_hadron64.lib&#10;delayimp.lib">
-      <CONFIGURATIONS>
-        <CONFIGURATION name="Debug-x64" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="1" optimisation="1" targetName="hadron64" headerPath="..\..\..\CsoundMod\win\csound_hadron\include"
-                       libraryPath="..\..\..\CsoundMod\win\csound_hadron\bin64" intermediatesPath=".\x64\Debug-x64\Temp"
-                       debugInformationFormat="ProgramDatabase" enablePluginBinaryCopyStep="0"/>
-        <CONFIGURATION name="Release-x64" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
-                       isDebug="0" optimisation="3" targetName="hadron64" headerPath="..\..\..\CsoundMod\win\csound_hadron\include"
-                       libraryPath="..\..\..\CsoundMod\win\csound_hadron\bin64" intermediatesPath=".\x64\Release-x64\Temp"
-                       postbuildCommand="copy .\x64\Release-x64\hadron64.dll .\" debugInformationFormat="ProgramDatabase"
-                       enablePluginBinaryCopyStep="0" linkTimeOptimisation="1"/>
-      </CONFIGURATIONS>
-      <MODULEPATHS>
-        <MODULEPATH id="juce_gui_extra" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_gui_basics" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_graphics" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_events" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_data_structures" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_core" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_audio_processors" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_audio_formats" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_audio_devices" path="JuceLibraryCode\modules"/>
-        <MODULEPATH id="juce_audio_basics" path="JuceLibraryCode\modules"/>
-      </MODULEPATHS>
-    </VS2013>
+    </VS2022>
   </EXPORTFORMATS>
   <MODULES>
     <MODULES id="juce_audio_basics" showAllCode="1" useLocalCopy="1"/>

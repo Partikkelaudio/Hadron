@@ -2,35 +2,26 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_TIME_H_INCLUDED
-#define JUCE_TIME_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -39,24 +30,22 @@
     Internally, the time is stored at millisecond precision.
 
     @see RelativeTime
+
+    @tags{Core}
 */
 class JUCE_API  Time
 {
 public:
     //==============================================================================
     /** Creates a Time object.
-
         This default constructor creates a time of midnight Jan 1st 1970 UTC, (which is
         represented internally as 0ms).
-
         To create a time object representing the current time, use getCurrentTime().
-
         @see getCurrentTime
     */
-    Time() noexcept;
+    Time() = default;
 
     /** Creates a time based on a number of milliseconds.
-
         To create a time object set to the current time, use getCurrentTime().
 
         @param millisecondsSinceEpoch   the number of milliseconds since the unix
@@ -86,14 +75,10 @@ public:
           int milliseconds = 0,
           bool useLocalTime = true) noexcept;
 
-    /** Creates a copy of another Time object. */
-    Time (const Time& other) noexcept;
+    Time (const Time&) = default;
+    ~Time() = default;
 
-    /** Destructor. */
-    ~Time() noexcept;
-
-    /** Copies this time from another one. */
-    Time& operator= (const Time& other) noexcept;
+    Time& operator= (const Time&) = default;
 
     //==============================================================================
     /** Returns a Time object that is set to the current system time.
@@ -190,7 +175,7 @@ public:
 
     //==============================================================================
     /** Returns a 3-character string to indicate the local timezone. */
-    String getTimeZone() const noexcept;
+    String getTimeZone() const;
 
     /** Returns the local timezone offset from UTC in seconds. */
     int getUTCOffsetSeconds() const noexcept;
@@ -217,7 +202,7 @@ public:
     String toString (bool includeDate,
                      bool includeTime,
                      bool includeSeconds = true,
-                     bool use24HourClock = false) const noexcept;
+                     bool use24HourClock = false) const;
 
     /** Converts this date/time to a string with a user-defined format.
 
@@ -237,7 +222,7 @@ public:
         - %m  is replaced by the month as a decimal number [01,12].
         - %M  is replaced by the minute as a decimal number [00,59].
         - %p  is replaced by the locale's equivalent of either a.m. or p.m.
-        - %S  is replaced by the second as a decimal number [00,61].
+        - %S  is replaced by the second as a decimal number [00,60].
         - %U  is replaced by the week number of the year (Sunday as the first day of the week) as a decimal number [00,53].
         - %w  is replaced by the weekday as a decimal number [0,6], with 0 representing Sunday.
         - %W  is replaced by the week number of the year (Monday as the first day of the week) as a decimal number [00,53]. All days in a new year preceding the first Monday are considered to be in week 0.
@@ -262,7 +247,7 @@ public:
     String toISO8601 (bool includeDividerCharacters) const;
 
     /** Parses an ISO-8601 string and returns it as a Time. */
-    static Time fromISO8601 (StringRef iso8601) noexcept;
+    static Time fromISO8601 (StringRef iso8601);
 
     //==============================================================================
     /** Adds a RelativeTime to this time. */
@@ -309,7 +294,7 @@ public:
 
     /** Returns the number of millisecs since a fixed event (usually system startup).
 
-        This returns a monotonically increasing value which it unaffected by changes to the
+        This returns a monotonically increasing value which is unaffected by changes to the
         system clock. It should be accurate to within a few millisecs, depending on platform,
         hardware, etc.
 
@@ -386,7 +371,7 @@ public:
 
 private:
     //==============================================================================
-    int64 millisSinceEpoch;
+    int64 millisSinceEpoch = 0;
 };
 
 //==============================================================================
@@ -398,7 +383,7 @@ JUCE_API Time operator+ (RelativeTime delta, Time time) noexcept;
 /** Subtracts a RelativeTime from a Time. */
 JUCE_API Time operator- (Time time, RelativeTime delta) noexcept;
 /** Returns the relative time difference between two times. */
-JUCE_API const RelativeTime operator- (Time time1, Time time2) noexcept;
+JUCE_API RelativeTime operator- (Time time1, Time time2) noexcept;
 
 /** Compares two Time objects. */
 JUCE_API bool operator== (Time time1, Time time2) noexcept;
@@ -413,5 +398,4 @@ JUCE_API bool operator>  (Time time1, Time time2) noexcept;
 /** Compares two Time objects. */
 JUCE_API bool operator>= (Time time1, Time time2) noexcept;
 
-
-#endif   // JUCE_TIME_H_INCLUDED
+} // namespace juce

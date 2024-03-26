@@ -5,7 +5,7 @@
 class HadronComboBox : public ComboBox
 {
 public:
-	HadronComboBox(String name = String::empty);
+	HadronComboBox(String name = String());
 	~HadronComboBox();
 
     void setUrlPath(const String& path);

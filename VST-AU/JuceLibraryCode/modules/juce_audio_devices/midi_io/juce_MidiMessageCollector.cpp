@@ -2,35 +2,28 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
+namespace juce
+{
+
 MidiMessageCollector::MidiMessageCollector()
-    : lastCallbackTime (0),
-      sampleRate (44100.0001)
 {
 }
 
@@ -41,9 +34,13 @@ MidiMessageCollector::~MidiMessageCollector()
 //==============================================================================
 void MidiMessageCollector::reset (const double newSampleRate)
 {
+    const ScopedLock sl (midiCallbackLock);
+
     jassert (newSampleRate > 0);
 
-    const ScopedLock sl (midiCallbackLock);
+   #if JUCE_DEBUG
+    hasCalledReset = true;
+   #endif
     sampleRate = newSampleRate;
     incomingMessages.clear();
     lastCallbackTime = Time::getMillisecondCounterHiRes();
@@ -51,17 +48,17 @@ void MidiMessageCollector::reset (const double newSampleRate)
 
 void MidiMessageCollector::addMessageToQueue (const MidiMessage& message)
 {
-    // you need to call reset() to set the correct sample rate before using this object
-    jassert (sampleRate != 44100.0001);
+    const ScopedLock sl (midiCallbackLock);
+
+   #if JUCE_DEBUG
+    jassert (hasCalledReset); // you need to call reset() to set the correct sample rate before using this object
+   #endif
 
     // the messages that come in here need to be time-stamped correctly - see MidiInput
     // for details of what the number should be.
-    jassert (message.getTimeStamp() != 0);
+    jassert (! approximatelyEqual (message.getTimeStamp(), 0.0));
 
-    const ScopedLock sl (midiCallbackLock);
-
-    const int sampleNumber
-        = (int) ((message.getTimeStamp() - 0.001 * lastCallbackTime) * sampleRate);
+    auto sampleNumber = (int) ((message.getTimeStamp() - 0.001 * lastCallbackTime) * sampleRate);
 
     incomingMessages.addEvent (message, sampleNumber);
 
@@ -74,27 +71,24 @@ void MidiMessageCollector::addMessageToQueue (const MidiMessage& message)
 void MidiMessageCollector::removeNextBlockOfMessages (MidiBuffer& destBuffer,
                                                       const int numSamples)
 {
-    // you need to call reset() to set the correct sample rate before using this object
-    jassert (sampleRate != 44100.0001);
+    const ScopedLock sl (midiCallbackLock);
+
+   #if JUCE_DEBUG
+    jassert (hasCalledReset); // you need to call reset() to set the correct sample rate before using this object
+   #endif
+
     jassert (numSamples > 0);
 
-    const double timeNow = Time::getMillisecondCounterHiRes();
-    const double msElapsed = timeNow - lastCallbackTime;
+    auto timeNow = Time::getMillisecondCounterHiRes();
+    auto msElapsed = timeNow - lastCallbackTime;
 
-    const ScopedLock sl (midiCallbackLock);
     lastCallbackTime = timeNow;
 
     if (! incomingMessages.isEmpty())
     {
         int numSourceSamples = jmax (1, roundToInt (msElapsed * 0.001 * sampleRate));
-
         int startSample = 0;
         int scale = 1 << 16;
-
-        const uint8* midiData;
-        int numBytes, samplePosition;
-
-        MidiBuffer::Iterator iter (incomingMessages);
 
         if (numSourceSamples > numSamples)
         {
@@ -102,22 +96,22 @@ void MidiMessageCollector::removeNextBlockOfMessages (MidiBuffer& destBuffer,
             // asked for, scale them down to squeeze them all in..
             const int maxBlockLengthToUse = numSamples << 5;
 
+            auto iter = incomingMessages.cbegin();
+
             if (numSourceSamples > maxBlockLengthToUse)
             {
                 startSample = numSourceSamples - maxBlockLengthToUse;
                 numSourceSamples = maxBlockLengthToUse;
-                iter.setNextSamplePosition (startSample);
+                iter = incomingMessages.findNextSamplePosition (startSample);
             }
 
             scale = (numSamples << 10) / numSourceSamples;
 
-            while (iter.getNextEvent (midiData, numBytes, samplePosition))
+            std::for_each (iter, incomingMessages.cend(), [&] (const MidiMessageMetadata& meta)
             {
-                samplePosition = ((samplePosition - startSample) * scale) >> 10;
-
-                destBuffer.addEvent (midiData, numBytes,
-                                     jlimit (0, numSamples - 1, samplePosition));
-            }
+                const auto pos = ((meta.samplePosition - startSample) * scale) >> 10;
+                destBuffer.addEvent (meta.data, meta.numBytes, jlimit (0, numSamples - 1, pos));
+            });
         }
         else
         {
@@ -125,15 +119,18 @@ void MidiMessageCollector::removeNextBlockOfMessages (MidiBuffer& destBuffer,
             // towards the end of the buffer
             startSample = numSamples - numSourceSamples;
 
-            while (iter.getNextEvent (midiData, numBytes, samplePosition))
-            {
-                destBuffer.addEvent (midiData, numBytes,
-                                     jlimit (0, numSamples - 1, samplePosition + startSample));
-            }
+            for (const auto metadata : incomingMessages)
+                destBuffer.addEvent (metadata.data, metadata.numBytes,
+                                     jlimit (0, numSamples - 1, metadata.samplePosition + startSample));
         }
 
         incomingMessages.clear();
     }
+}
+
+void MidiMessageCollector::ensureStorageAllocated (size_t bytes)
+{
+    incomingMessages.ensureSize (bytes);
 }
 
 //==============================================================================
@@ -157,3 +154,5 @@ void MidiMessageCollector::handleIncomingMidiMessage (MidiInput*, const MidiMess
 {
     addMessageToQueue (message);
 }
+
+} // namespace juce

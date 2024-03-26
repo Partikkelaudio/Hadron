@@ -2,35 +2,26 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_BIGINTEGER_H_INCLUDED
-#define JUCE_BIGINTEGER_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
@@ -41,6 +32,8 @@
 
     Negative values are possible, but the value isn't stored as 2s-complement, so
     be careful if you use negative values and look at the values of individual bits.
+
+    @tags{Core}
 */
 class JUCE_API  BigInteger
 {
@@ -69,10 +62,11 @@ public:
     /** Creates a copy of another BigInteger. */
     BigInteger (const BigInteger&);
 
-   #if JUCE_COMPILER_SUPPORTS_MOVE_SEMANTICS
+    /** Move constructor */
     BigInteger (BigInteger&&) noexcept;
+
+    /** Move assignment operator */
     BigInteger& operator= (BigInteger&&) noexcept;
-   #endif
 
     /** Destructor. */
     ~BigInteger();
@@ -108,16 +102,16 @@ public:
 
     //==============================================================================
     /** Resets the value to 0. */
-    void clear() noexcept;
+    BigInteger& clear() noexcept;
 
     /** Clears a particular bit in the number. */
-    void clearBit (int bitNumber) noexcept;
+    BigInteger& clearBit (int bitNumber) noexcept;
 
     /** Sets a specified bit to 1. */
-    void setBit (int bitNumber);
+    BigInteger& setBit (int bitNumber);
 
     /** Sets or clears a specified bit. */
-    void setBit (int bitNumber, bool shouldBeSet);
+    BigInteger& setBit (int bitNumber, bool shouldBeSet);
 
     /** Sets a range of bits to be either on or off.
 
@@ -125,10 +119,10 @@ public:
         @param numBits      the number of bits to change
         @param shouldBeSet  whether to turn these bits on or off
     */
-    void setRange (int startBit, int numBits, bool shouldBeSet);
+    BigInteger& setRange (int startBit, int numBits, bool shouldBeSet);
 
     /** Inserts a bit an a given position, shifting up any bits above it. */
-    void insertBit (int bitNumber, bool shouldBeSet);
+    BigInteger& insertBit (int bitNumber, bool shouldBeSet);
 
     /** Returns a range of bits as a new BigInteger.
 
@@ -151,14 +145,14 @@ public:
         Copies the given integer onto a range of bits, starting at startBit,
         and using up to numBits of the available bits.
     */
-    void setBitRangeAsInt (int startBit, int numBits, uint32 valueToSet);
+    BigInteger& setBitRangeAsInt (int startBit, int numBits, uint32 valueToSet);
 
     /** Shifts a section of bits left or right.
 
         @param howManyBitsLeft  how far to move the bits (+ve numbers shift it left, -ve numbers shift it right).
         @param startBit         the first bit to affect - if this is > 0, only bits above that index will be affected.
     */
-    void shiftBits (int howManyBitsLeft, int startBit);
+    BigInteger& shiftBits (int howManyBitsLeft, int startBit);
 
     /** Returns the total number of set bits in the value. */
     int countNumberOfSetBits() const noexcept;
@@ -331,8 +325,8 @@ private:
     HeapBlock<uint32> heapAllocation;
     uint32 preallocated[numPreallocatedInts];
     size_t allocatedSize;
-    int highestBit;
-    bool negative;
+    int highestBit = -1;
+    bool negative = false;
 
     uint32* getValues() const noexcept;
     uint32* ensureSize (size_t);
@@ -345,11 +339,4 @@ private:
 /** Writes a BigInteger to an OutputStream as a UTF8 decimal string. */
 OutputStream& JUCE_CALLTYPE operator<< (OutputStream& stream, const BigInteger& value);
 
-//==============================================================================
-#ifndef DOXYGEN
- // For backwards compatibility, BitArray is defined as an alias for BigInteger.
- typedef BigInteger BitArray;
-#endif
-
-
-#endif   // JUCE_BIGINTEGER_H_INCLUDED
+} // namespace juce

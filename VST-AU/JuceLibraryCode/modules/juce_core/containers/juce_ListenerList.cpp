@@ -2,177 +2,461 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
+namespace juce
+{
+
 #if JUCE_UNIT_TESTS
 
-struct ListenerBase
-{
-    ListenerBase (int& counter) : c (counter) {}
-    virtual ~ListenerBase () {}
-
-    virtual void f () = 0;
-    virtual void f (void*) = 0;
-    virtual void f (void*, void*) = 0;
-    virtual void f (void*, void*, void*) = 0;
-    virtual void f (void*, void*, void*, void*) = 0;
-    virtual void f (void*, void*, void*, void*, void*) = 0;
-    virtual void f (void*, void*, void*, void*, void*, void*) = 0;
-
-    int& c;
-};
-
-struct Listener1 : public ListenerBase
-{
-    Listener1 (int& counter) : ListenerBase (counter) {}
-
-    void f () override                                         { c += 1; }
-    void f (void*) override                                    { c += 2; }
-    void f (void*, void*) override                             { c += 3; }
-    void f (void*, void*, void*) override                      { c += 4; }
-    void f (void*, void*, void*, void*) override               { c += 5; }
-    void f (void*, void*, void*, void*, void*) override        { c += 6; }
-    void f (void*, void*, void*, void*, void*, void*) override { c += 7; }
-};
-
-struct Listener2 : public ListenerBase
-{
-    Listener2 (int& counter) : ListenerBase (counter) {}
-
-    void f () override                                         { c -= 2; }
-    void f (void*) override                                    { c -= 4; }
-    void f (void*, void*) override                             { c -= 6; }
-    void f (void*, void*, void*) override                      { c -= 8; }
-    void f (void*, void*, void*, void*) override               { c -= 10; }
-    void f (void*, void*, void*, void*, void*) override        { c -= 12; }
-    void f (void*, void*, void*, void*, void*, void*) override { c -= 14; }
-};
-
-class ListenerListTests : public UnitTest
+class ListenerListTests final : public UnitTest
 {
 public:
-    ListenerListTests() : UnitTest ("ListenerList") {}
-
-    template <typename... Args>
-    void callHelper (std::vector<int>& expectedCounterValues)
+    //==============================================================================
+    class TestListener
     {
-        counter = 0;
-        listeners.call (&ListenerBase::f);
-        expect (counter == expectedCounterValues[0]);
+    public:
+        explicit TestListener (std::function<void()> cb) : callback (std::move (cb)) {}
 
-        ListenerList<ListenerBase>::DummyBailOutChecker boc;
+        void doCallback()
+        {
+            ++numCalls;
+            callback();
+        }
 
-        counter = 0;
-        listeners.callChecked (boc, &ListenerBase::f);
-        expect (counter == expectedCounterValues[0]);
-    }
+        int getNumCalls() const { return numCalls; }
 
-    template<typename T, typename... Args>
-    void callHelper (std::vector<int>& expectedCounterValues, T first, Args... args)
+    private:
+        int numCalls = 0;
+        std::function<void()> callback;
+    };
+
+    class TestObject
     {
-        const int expected = expectedCounterValues[sizeof... (args) + 1];
+    public:
+        void addListener (std::function<void()> cb)
+        {
+            listeners.push_back (std::make_unique<TestListener> (std::move (cb)));
+            listenerList.add (listeners.back().get());
+        }
 
-        counter = 0;
-        listeners.call (&ListenerBase::f, first, args...);
-        expect (counter == expected);
+        void removeListener (int i) { listenerList.remove (listeners[(size_t) i].get()); }
 
-        ListenerList<ListenerBase>::DummyBailOutChecker boc;
-        counter = 0;
-        listeners.callChecked (boc, &ListenerBase::f, first, args...);
-        expect (counter == expected);
+        void callListeners()
+        {
+            ++callLevel;
+            listenerList.call ([] (auto& l) { l.doCallback(); });
+            --callLevel;
+        }
 
-        callHelper (expectedCounterValues, args...);
-    }
+        int getNumListeners() const { return (int) listeners.size(); }
 
-    template <typename... Args>
-    void callExcludingHelper (ListenerBase& listenerToExclude,
-                              std::vector<int>& expectedCounterValues)
-    {
-        counter = 0;
-        listeners.callExcluding (listenerToExclude, &ListenerBase::f);
-        expect (counter == expectedCounterValues[0]);
+        auto& getListener (int i) { return *listeners[(size_t) i]; }
 
-        ListenerList<ListenerBase>::DummyBailOutChecker boc;
+        int getCallLevel() const
+        {
+            return callLevel;
+        }
 
-        counter = 0;
-        listeners.callCheckedExcluding (listenerToExclude, boc, &ListenerBase::f);
-        expect (counter == expectedCounterValues[0]);
-    }
+        bool wereAllNonRemovedListenersCalled (int numCalls) const
+        {
+            return std::all_of (std::begin (listeners),
+                                std::end (listeners),
+                                [&] (auto& listener)
+                                {
+                                    return (! listenerList.contains (listener.get())) || listener->getNumCalls() == numCalls;
+                                });
+        }
 
-    template<typename T, typename... Args>
-    void callExcludingHelper (ListenerBase& listenerToExclude,
-                              std::vector<int>& expectedCounterValues, T first, Args... args)
-    {
-        const int expected = expectedCounterValues[sizeof... (args) + 1];
+    private:
+        std::vector<std::unique_ptr<TestListener>> listeners;
+        ListenerList<TestListener> listenerList;
+        int callLevel = 0;
+    };
 
-        counter = 0;
-        listeners.callExcluding (listenerToExclude, &ListenerBase::f, first, args...);
-        expect (counter == expected);
-
-        ListenerList<ListenerBase>::DummyBailOutChecker boc;
-        counter = 0;
-        listeners.callCheckedExcluding (listenerToExclude, boc, &ListenerBase::f, first, args...);
-        expect (counter == expected);
-
-        callExcludingHelper (listenerToExclude, expectedCounterValues, args...);
-    }
+    //==============================================================================
+    ListenerListTests() : UnitTest ("ListenerList", UnitTestCategories::containers) {}
 
     void runTest() override
     {
-        beginTest ("Call single listener");
-        listeners.add (&listener1);
-        std::vector<int> expectedCounterValues;
-        for (int i = 1; i < 8; ++i)
-            expectedCounterValues.push_back (i);
+        // This is a test that the pre-iterator adjustment implementation should pass too
+        beginTest ("All non-removed listeners should be called - removing an already called listener");
+        {
+            TestObject test;
 
-        callHelper (expectedCounterValues, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+            for (int i = 0; i < 20; ++i)
+            {
+                test.addListener ([i, &test]
+                                  {
+                                      if (i == 5)
+                                          test.removeListener (6);
+                                  });
+            }
 
-        beginTest ("Call multiple listeners");
-        listeners.add (&listener2);
-        expectedCounterValues.clear();
-        for (int i = 1; i < 8; ++i)
-            expectedCounterValues.push_back (-i);
+            test.callListeners();
+            expect (test.wereAllNonRemovedListenersCalled (1));
+        }
 
-        callHelper (expectedCounterValues, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+        // Iterator adjustment is necessary for passing this
+        beginTest ("All non-removed listeners should be called - removing a yet uncalled listener");
+        {
+            TestObject test;
 
-        beginTest ("Call listeners excluding");
-        expectedCounterValues.clear();
-        for (int i = 1; i < 8; ++i)
-            expectedCounterValues.push_back (i);
+            for (int i = 0; i < 20; ++i)
+            {
+                test.addListener ([i, &test]
+                                  {
+                                      if (i == 5)
+                                          test.removeListener (4);
+                                  });
+            }
 
-        callExcludingHelper (listener2, expectedCounterValues, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr);
+            test.callListeners();
+            expect (test.wereAllNonRemovedListenersCalled (1));
+        }
+
+        // This test case demonstrates why we have to call --it.index instead of it.next()
+        beginTest ("All non-removed listeners should be called - one callback removes multiple listeners");
+        {
+            TestObject test;
+
+            for (int i = 0; i < 20; ++i)
+            {
+                test.addListener ([i, &test]
+                                  {
+                                      if (i == 19)
+                                      {
+                                          test.removeListener (19);
+                                          test.removeListener (0);
+                                      }
+                                  });
+            }
+
+            test.callListeners();
+            expect (test.wereAllNonRemovedListenersCalled (1));
+        }
+
+        beginTest ("All non-removed listeners should be called - removing listeners randomly");
+        {
+            auto random = getRandom();
+
+            for (auto run = 0; run < 10; ++run)
+            {
+                const auto numListeners = random.nextInt ({ 10, 100 });
+                const auto listenersThatRemoveListeners = chooseUnique (random,
+                                                                        numListeners,
+                                                                        random.nextInt ({ 0, numListeners / 2 }));
+
+                // The listener in position [key] should remove listeners in [value]
+                std::map<int, std::set<int>> removals;
+
+                for (auto i : listenersThatRemoveListeners)
+                {
+                    // Random::nextInt ({1, 1}); triggers an assertion
+                    removals[i] = chooseUnique (random,
+                                                numListeners,
+                                                random.nextInt ({ 1, std::max (2, numListeners / 10) }));
+                }
+
+                TestObject test;
+
+                for (int i = 0; i < numListeners; ++i)
+                {
+                    test.addListener ([i, &removals, &test]
+                                      {
+                                          const auto iter = removals.find (i);
+
+                                          if (iter == removals.end())
+                                              return;
+
+                                          for (auto j : iter->second)
+                                          {
+                                              test.removeListener (j);
+                                          }
+                                      });
+                }
+
+                test.callListeners();
+                expect (test.wereAllNonRemovedListenersCalled (1));
+            }
+        }
+
+        // Iterator adjustment is not necessary for passing this
+        beginTest ("All non-removed listeners should be called - add listener during iteration");
+        {
+            TestObject test;
+            const auto numStartingListeners = 20;
+
+            for (int i = 0; i < numStartingListeners; ++i)
+            {
+                test.addListener ([i, &test]
+                                  {
+                                      if (i == 5 || i == 6)
+                                          test.addListener ([] {});
+                                  });
+            }
+
+            test.callListeners();
+
+            // Only the Listeners added before the test can be expected to have been called
+            bool success = true;
+
+            for (int i = 0; i < numStartingListeners; ++i)
+                success = success && test.getListener (i).getNumCalls() == 1;
+
+            // Listeners added during the iteration must not be called in that iteration
+            for (int i = numStartingListeners; i < test.getNumListeners(); ++i)
+                success = success && test.getListener (i).getNumCalls() == 0;
+
+            expect (success);
+        }
+
+        beginTest ("All non-removed listeners should be called - nested ListenerList::call()");
+        {
+            TestObject test;
+
+            for (int i = 0; i < 20; ++i)
+            {
+                test.addListener ([i, &test]
+                                  {
+                                      const auto callLevel = test.getCallLevel();
+
+                                      if (i == 6 && callLevel == 1)
+                                      {
+                                          test.callListeners();
+                                      }
+
+                                      if (i == 5)
+                                      {
+                                          if (callLevel == 1)
+                                              test.removeListener (4);
+                                          else if (callLevel == 2)
+                                              test.removeListener (6);
+                                      }
+                                  });
+            }
+
+            test.callListeners();
+            expect (test.wereAllNonRemovedListenersCalled (2));
+        }
+
+        beginTest ("All non-removed listeners should be called - random ListenerList::call()");
+        {
+            const auto numListeners = 20;
+            auto random = getRandom();
+
+            for (int run = 0; run < 10; ++run)
+            {
+                TestObject test;
+                auto numCalls = 0;
+
+                auto listenersToRemove = chooseUnique (random, numListeners, numListeners / 2);
+
+                for (int i = 0; i < numListeners; ++i)
+                {
+                    // Capturing numListeners is a warning on MacOS, not capturing it is an error on Windows
+                    test.addListener ([&]
+                                      {
+                                          const auto callLevel = test.getCallLevel();
+
+                                          if (callLevel < 4 && random.nextFloat() < 0.05f)
+                                          {
+                                              ++numCalls;
+                                              test.callListeners();
+                                          }
+
+                                          if (random.nextFloat() < 0.5f)
+                                          {
+                                              const auto listenerToRemove = random.nextInt ({ 0, numListeners });
+
+                                              if (listenersToRemove.erase (listenerToRemove) > 0)
+                                                  test.removeListener (listenerToRemove);
+                                          }
+                                      });
+                }
+
+                while (listenersToRemove.size() > 0)
+                {
+                    test.callListeners();
+                    ++numCalls;
+                }
+
+                expect (test.wereAllNonRemovedListenersCalled (numCalls));
+            }
+        }
+
+        beginTest ("Deleting the listener list from a callback");
+        {
+            struct Listener
+            {
+                std::function<void()> onCallback;
+                void notify() { onCallback(); }
+            };
+
+            auto listeners = std::make_unique<juce::ListenerList<Listener>>();
+
+            const auto callback = [&]
+            {
+                expect (listeners != nullptr);
+                listeners.reset();
+            };
+
+            Listener listener1 { callback };
+            Listener listener2 { callback };
+
+            listeners->add (&listener1);
+            listeners->add (&listener2);
+
+            listeners->call (&Listener::notify);
+
+            expect (listeners == nullptr);
+        }
+
+        beginTest ("Using a BailOutChecker");
+        {
+            struct Listener
+            {
+                std::function<void()> onCallback;
+                void notify() { onCallback(); }
+            };
+
+            ListenerList<Listener> listeners;
+
+            bool listener1Called = false;
+            bool listener2Called = false;
+            bool listener3Called = false;
+
+            Listener listener1 { [&]{ listener1Called = true; } };
+            Listener listener2 { [&]{ listener2Called = true; } };
+            Listener listener3 { [&]{ listener3Called = true; } };
+
+            listeners.add (&listener1);
+            listeners.add (&listener2);
+            listeners.add (&listener3);
+
+            struct BailOutChecker
+            {
+                bool& bailOutBool;
+                bool shouldBailOut() const { return bailOutBool; }
+            };
+
+            BailOutChecker bailOutChecker { listener2Called };
+            listeners.callChecked (bailOutChecker, &Listener::notify);
+
+            expect (  listener1Called);
+            expect (  listener2Called);
+            expect (! listener3Called);
+        }
+
+        beginTest ("Using a critical section");
+        {
+            struct Listener
+            {
+                std::function<void()> onCallback;
+                void notify() { onCallback(); }
+            };
+
+            struct TestCriticalSection
+            {
+                TestCriticalSection()  { isAlive() = true; }
+                ~TestCriticalSection() { isAlive() = false; }
+
+                static void enter() noexcept { numOutOfScopeCalls() += isAlive() ? 0 : 1; }
+                static void exit() noexcept  { numOutOfScopeCalls() += isAlive() ? 0 : 1; }
+
+                static bool tryEnter() noexcept
+                {
+                    numOutOfScopeCalls() += isAlive() ? 0 : 1;
+                    return true;
+                }
+
+                using ScopedLockType = GenericScopedLock<TestCriticalSection>;
+
+                static bool& isAlive()
+                {
+                    static bool inScope = false;
+                    return inScope;
+                }
+
+                static int& numOutOfScopeCalls()
+                {
+                    static int numOutOfScopeCalls = 0;
+                    return numOutOfScopeCalls;
+                }
+            };
+
+            auto listeners = std::make_unique<juce::ListenerList<Listener, Array<Listener*, TestCriticalSection>>>();
+
+            const auto callback = [&]{ listeners.reset(); };
+
+            Listener listener { callback };
+
+            listeners->add (&listener);
+            listeners->call (&Listener::notify);
+
+            expect (listeners == nullptr);
+            expect (TestCriticalSection::numOutOfScopeCalls() == 0);
+        }
+
+        beginTest ("Adding a listener during a callback when one has already been removed");
+        {
+            struct Listener{};
+
+            ListenerList<Listener> listeners;
+            expect (listeners.size() == 0);
+
+            Listener listener;
+            listeners.add (&listener);
+            expect (listeners.size() == 1);
+
+            bool listenerCalled = false;
+
+            listeners.call ([&] (auto& l)
+            {
+                listeners.remove (&l);
+                expect (listeners.size() == 0);
+
+                listeners.add (&l);
+                expect (listeners.size() == 1);
+
+                listenerCalled = true;
+            });
+
+            expect (listenerCalled);
+            expect (listeners.size() == 1);
+        }
     }
 
-    int counter = 0;
-    ListenerList<ListenerBase> listeners;
-    Listener1 listener1 {counter};
-    Listener2 listener2 {counter};
+private:
+    static std::set<int> chooseUnique (Random& random, int max, int numChosen)
+    {
+        std::set<int> result;
+
+        while ((int) result.size() < numChosen)
+            result.insert (random.nextInt ({ 0, max }));
+
+        return result;
+    }
 };
 
 static ListenerListTests listenerListTests;
 
 #endif
+
+} // namespace juce

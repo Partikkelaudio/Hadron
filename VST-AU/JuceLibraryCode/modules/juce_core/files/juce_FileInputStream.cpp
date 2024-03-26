@@ -2,41 +2,32 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
+
+namespace juce
+{
 
 int64 juce_fileSetPosition (void* handle, int64 pos);
 
 
 //==============================================================================
-FileInputStream::FileInputStream (const File& f)
-    : file (f),
-      fileHandle (nullptr),
-      currentPosition (0),
-      status (Result::ok())
+FileInputStream::FileInputStream (const File& f)  : file (f)
 {
     openHandle();
 }
@@ -58,7 +49,7 @@ int FileInputStream::read (void* buffer, int bytesToRead)
     // sign that something is broken!
     jassert (buffer != nullptr && bytesToRead >= 0);
 
-    const size_t num = readInternal (buffer, (size_t) bytesToRead);
+    auto num = readInternal (buffer, (size_t) bytesToRead);
     currentPosition += (int64) num;
 
     return (int) num;
@@ -84,3 +75,103 @@ bool FileInputStream::setPosition (int64 pos)
 
     return currentPosition == pos;
 }
+
+
+//==============================================================================
+//==============================================================================
+#if JUCE_UNIT_TESTS
+
+struct FileInputStreamTests final : public UnitTest
+{
+    FileInputStreamTests()
+        : UnitTest ("FileInputStream", UnitTestCategories::streams)
+    {}
+
+    void runTest() override
+    {
+        beginTest ("Open stream non-existent file");
+        {
+            auto tempFile = File::createTempFile (".txt");
+            expect (! tempFile.exists());
+
+            FileInputStream stream (tempFile);
+            expect (stream.failedToOpen());
+        }
+
+        beginTest ("Open stream existing file");
+        {
+            auto tempFile = File::createTempFile (".txt");
+            tempFile.create();
+            expect (tempFile.exists());
+
+            FileInputStream stream (tempFile);
+            expect (stream.openedOk());
+        }
+
+        const MemoryBlock data ("abcdefghijklmnopqrstuvwxyz", 26);
+        File f (File::createTempFile (".txt"));
+        f.appendData (data.getData(), data.getSize());
+        FileInputStream stream (f);
+
+        beginTest ("Read");
+        {
+            expectEquals (stream.getPosition(), (int64) 0);
+            expectEquals (stream.getTotalLength(), (int64) data.getSize());
+            expectEquals (stream.getNumBytesRemaining(), stream.getTotalLength());
+            expect (! stream.isExhausted());
+
+            size_t numBytesRead = 0;
+            MemoryBlock readBuffer (data.getSize());
+
+            while (numBytesRead < data.getSize())
+            {
+                numBytesRead += (size_t) stream.read (&readBuffer[numBytesRead], 3);
+
+                expectEquals (stream.getPosition(), (int64) numBytesRead);
+                expectEquals (stream.getNumBytesRemaining(), (int64) (data.getSize() - numBytesRead));
+                expect (stream.isExhausted() == (numBytesRead == data.getSize()));
+            }
+
+            expectEquals (stream.getPosition(), (int64) data.getSize());
+            expectEquals (stream.getNumBytesRemaining(), (int64) 0);
+            expect (stream.isExhausted());
+
+            expect (readBuffer == data);
+        }
+
+        beginTest ("Skip");
+        {
+            stream.setPosition (0);
+            expectEquals (stream.getPosition(), (int64) 0);
+            expectEquals (stream.getTotalLength(), (int64) data.getSize());
+            expectEquals (stream.getNumBytesRemaining(), stream.getTotalLength());
+            expect (! stream.isExhausted());
+
+            size_t numBytesRead = 0;
+            const int numBytesToSkip = 5;
+
+            while (numBytesRead < data.getSize())
+            {
+                stream.skipNextBytes (numBytesToSkip);
+                numBytesRead += numBytesToSkip;
+                numBytesRead = std::min (numBytesRead, data.getSize());
+
+                expectEquals (stream.getPosition(), (int64) numBytesRead);
+                expectEquals (stream.getNumBytesRemaining(), (int64) (data.getSize() - numBytesRead));
+                expect (stream.isExhausted() == (numBytesRead == data.getSize()));
+            }
+
+            expectEquals (stream.getPosition(), (int64) data.getSize());
+            expectEquals (stream.getNumBytesRemaining(), (int64) 0);
+            expect (stream.isExhausted());
+
+            f.deleteFile();
+        }
+    }
+};
+
+static FileInputStreamTests fileInputStreamTests;
+
+#endif
+
+} // namespace juce

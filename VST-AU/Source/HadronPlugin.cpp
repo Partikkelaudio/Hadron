@@ -61,8 +61,8 @@ HadronPlugin::HadronPlugin()
 , sounds_()
 , update_flag_()
 , current_program_(0)
-, hadron_path_(String::empty)
-, csound_log_path_(String::empty)
+, hadron_path_(String())
+, csound_log_path_(String())
 {
 
 	// Set up the Hadron path
@@ -72,7 +72,7 @@ HadronPlugin::HadronPlugin()
 	const char* env_char = "/Applications/Hadron";
 #endif
 
-	hadron_path_ = env_char != NULL ? String(env_char) : String::empty;
+	hadron_path_ = env_char != NULL ? String(env_char) : String();
 	if (hadron_path_.isEmpty()) {
 		createCriticalLog("No Hadron directory found. Please reinstall.");
 		return;
@@ -182,12 +182,12 @@ HadronPlugin::setParameterDenormalized(int index, float value, bool notify_host)
 
 const String HadronPlugin::getParameterName(int index) {
 	return (index >= 0 && index < Hadron::getNumParameters()) ?
-		String(Hadron::getParameter(index).ui_name.c_str()) : String::empty;
+		String(Hadron::getParameter(index).ui_name.c_str()) : String();
 }
 
 const String HadronPlugin::getParameterText(int index) {
 	return (index >= 0 && index < Hadron::getNumParameters()) ?
-		String(getParameter(index), 2) : String::empty;
+		String(getParameter(index), 2) : String();
 }
 
 bool HadronPlugin::acceptsMidi() const
@@ -297,14 +297,14 @@ void HadronPlugin::getStateInformation(MemoryBlock& destData)
 void
 HadronPlugin::setStateInformation(const void* data, int sizeInBytes)
 {
-	XmlElement* const xmlState = getXmlFromBinary(data, sizeInBytes);
+	auto xmlState = getXmlFromBinary(data, sizeInBytes);
 
 	if (xmlState != 0) {
 		if (xmlState->hasTagName(chunk_tag)) {
 
 			int version = xmlState->getIntAttribute("pluginVersion", 2);
 			if (version < 3) {
-				setProgramInformation(xmlState, 0); // Just a single state here
+				setProgramInformation(xmlState.get(), 0); // Just a single state here
 			}
 			else {
 				int num_programs = xmlState->getIntAttribute("numPrograms", 0);
@@ -326,7 +326,6 @@ HadronPlugin::setStateInformation(const void* data, int sizeInBytes)
 		else {
 			writeToLog("Error: Wrong tag name for imported program bank.");
 		}
-		delete xmlState;
 	}
 	else {
 		writeToLog("No program bank found.");
@@ -348,12 +347,12 @@ HadronPlugin::getCurrentProgramStateInformation(MemoryBlock& destData)
 void
 HadronPlugin::setCurrentProgramStateInformation(const void* data, int sizeInBytes)
 {
-	XmlElement* const xmlState = getXmlFromBinary(data, sizeInBytes);
+	auto xmlState = getXmlFromBinary(data, sizeInBytes);
 
 	if (xmlState != 0) {
 		if (xmlState->hasTagName(chunk_tag)) {
 
-			setProgramInformation(xmlState, current_program_);
+			setProgramInformation(xmlState.get(), current_program_);
 			if (has_loaded_hadron_)
 				reloadSelections();
 
@@ -362,7 +361,6 @@ HadronPlugin::setCurrentProgramStateInformation(const void* data, int sizeInByte
 		else {
 			writeToLog("Error: Wrong tag name for imported program.");
 		}
-		delete xmlState;
 	}
 	else {
 		writeToLog("No program found.");
@@ -466,7 +464,7 @@ HadronPlugin::createConfigFile(const File& config_file, const String& hadron_pat
 	fileProps->setAttribute("Timestamp", false);
 	fileProps->setAttribute("Extension", "log");
 
-	hadronConfig.writeToFile(config_file, String::empty);
+	hadronConfig.writeToFile(config_file, String());
 }
 
 void
@@ -474,7 +472,7 @@ HadronPlugin::readConfigFile(const File& config_file, String& logfile, String& c
 
 	bool hadron_log = false, csound_log = false;
 
-	XmlElement* hadronConfig = XmlDocument::parse(config_file);
+	auto hadronConfig = XmlDocument::parse(config_file);
 	if (hadronConfig != nullptr && hadronConfig->hasTagName("Hadron_properties")) {
 
 		XmlElement* logProps = hadronConfig->getChildByName("Logging");
@@ -484,21 +482,20 @@ HadronPlugin::readConfigFile(const File& config_file, String& logfile, String& c
 		}
 		XmlElement* fileProps = hadronConfig->getChildByName("Filename");
 		if (fileProps != nullptr) {
-			String filename = fileProps->getStringAttribute("Folder", String::empty) + "/";
-			filename += fileProps->getStringAttribute("Name", String::empty);
-			String extension = fileProps->getStringAttribute("Extension", String::empty);
+			String filename = fileProps->getStringAttribute("Folder", String()) + "/";
+			filename += fileProps->getStringAttribute("Name", String());
+			String extension = fileProps->getStringAttribute("Extension", String());
 			bool should_timestamp = fileProps->getBoolAttribute("Timestamp", false);
-			String stamp = String::empty;
+			String stamp = String();
 			if (should_timestamp) {
 				stamp += "_" + Time::getCurrentTime().formatted("%M%S");
 				Uuid unique;
 				stamp += "_" + unique.toString();
 			}
-			logfile = hadron_log ? filename + stamp + "." + extension : String::empty;
-			csound_logfile = csound_log ? filename + "_csound" + stamp + "." + extension : String::empty;
+			logfile = hadron_log ? filename + stamp + "." + extension : String();
+			csound_logfile = csound_log ? filename + "_csound" + stamp + "." + extension : String();
 		}
 	}
-	delete hadronConfig;
 }
 
 void
@@ -662,8 +659,8 @@ HadronPlugin::configureLogging(const File& directory)
 		createConfigFile(config_file, directory.getFullPathName());
 	}
 
-	csound_log_path_ = String::empty;
-	String logfile_name = String::empty;
+	csound_log_path_ = String();
+	String logfile_name = String();
 	readConfigFile(config_file, logfile_name, csound_log_path_);
 
 	// Create log files (if necessary)

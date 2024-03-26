@@ -2,41 +2,34 @@
   ==============================================================================
 
    This file is part of the JUCE library.
-   Copyright (c) 2016 - ROLI Ltd.
+   Copyright (c) 2022 - Raw Material Software Limited
 
-   Permission is granted to use this software under the terms of the ISC license
-   http://www.isc.org/downloads/software-support-policy/isc-license/
+   JUCE is an open source library subject to commercial or open-source
+   licensing.
 
-   Permission to use, copy, modify, and/or distribute this software for any
-   purpose with or without fee is hereby granted, provided that the above
-   copyright notice and this permission notice appear in all copies.
+   The code included in this file is provided under the terms of the ISC license
+   http://www.isc.org/downloads/software-support-policy/isc-license. Permission
+   To use, copy, modify, and/or distribute this software for any purpose with or
+   without fee is hereby granted provided that the above copyright notice and
+   this permission notice appear in all copies.
 
-   THE SOFTWARE IS PROVIDED "AS IS" AND ISC DISCLAIMS ALL WARRANTIES WITH REGARD
-   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
-   FITNESS. IN NO EVENT SHALL ISC BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT,
-   OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-   USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
-   TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
-   OF THIS SOFTWARE.
-
-   -----------------------------------------------------------------------------
-
-   To release a closed-source product which uses other parts of JUCE not
-   licensed under the ISC terms, commercial licenses are available: visit
-   www.juce.com for more information.
+   JUCE IS PROVIDED "AS IS" WITHOUT ANY WARRANTY, AND ALL WARRANTIES, WHETHER
+   EXPRESSED OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR PURPOSE, ARE
+   DISCLAIMED.
 
   ==============================================================================
 */
 
-#ifndef JUCE_MIDIMESSAGE_H_INCLUDED
-#define JUCE_MIDIMESSAGE_H_INCLUDED
-
+namespace juce
+{
 
 //==============================================================================
 /**
     Encapsulates a MIDI message.
 
     @see MidiMessageSequence, MidiOutput, MidiInput
+
+    @tags{Audio}
 */
 class JUCE_API  MidiMessage
 {
@@ -69,6 +62,18 @@ public:
     */
     MidiMessage (int byte1, double timeStamp = 0) noexcept;
 
+    /** Creates a midi message from a list of bytes. */
+    template <typename... Data>
+    MidiMessage (int byte1, int byte2, int byte3, Data... otherBytes)  : size (3 + sizeof... (otherBytes))
+    {
+        // this checks that the length matches the data..
+        jassert (size > 3 || byte1 >= 0xf0 || getMessageLengthFromFirstByte ((uint8) byte1) == size);
+
+        const uint8 data[] = { (uint8) byte1, (uint8) byte2, (uint8) byte3, static_cast<uint8> (otherBytes)... };
+        memcpy (allocateSpace (size), data, (size_t) size);
+    }
+
+
     /** Creates a midi message from a block of data. */
     MidiMessage (const void* data, int numBytes, double timeStamp = 0);
 
@@ -78,26 +83,27 @@ public:
         complete message, and will return the number of bytes it used. This lets
         you read a sequence of midi messages from a file or stream.
 
-        @param data             the data to read from
-        @param maxBytesToUse    the maximum number of bytes it's allowed to read
-        @param numBytesUsed     returns the number of bytes that were actually needed
-        @param lastStatusByte   in a sequence of midi messages, the initial byte
-                                can be dropped from a message if it's the same as the
-                                first byte of the previous message, so this lets you
-                                supply the byte to use if the first byte of the message
-                                has in fact been dropped.
-        @param timeStamp        the time to give the midi message - this value doesn't
-                                use any particular units, so will be application-specific
+        @param data                     the data to read from
+        @param maxBytesToUse            the maximum number of bytes it's allowed to read
+        @param numBytesUsed             returns the number of bytes that were actually needed
+        @param lastStatusByte           in a sequence of midi messages, the initial byte
+                                        can be dropped from a message if it's the same as the
+                                        first byte of the previous message, so this lets you
+                                        supply the byte to use if the first byte of the message
+                                        has in fact been dropped.
+        @param timeStamp                the time to give the midi message - this value doesn't
+                                        use any particular units, so will be application-specific
         @param sysexHasEmbeddedLength   when reading sysexes, this flag indicates whether
-                                to expect the data to begin with a variable-length field
-                                indicating its size
+                                        to expect the data to begin with a variable-length
+                                        field indicating its size
     */
     MidiMessage (const void* data, int maxBytesToUse,
                  int& numBytesUsed, uint8 lastStatusByte,
                  double timeStamp = 0,
                  bool sysexHasEmbeddedLength = true);
 
-    /** Creates an active-sense message.
+    /** Creates an empty sysex message.
+
         Since the MidiMessage has to contain a valid message, this default constructor
         just initialises it with an empty sysex message.
     */
@@ -115,10 +121,11 @@ public:
     /** Copies this message from another one. */
     MidiMessage& operator= (const MidiMessage& other);
 
-   #if JUCE_COMPILER_SUPPORTS_MOVE_SEMANTICS
+    /** Move constructor */
     MidiMessage (MidiMessage&&) noexcept;
+
+    /** Move assignment operator */
     MidiMessage& operator= (MidiMessage&&) noexcept;
-   #endif
 
     //==============================================================================
     /** Returns a pointer to the raw midi data.
@@ -167,6 +174,11 @@ public:
     */
     void addToTimeStamp (double delta) noexcept         { timeStamp += delta; }
 
+    /** Return a copy of this message with a new timestamp.
+        The units for the timestamp will be application-specific - see the notes for getTimeStamp().
+    */
+    MidiMessage withTimeStamp (double newTimestamp) const;
+
     //==============================================================================
     /** Returns the midi channel associated with the message.
 
@@ -205,6 +217,13 @@ public:
         @see getSysExData
     */
     int getSysExDataSize() const noexcept;
+
+    /** Returns a span that bounds the sysex body bytes contained in this message. */
+    Span<const std::byte> getSysExDataSpan() const noexcept
+    {
+        return { reinterpret_cast<const std::byte*> (getSysExData()),
+                 (size_t) getSysExDataSize() };
+    }
 
     //==============================================================================
     /** Returns true if this message is a 'key-down' event.
@@ -390,7 +409,7 @@ public:
     /** Returns true if the message is an aftertouch event.
 
         For aftertouch events, use the getNoteNumber() method to find out the key
-        that it applies to, and getAftertouchValue() to find out the amount. Use
+        that it applies to, and getAfterTouchValue() to find out the amount. Use
         getChannel() to find out the channel.
 
         @see getAftertouchValue, getNoteNumber
@@ -473,7 +492,6 @@ public:
     bool isControllerOfType (int controllerType) const noexcept;
 
     /** Creates a controller message.
-
         @param channel          the midi channel, in the range 1 to 16
         @param controllerType   the type of controller
         @param value            the controller value
@@ -493,22 +511,24 @@ public:
     */
     bool isAllSoundOff() const noexcept;
 
-    /** Creates an all-notes-off message.
+    /** Checks whether this message is a reset all controllers message.
+        @see allControllerOff
+    */
+    bool isResetAllControllers() const noexcept;
 
+    /** Creates an all-notes-off message.
         @param channel              the midi channel, in the range 1 to 16
         @see isAllNotesOff
     */
     static MidiMessage allNotesOff (int channel) noexcept;
 
     /** Creates an all-sound-off message.
-
         @param channel              the midi channel, in the range 1 to 16
         @see isAllSoundOff
     */
     static MidiMessage allSoundOff (int channel) noexcept;
 
     /** Creates an all-controllers-off message.
-
         @param channel              the midi channel, in the range 1 to 16
     */
     static MidiMessage allControllersOff (int channel) noexcept;
@@ -842,15 +862,52 @@ public:
     static MidiMessage createSysExMessage (const void* sysexData,
                                            int dataSize);
 
+    /** Creates a system-exclusive message.
+        The data passed in is wrapped with header and tail bytes of 0xf0 and 0xf7.
+    */
+    static MidiMessage createSysExMessage (Span<const std::byte> data);
 
     //==============================================================================
+   #ifndef DOXYGEN
     /** Reads a midi variable-length integer.
 
-        @param data             the data to read the number from
-        @param numBytesUsed     on return, this will be set to the number of bytes that were read
+        The `data` argument indicates the data to read the number from,
+        and `numBytesUsed` is used as an out-parameter to indicate the number
+        of bytes that were read.
     */
-    static int readVariableLengthVal (const uint8* data,
-                                      int& numBytesUsed) noexcept;
+    [[deprecated ("This signature has been deprecated in favour of the safer readVariableLengthValue.")]]
+    static int readVariableLengthVal (const uint8* data, int& numBytesUsed) noexcept;
+   #endif
+
+    /** Holds information about a variable-length value which was parsed
+        from a stream of bytes.
+
+        A valid value requires that `bytesUsed` is greater than 0.
+    */
+    struct VariableLengthValue
+    {
+        VariableLengthValue() = default;
+
+        VariableLengthValue (int valueIn, int bytesUsedIn)
+            : value (valueIn), bytesUsed (bytesUsedIn) {}
+
+        bool isValid() const noexcept  { return bytesUsed > 0; }
+
+        int value = 0;
+        int bytesUsed = 0;
+    };
+
+    /** Reads a midi variable-length integer, with protection against buffer overflow.
+
+        @param data             the data to read the number from
+        @param maxBytesToUse    the number of bytes in the region following `data`
+        @returns                a struct containing the parsed value, and the number
+                                of bytes that were read. If parsing fails, both the
+                                `value` and `bytesUsed` fields will be set to 0 and
+                                `isValid()` will return false
+    */
+    static VariableLengthValue readVariableLengthValue (const uint8* data,
+                                                        int maxBytesToUse) noexcept;
 
     /** Based on the first byte of a short midi message, this uses a lookup table
         to return the message length (either 1, 2, or 3 bytes).
@@ -928,7 +985,7 @@ private:
     };
 
     PackedData packedData;
-    double timeStamp;
+    double timeStamp = 0;
     int size;
    #endif
 
@@ -937,4 +994,4 @@ private:
     uint8* allocateSpace (int);
 };
 
-#endif   // JUCE_MIDIMESSAGE_H_INCLUDED
+} // namespace juce
