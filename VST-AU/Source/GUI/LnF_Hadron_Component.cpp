@@ -54,7 +54,7 @@ void LnF_Hadron_Component::drawLinearSlider(Graphics& g,
 												int width, int height,
 												float sliderPos,
 												float , float ,
-												const Slider::SliderStyle,
+												Slider::SliderStyle,
 												Slider& slider)
 {
 	g.setColour(slider.findColour(Slider::trackColourId));

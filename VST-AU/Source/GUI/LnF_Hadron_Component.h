@@ -16,18 +16,18 @@ public:
                                    float sliderPos,
                                    float minSliderPos,
                                    float maxSliderPos,
-                                   const Slider::SliderStyle style,
-                                   Slider& slider);
+                                   Slider::SliderStyle style,
+                                   Slider& slider) override;
 
-	int getSliderThumbRadius (Slider& slider);
+	int getSliderThumbRadius (Slider& slider) override;
 	void drawRotarySlider (Graphics& g,
                                     int x, int y,
                                     int width, int height,
                                     float sliderPos,
                                     float rotaryStartAngle,
                                     float rotaryEndAngle,
-                                    Slider& slider);
-    Font getComboBoxFont (ComboBox& box);
+                                    Slider& slider) override;
+    Font getComboBoxFont (ComboBox& box) override;
 
 	//static const char* expressionSliderMask_png;
 	//static const int expressionSliderMask_pngSize;
