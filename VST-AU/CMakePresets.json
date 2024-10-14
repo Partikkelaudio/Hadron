@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "win-x64",
+      "displayName": "Ninja Multi-Config",
+      "description": "Generate Ninja project files for debug and release",
+      "binaryDir": "${sourceDir}/target/win-x64/",
+      "generator": "Visual Studio 17 2022",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      },
+      "cacheVariables": {
+        "WIN_ARCHITECTURE": "x64"
+      }
+    },
+    {
+      "name": "win-x86",
+      "displayName": "Ninja Multi-Config",
+      "description": "Generate Ninja project files for debug and release",
+      "binaryDir": "${sourceDir}/target/win-x86/",
+      "generator": "Visual Studio 17 2022",
+      "architecture": {
+        "value": "Win32",
+        "strategy": "set"
+      },
+      "cacheVariables": {
+        "WIN_ARCHITECTURE": "x86"
+      }
+    }
+  ]
+}

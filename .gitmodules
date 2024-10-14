@@ -1,0 +1,4 @@
+[submodule "VST-AU/vendor/JUCE"]
+	path = VST-AU/vendor/JUCE
+	url = https://github.com/juce-framework/JUCE.git
+	branch = master
