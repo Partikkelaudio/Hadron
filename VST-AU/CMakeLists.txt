@@ -25,7 +25,9 @@ add_subdirectory(vendor)
 # If you are building a VST2 or AAX plugin, CMake needs to be told where to find these SDKs on your
 # system. This setup should be done before calling `juce_add_plugin`.
 
-juce_set_vst2_sdk_path(../../vst2.4)
+if (WIN32)
+    juce_set_vst2_sdk_path(../../vst2.4)
+endif()
 
 # `juce_add_plugin` adds a static library target with the name passed as the first argument
 # (AudioPluginExample here). This target is a normal CMake target, but has a lot of extra properties set
