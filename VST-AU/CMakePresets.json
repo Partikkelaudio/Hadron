@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "cmakeMinimumRequired": {
     "major": 3,
     "minor": 22,
@@ -33,6 +33,13 @@
       "cacheVariables": {
         "WIN_ARCHITECTURE": "x86"
       }
+    },
+    {
+      "name": "macos",
+      "displayName": "MacOS ARM",
+      "description": "Generate Xcode project files for debug and release",
+      "binaryDir": "${sourceDir}/target/macos/",
+      "generator": "Xcode"
     }
   ]
 }

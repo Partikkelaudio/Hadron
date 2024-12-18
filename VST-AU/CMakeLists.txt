@@ -29,6 +29,10 @@ if (WIN32)
     juce_set_vst2_sdk_path(../../vst2.4)
 endif()
 
+if (APPLE)
+    juce_set_vst2_sdk_path(../../vstsdk2.4)
+endif()
+
 # `juce_add_plugin` adds a static library target with the name passed as the first argument
 # (AudioPluginExample here). This target is a normal CMake target, but has a lot of extra properties set
 # up by default. As well as this shared code static library, this function adds targets for each of
