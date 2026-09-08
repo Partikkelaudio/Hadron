@@ -2,6 +2,15 @@ cmake_minimum_required(VERSION 3.22)
 
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Default build type: Release")
 
+# Build for both Intel and Apple Silicon. Without this the build silently
+# inherits the host architecture, which is how the previously shipped plugins
+# ended up arm64-only. Set before project() so the compiler checks run against
+# both slices. The embedded CsoundLib64.framework is universal already.
+if (APPLE)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64"
+        CACHE STRING "Build universal binaries for Intel and Apple Silicon")
+endif()
+
 project(Hadron VERSION 1.0.1)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -61,6 +70,31 @@ target_compile_definitions(Hadron PRIVATE JUCE_MODAL_LOOPS_PERMITTED=1)
 juce_generate_juce_header(Hadron)
 
 add_subdirectory(src)
+
+if (APPLE)
+    # Copy CsoundLib64.framework into each plugin bundle at Contents/Frameworks,
+    # which is where the install name written by relink-csound-framework.sh
+    # points. src/CMakeLists.txt does the fetching and relinking; only this part
+    # has to be here, because add_custom_command(TARGET ...) must be called from
+    # the directory that created the target.
+    #
+    # Iterating JUCE's own list of format targets keeps this in step with the
+    # FORMATS given to juce_add_plugin above.
+    get_target_property(hadron_plugin_targets Hadron JUCE_ACTIVE_PLUGIN_TARGETS)
+    if (NOT hadron_plugin_targets)
+        message(FATAL_ERROR
+            "no JUCE plugin targets found; the Csound framework would not be "
+            "embedded and the built plugin would not load")
+    endif()
+
+    foreach (plugin_target IN LISTS hadron_plugin_targets)
+        add_custom_command(TARGET ${plugin_target} POST_BUILD
+            COMMAND "${CSOUND_DIRECTORY}/OSX/embed-csound-framework.sh"
+                    "$<TARGET_BUNDLE_DIR:${plugin_target}>"
+            COMMENT "Embedding CsoundLib64.framework into ${plugin_target}"
+            VERBATIM)
+    endforeach()
+endif()
 
 # `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer
 # project, these might be passed in the 'Preprocessor Definitions' field. JUCE modules also make use

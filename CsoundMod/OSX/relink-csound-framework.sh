@@ -8,8 +8,8 @@
 #     /Library/Frameworks/CsoundLib64.framework/CsoundLib64
 # which makes the plugin depend on Csound being installed system-wide. This
 # rewrites that to a path relative to whatever binary loads it:
-#     @loader_path/../Resources/CsoundLib64.framework/Versions/6.0/CsoundLib64
-# i.e. Contents/Resources/ inside the .vst / .component bundle, given the
+#     @loader_path/../Frameworks/CsoundLib64.framework/Versions/6.0/CsoundLib64
+# i.e. Contents/Frameworks/ inside the .vst / .component bundle, given the
 # plugin binary sits in Contents/MacOS/.
 #
 # This must run BEFORE the plugin is linked: the framework's LC_ID_DYLIB is
@@ -26,7 +26,7 @@
 # Usage:
 #   ./relink-csound-framework.sh
 #   ./relink-csound-framework.sh --framework /path/to/CsoundLib64.framework
-#   ./relink-csound-framework.sh --embed-path ../Frameworks
+#   ./relink-csound-framework.sh --embed-path ../Resources
 #   ./relink-csound-framework.sh --check      # report only, change nothing
 
 set -euo pipefail
@@ -36,9 +36,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FRAMEWORK="${SCRIPT_DIR}/Csound_framework/6_18/CsoundLib64.framework"
 
 # Where the framework will live inside the plugin bundle, relative to the
-# loading binary (Contents/MacOS/Hadron). Contents/Resources is the location
-# Hadron has always used.
-EMBED_PATH="../Resources"
+# loading binary (Contents/MacOS/Hadron). Contents/Frameworks is Apple's
+# documented location for embedded frameworks, and the one the Csound 5 era
+# scripts used (hadron-relink-csound5-framework.sh, and the framework copy in
+# installer/DSP_installer/OSX/scripts/osx-universal-hadron-prepare-bundle.sh).
+# Nested code under Contents/Resources loads, but is the kind of layout
+# notarisation objects to.
+EMBED_PATH="../Frameworks"
 
 CHECK_ONLY=0
 
