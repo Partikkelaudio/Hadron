@@ -17,9 +17,14 @@ installer/Statespack_1/Win/*.exe
 installer/Statespack_2/Win/*.exe
 *.zip
 csoundCommandline.py
-*DS_Store
-*/DS_Store
+.DS_Store
+.DS_Store.orig
 *.mode1v3
 *.pbxuser
 *.jBridge
 *.sdf
+
+# Csound framework fetched by CsoundMod/OSX/fetch-csound-framework.sh
+# (official Csound 6.18.1 universal release; not committed - see issue #2)
+/CsoundMod/OSX/Csound_framework/6_18/
+/CsoundMod/OSX/Csound_framework/.download-cache/
