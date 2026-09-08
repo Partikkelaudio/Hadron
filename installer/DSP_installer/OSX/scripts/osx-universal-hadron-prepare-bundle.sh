@@ -68,7 +68,7 @@ cp -Rfv $repo/lgpl-3.0.txt $build/Hadron/
 cp -Rfv $repo/readme_standalone.txt $build/Hadron
 cp -Rfv $repo/Hadron_Csound_Standalone.csd $build/Hadron
 cp -Rfv $repo/hadron_cs_standalone_sco.inc $build/Hadron
-cp -Rfv $repo/VST-AU/Builds/MacOSX/hadron_vst.config $build/Hadron
+cp -Rfv $repo/hadron_vst.config $build/Hadron
 cp -Rfv $repo/default_preset.table $build/Hadron
 cp -Rfv $repo/installer/DSP_installer/VST_presets/HadronFree.fxb $build/Hadron
 
