@@ -9,9 +9,48 @@ set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Default build type: Release")
 if (APPLE)
     set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64"
         CACHE STRING "Build universal binaries for Intel and Apple Silicon")
+
+    # Oldest macOS the plugin runs on. Unset, this inherits the build host,
+    # which makes the Intel slice useless: built on Sonoma it would refuse to
+    # load on the Intel Macs that are the only reason to ship that slice.
+    #
+    # 10.13 is the lowest value everything in the build supports. The embedded
+    # CsoundLib64.framework and every dylib under it are built for 10.9 on
+    # x86_64, JUCE 8.0.2 refuses to build below 10.11, and Hadron uses no C++17
+    # library feature carrying a macOS availability limit. The arm64 slice is
+    # bumped to 11.0 by the toolchain, since no arm64 Mac predates it.
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13"
+        CACHE STRING "Oldest supported macOS (arm64 is raised to 11.0 automatically)")
 endif()
 
 project(Hadron VERSION 1.0.1)
+
+# Install the built plugin into the user plug-in folders as the last build step,
+# so a build is immediately testable in a host:
+#
+#     AU  -> ~/Library/Audio/Plug-Ins/Components/Hadron.component
+#     VST -> ~/Library/Audio/Plug-Ins/VST/Hadron.vst
+#
+# This is ON by default on macOS. To build without installing:
+#
+#     cmake -S VST-AU -B <build dir> -DCOPY_PLUGIN_AFTER_BUILD=0
+#
+# Note that it overwrites whatever is already installed there, including a
+# release build, and that a Debug build installs a Debug plugin.
+#
+# It defaults to OFF elsewhere because the Windows destination is
+# %ProgramFiles%/Steinberg/Vstplugins, which needs an elevated shell and would
+# otherwise fail the build. Set it to 1 there if you want it and can write to
+# that directory.
+if (APPLE)
+    set(hadron_copy_default ON)
+else()
+    set(hadron_copy_default OFF)
+endif()
+
+option(COPY_PLUGIN_AFTER_BUILD
+    "Install the plugin into the user plug-in folders after each build"
+    ${hadron_copy_default})
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -58,7 +97,9 @@ juce_add_plugin(Hadron
     # NEEDS_MIDI_OUTPUT TRUE/FALSE              # Does the plugin need midi output?
     # IS_MIDI_EFFECT TRUE/FALSE                 # Is this plugin a MIDI effect?
     # EDITOR_WANTS_KEYBOARD_FOCUS TRUE/FALSE    # Does the editor need keyboard focus?
-    # COPY_PLUGIN_AFTER_BUILD TRUE/FALSE        # Should the plugin be installed to a default location after building?
+    # COPY_PLUGIN_AFTER_BUILD is deliberately NOT set here. It would install the
+    # bundle before the Csound framework is embedded into it; see the call to
+    # juce_enable_copy_plugin_step below.
     PLUGIN_MANUFACTURER_CODE PaAu               # A four-character manufacturer id with at least one upper-case character
     PLUGIN_CODE 7263                            # A unique four-character plugin id with exactly one upper-case character
                                                 # GarageBand 10.3 requires the first letter to be upper-case, and the remaining letters to be lower-case
@@ -94,6 +135,19 @@ if (APPLE)
             COMMENT "Embedding CsoundLib64.framework into ${plugin_target}"
             VERBATIM)
     endforeach()
+endif()
+
+# Registered here, after the POST_BUILD step above, and never as
+# juce_add_plugin's COPY_PLUGIN_AFTER_BUILD. POST_BUILD commands run in the
+# order they are added, and juce_add_plugin adds its copy from inside itself,
+# so setting the keyword there would install the bundle before the Csound
+# framework is embedded into it: the installed plugin would be missing
+# CsoundLib64 and would fail to load, while the one in the build tree worked.
+# Deferring the copy this way is what JUCE's own CMake docs prescribe for
+# builds that modify the bundle. JUCE's copy uses file(INSTALL), which
+# preserves the framework's symlinks.
+if (COPY_PLUGIN_AFTER_BUILD)
+    juce_enable_copy_plugin_step(Hadron)
 endif()
 
 # `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer
