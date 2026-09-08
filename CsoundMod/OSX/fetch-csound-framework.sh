@@ -45,7 +45,9 @@ CACHE_DIR="${FRAMEWORK_ROOT}/.download-cache"
 # Deliberately KEPT:
 #   Versions/6.0/Resources/Info.plist  - required to codesign/notarise the
 #                                        embedded framework
-#   Versions/6.0/Resources/Opcodes64   - plugin opcodes, only 3.5 MB
+#   Versions/6.0/Resources/Opcodes64   - the plugin opcode directory, kept even
+#                                        when its contents are stripped; see
+#                                        STRIP_OPCODES below
 #   Versions/6.0/Headers               - CMake uses this as the include dir
 #   libs/                              - CsoundLib64 hard-links
 #                                        @loader_path/../../libs/libsndfile.1.dylib
@@ -59,13 +61,20 @@ STRIP_PATHS=(
     "libcsnd6.a"                        # 548 KB static lib, build-time only
 )
 
-# Hadron's orchestra uses no plugin opcodes, so the Opcodes64 directory and the
-# four dylibs only it references are dropped by default. Set this to 0 to keep
-# them (adds ~7 MB) if Hadron ever starts using a plugin opcode.
+# Hadron's orchestra uses no plugin opcodes, so the contents of Opcodes64 and
+# the four dylibs only they reference are dropped by default (~7 MB). Set this
+# to 0 to keep them if Hadron ever starts using a plugin opcode.
+#
+# The Opcodes64 directory itself is kept either way, empty when stripping. The
+# plugin points OPCODE6DIR64 at it (see VST-AU/src/CSoundInterface.cpp), and an
+# empty directory is what makes that setting do its job: Csound scans it, finds
+# nothing, and says nothing. Delete the directory instead and Csound warns on
+# every load; leave OPCODE6DIR64 unset instead and Csound falls back to its
+# compiled-in default, /Library/Frameworks/CsoundLib64.framework, loading a
+# separately installed Csound's plugin opcodes into the plugin's process.
 STRIP_OPCODES=1
 if [[ "${STRIP_OPCODES}" == "1" ]]; then
     STRIP_PATHS+=(
-        "Versions/6.0/Resources/Opcodes64"
         "libs/liblo.7.dylib"
         "libs/libportaudio.2.dylib"
         "libs/libportmidi.dylib"
@@ -185,6 +194,20 @@ for rel in "${STRIP_PATHS[@]}"; do
     fi
 done
 
+# Emptied rather than removed, so that OPCODE6DIR64 has an existing directory
+# to point at. See the STRIP_OPCODES comment above.
+if [[ "${STRIP_OPCODES}" == "1" ]]; then
+    opcodes="${EXTRACTED}/Versions/6.0/Resources/Opcodes64"
+    if [[ -d "${opcodes}" ]]; then
+        size="$(du -sh "${opcodes}" 2>/dev/null | cut -f1 | tr -d ' ')"
+        rm -rf "${opcodes}"
+        mkdir -p "${opcodes}"
+        printf '    emptied %-40s %s\n' "Versions/6.0/Resources/Opcodes64" "${size}"
+    else
+        warn "strip target not present (upstream layout changed?): Versions/6.0/Resources/Opcodes64"
+    fi
+fi
+
 # --- normalise framework layout ---------------------------------------------
 
 # Csound ships libs/ at the framework root. Apple requires a versioned
@@ -236,8 +259,15 @@ check "Versions/6.0/Resources/Info.plist" "${DEST_FRAMEWORK}/Versions/6.0/Resour
 check "libs/libsndfile.1.dylib"           "${DEST_FRAMEWORK}/libs/libsndfile.1.dylib"
 check "Versions/6.0/libs/"                "${DEST_FRAMEWORK}/Versions/6.0/libs"
 check "Versions/Current -> 6.0 symlink"   "${DEST_FRAMEWORK}/Versions/Current"
-[[ "${STRIP_OPCODES}" == "1" ]] || \
-    check "Versions/6.0/Resources/Opcodes64"  "${DEST_FRAMEWORK}/Versions/6.0/Resources/Opcodes64"
+check "Versions/6.0/Resources/Opcodes64"  "${DEST_FRAMEWORK}/Versions/6.0/Resources/Opcodes64"
+if [[ "${STRIP_OPCODES}" == "1" ]]; then
+    if [[ -z "$(ls -A "${DEST_FRAMEWORK}/Versions/6.0/Resources/Opcodes64" 2>/dev/null)" ]]; then
+        printf '    \033[32mok\033[0m   %s\n' "Versions/6.0/Resources/Opcodes64 is empty"
+    else
+        printf '    \033[31mFAIL\033[0m %s\n' "Versions/6.0/Resources/Opcodes64 is not empty"
+        fail=1
+    fi
+fi
 
 # The top level entries must be symlinks, not copies, or the bundle is invalid.
 for link in CsoundLib64 Headers Resources libs; do

@@ -11,6 +11,11 @@ typedef unsigned __int32 uint32;
 
 #include <sstream>
 
+#ifdef __APPLE__
+#include <dlfcn.h>
+#include <sys/stat.h>
+#endif
+
 
 
 	static void my_callback(CSOUND *csound, int, const char *format, va_list valist) {
@@ -44,6 +49,38 @@ namespace {
 
     return static_cast<float>(midi_value/127.0);
   }
+
+#ifdef __APPLE__
+
+  // The plugin opcode directory inside the CsoundLib64.framework that is
+  // embedded in this plugin's own bundle, at
+  //     <bundle>/Contents/Frameworks/CsoundLib64.framework
+  // by the POST_BUILD step in VST-AU/CMakeLists.txt.
+  //
+  // The bundle is found with dladdr, i.e. from the module this code was loaded
+  // from, and not from the Hadron root path: that is /Applications/Hadron, a
+  // plain data folder with no Contents/Frameworks in it, so deriving the
+  // opcode directory from it gave a path that has never existed.
+  //
+  // Returns an empty string if this module is not inside a bundle, which
+  // should only happen if Hadron is ever built as a bare dylib.
+  std::string embeddedOpcodeDir() {
+
+    Dl_info info;
+    if (dladdr(reinterpret_cast<const void*>(&embeddedOpcodeDir), &info) == 0 || info.dli_fname == nullptr)
+      return std::string();
+
+    // <bundle>/Contents/MacOS/Hadron -> <bundle>/Contents
+    const std::string module_path(info.dli_fname);
+    const std::string::size_type contents = module_path.rfind("/Contents/");
+    if (contents == std::string::npos)
+      return std::string();
+
+    return module_path.substr(0, contents) +
+        std::string("/Contents/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64");
+  }
+
+#endif
 }
 
 
@@ -102,7 +139,19 @@ CSoundInterface::initialize(const std::string& root_path, const std::string& orc
 #ifdef WIN32 
   std::string opcode_path = root_path + std::string("/Csound_Hadron/plugins64");
 #else
-  std::string opcode_path = root_path + std::string("/Contents/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64");
+  std::string opcode_path = embeddedOpcodeDir();
+
+	// Logged with its existence so that a path that stops matching the bundle
+	// shows up here, rather than only as a Csound warning far from the cause.
+	if (csound_log_.is_open()) {
+		struct stat opcode_dir_stat;
+		const bool exists = !opcode_path.empty()
+				&& stat(opcode_path.c_str(), &opcode_dir_stat) == 0
+				&& S_ISDIR(opcode_dir_stat.st_mode);
+		csound_log_ << "With opcode_path = "
+								<< (opcode_path.empty() ? "<bundle not found>" : opcode_path.c_str())
+								<< (exists ? " (exists)" : " (DOES NOT EXIST)") << std::endl;
+	}
 #endif	
 
 //  std::string inc_path = root_path + std::string("/inc");
@@ -113,7 +162,17 @@ CSoundInterface::initialize(const std::string& root_path, const std::string& orc
 
   try {
 	int result = csoundSetGlobalEnv("INCDIR", root_path.c_str());
+
+#ifdef WIN32
     result = csoundSetGlobalEnv("OPCODE6DIR64", opcode_path.c_str());
+#else
+    // Left unset only if the bundle could not be located above. Csound then
+    // falls back to its compiled-in default, which on macOS is the separately
+    // installed /Library/Frameworks/CsoundLib64.framework -- a different build
+    // of Csound whose plugin opcodes must not be loaded into this process.
+    if (!opcode_path.empty())
+      result = csoundSetGlobalEnv("OPCODE6DIR64", opcode_path.c_str());
+#endif
 
     csound_ = new Csound();
     if (csound_) {
